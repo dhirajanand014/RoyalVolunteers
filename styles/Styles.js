@@ -6,5 +6,11 @@ export const RVStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff'
+    },
+    signUp_keyboardAvoidingView: {
+        flex: 1,
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#fff'
     }
 });
