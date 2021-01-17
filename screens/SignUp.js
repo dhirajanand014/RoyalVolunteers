@@ -1,45 +1,44 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { Text, View, KeyboardAvoidingView } from 'react-native';
-import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
-import SvgUri from 'react-native-svg-uri';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, Dimensions } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
+import Animated from 'react-native-reanimated';
+import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
 import { onChangeInput } from '../helper/Helper';
 import { RVStyles } from '../styles/Styles';
 export const SignUp = () => {
 
     const navigation = useNavigation();
 
+    const { width, height } = Dimensions.get(`window`);
+
     const [signUpDetails, setSignUpDetails] = useState({
-        phoneNumber: 0
     });
-    console.log(signUpDetails.phoneNumber.toString.length)
+
     return (
-        <View style={RVStyles.container}>
-            <KeyboardAvoidingView
-                keyboardVerticalOffset={50}
-                behavior={'padding'}
-                style={{
-                    alignItems: 'center'
-                }}>
-                <Text style={{ fontSize: 28, lineHeight: 30, textAlign: 'center', color: `#0C0D34` }}>Welcome</Text>
-                <Text style={{ marginBottom: 50, marginTop: 20, fontSize: 15, color: `#0C0D34` }}>Please enter the below details</Text>
-
-                <View style={{
-                    flexDirection: 'row', alignSelf: 'center', marginHorizontal: 55, borderWidth: 2, marginVertical: 20,
-                    paddingHorizontal: 10, borderRadius: 23, borderColor: '#999999', paddingVertical: 2
-                }}>
-                    <TextInput placeholder={"Enter Mobile Number"} value={signUpDetails.phoneNumber}
-                        maxLength={10} onChangeText={(value) =>
-                            onChangeInput('phoneNumber', value, signUpDetails, setSignUpDetails)}
-                        keyboardType={"numeric"} style={{ paddingHorizontal: 10, width: 200, textAlign: 'center' }} />
-                </View>
-                {
-
-                    signUpDetails.phoneNumber.toString().length == 10 &&
-                    navigation.navigate(`RegistrationOTPInput`)
-                }
-            </KeyboardAvoidingView>
-
-        </View >
+        <Animated.View style={RVStyles.signUpContainer}>
+            <View style={RVStyles.signUpHeaderImage}>
+                <Image source={require(`../assets/rv_home_logo.png`)} />
+            </View>
+            <View style={RVStyles.signUpFooter}>
+                <Text style={RVStyles.signUpTextHeader}>SIGN UP</Text>
+                <Animated.ScrollView>
+                    <View style={RVStyles.userInputView}>
+                        <Text style={RVStyles.userInputTextView}>Mobile Number</Text>
+                        <View style={RVStyles.userInput}>
+                            <RVPhoneIcon />
+                            <TextInput autoCapitalize="none" placeholder="Enter 10 digit Mobile Number"
+                                keyboardType={"numeric"} style={RVStyles.signUpTextInput} placeholderTextColor="#999999" />
+                        </View>
+                    </View>
+                </Animated.ScrollView>
+                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 150 }}>
+                    <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Proceed</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
+            </View>
+        </Animated.View>
     )
 }

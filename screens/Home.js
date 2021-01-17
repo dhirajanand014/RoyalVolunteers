@@ -20,7 +20,7 @@ export const Home = () => {
                     borderRadius: 25,
                     paddingHorizontal: 20,
                     paddingVertical: 15,
-                    marginVertical: 10,
+                    marginVertical: 15,
                     width: 300,
                     elevation: 3,
                     backgroundColor: "#DE1F25"
@@ -36,7 +36,7 @@ export const Home = () => {
                     elevation: 3,
                     backgroundColor: "#DE1F25"
                 }} onPress={() => navigation.navigate('SignUp')}>
-                    <Text style={{ color: 'white', textAlign: 'center' }}>Register</Text>
+                    <Text style={{ color: 'white', textAlign: 'center' }}>Sign Up</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.7} style={{
                     borderRadius: 25,
