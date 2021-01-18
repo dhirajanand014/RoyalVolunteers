@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import { Home } from './screens/Home';
@@ -8,13 +8,23 @@ import { SignUp } from './screens/SignUp';
 import { RegistrationOTPInput } from './screens/RegistrationOTPInput';
 import { screenOptions, stackOptions } from './constants/Constants';
 
-export const CategoryContext = React.createContext();
+export const SignUpContext = createContext();
+const Stack = createStackNavigator();
 
-export default class App extends React.PureComponent {
-  render() {
-    const Stack = createStackNavigator();
+export default function App() {
 
-    return (
+  const [signUpDetails, setSignUpDetails] = useState({
+    phoneNumber: ``,
+    secret: ``
+  });
+
+  const usersDetailsStateContext = {
+    signUpDetails,
+    setSignUpDetails
+  };
+
+  return (
+    <SignUpContext.Provider value={usersDetailsStateContext}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={`Home`} screenOptions={screenOptions}
           headerMode='float' animation="fade">
@@ -24,6 +34,6 @@ export default class App extends React.PureComponent {
           <Stack.Screen name="RegistrationOTPInput" component={RegistrationOTPInput} options={stackOptions} />
         </Stack.Navigator>
       </NavigationContainer>
-    );
-  }
+    </SignUpContext.Provider>
+  );
 }

@@ -39,12 +39,12 @@ export const RVStyles = StyleSheet.create({
     signUpTextInput: {
         flex: 1,
         marginTop: Platform.OS === 'ios' ? 0 : 0,
-        paddingLeft: 18,
+        paddingLeft: 3,
         fontSize: 18,
         color: '#05375a'
     },
     userInputView: {
-        paddingTop: 20
+        paddingVertical: 20
     },
     userPasswordInputView: {
         paddingVertical: 10,
@@ -64,8 +64,24 @@ export const RVStyles = StyleSheet.create({
         paddingStart: 15,
         borderColor: '#999999',
         borderRadius: 35,
-        width: width / 1.2,
+        width: width / 1.15,
         marginVertical: 10
+    },
+    mobileCountryCode: {
+        marginHorizontal: 5,
+        paddingHorizontal: 5,
+        borderRightColor: '#000000',
+        borderRightWidth: 2,
+        color: '#05375a',
+        fontSize: 18,
+        paddingLeft: 5
+    },
+    signUpDescription: {
+        color: '#989898',
+        textAlign: 'center',
+        fontSize: 16,
+        marginTop: 40,
+        fontWeight: '500'
     },
 
     buttonStyle: {
