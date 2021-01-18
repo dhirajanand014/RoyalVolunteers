@@ -20,12 +20,13 @@ export const SignUp = () => {
 
     const onSubmit = (data) => {
         console.log(data, 'data');
+        navigation.navigate(`SignUpOTPVerication`)
     };
 
     const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
 
     return (
-        <Animated.View style={RVStyles.signUpContainer}>
+        <Animated.View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.signUpHeaderImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <View style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>SIGN UP</Text>

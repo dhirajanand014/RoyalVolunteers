@@ -5,7 +5,7 @@ import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 import { Home } from './screens/Home';
 import { SignIn } from './screens/SignIn';
 import { SignUp } from './screens/SignUp';
-import { RegistrationOTPInput } from './screens/RegistrationOTPInput';
+import { RegistrationOTPInput, SignUpOTPVerication } from './screens/SignUpOTPVerication';
 import { screenOptions, stackOptions } from './constants/Constants';
 
 export const SignUpContext = createContext();
@@ -31,7 +31,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} options={stackOptions} />
           <Stack.Screen name="SignIn" component={SignIn} options={stackOptions} />
           <Stack.Screen name="SignUp" component={SignUp} options={stackOptions} />
-          <Stack.Screen name="RegistrationOTPInput" component={RegistrationOTPInput} options={stackOptions} />
+          <Stack.Screen name="SignUpOTPVerication" component={SignUpOTPVerication} options={stackOptions} />
         </Stack.Navigator>
       </NavigationContainer>
     </SignUpContext.Provider>
