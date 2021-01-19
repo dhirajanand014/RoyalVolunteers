@@ -1,23 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator, Text } from 'react-native';
+import { View, ActivityIndicator, Text, Dimensions } from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import { OTPInputText } from '../components/input/OTPInputText';
-import { stringConstants } from '../constants/Constants';
 import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
 import { isAndroid, logErrorWithMessage } from '../helper/Helper';
 import Animated from 'react-native-reanimated';
 import { HeaderForm } from '../layouts/HeaderForm';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
+import { useForm } from 'react-hook-form';
 
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
 const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
 let resendOtpTimerInterval;
 let autoSubmitOtpTimerInterval;
 
+const { width } = Dimensions.get(`window`);
+
 let otpInputs = [``, ``, ``, ``, ``, ``];
+
+const onSubmit = (data) => {
+    console.log(data, 'data');
+};
 
 export const SignUpOTPVerication = props => {
     const { otpRequestData, attempts } = props;
@@ -26,12 +34,15 @@ export const SignUpOTPVerication = props => {
     const [submittingOtp, setSubmittingOtp] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
+    const { handleSubmit, control, errors } = useForm();
+    errors && console.log(errors)
+
     // in secs, if value is greater than 0 then button will be disabled
     const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
         RESEND_OTP_TIME_LIMIT,
     );
 
-    // 0 < autoSubmitOtpTime < 4 to show auto submitting OTP text
+    // 0 < autoSubmitOtpTime < 3 to show auto submitting OTP text
     const [autoSubmitOtpTime, setAutoSubmitOtpTime] = useState(
         AUTO_SUBMIT_OTP_TIME_LIMIT,
     );
@@ -43,15 +54,6 @@ export const SignUpOTPVerication = props => {
     const fourthTextInputRef = useRef(null);
     const fifthTextInputRef = useRef(null);
     const sixththTextInputRef = useRef(null);
-
-    // a reference to autoSubmitOtpTimerIntervalCallback to always get updated value of autoSubmitOtpTime
-    const autoSubmitOtpTimerIntervalCallbackReference = useRef();
-
-    useEffect(() => {
-        // autoSubmitOtpTime value will be set after otp is detected,
-        // in that case we have to start auto submit timer
-        autoSubmitOtpTimerIntervalCallbackReference.current = autoSubmitOtpTimerIntervalCallback;
-    });
 
     useEffect(() => {
         startResendOtpTimer();
@@ -69,19 +71,19 @@ export const SignUpOTPVerication = props => {
             .then(p =>
                 RNOtpVerify.addListener(message => {
                     try {
-                        if (message) {
-                            const messageArray = message.split('\n');
-                            if (messageArray[2]) {
-                                const otp = messageArray[2].split(' ')[0];
-                                if (otp.length === 6) {
-                                    setOtpArray(otp.split(''));
+                        // if (message) {
+                        //     const messageArray = message.split('\n');
+                        //     if (messageArray[2]) {
+                        //         const otp = messageArray[2].split(' ')[0];
+                        //         if (otp.length === 6) {
+                        //             setOtpArray(otp.split(''));
 
-                                    // to auto submit otp in 4 secs
-                                    setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
-                                    startAutoSubmitOtpTimer();
-                                }
-                            }
-                        }
+                        //             // to auto submit otp in 4 secs
+                        //             setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
+                        //             startAutoSubmitOtpTimer();
+                        //         }
+                        //     }
+                        // }
                     } catch (error) {
                         logErrorWithMessage(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
                     }
@@ -110,28 +112,6 @@ export const SignUpOTPVerication = props => {
         }, 1000);
     };
 
-    // this callback is being invoked from startAutoSubmitOtpTimer which itself is being invoked from useEffect
-    // since useEffect use closure to cache variables data, we will not be able to get updated autoSubmitOtpTime value
-    // as a solution we are using useRef by keeping its value always updated inside useEffect(componentDidUpdate)
-    const autoSubmitOtpTimerIntervalCallback = () => {
-        if (autoSubmitOtpTime <= 0) {
-            clearInterval(autoSubmitOtpTimerInterval);
-
-            // submit OTP
-            onSubmitButtonPress();
-        }
-        setAutoSubmitOtpTime(autoSubmitOtpTime - 1);
-    };
-
-    const startAutoSubmitOtpTimer = () => {
-        if (autoSubmitOtpTimerInterval) {
-            clearInterval(autoSubmitOtpTimerInterval);
-        }
-        autoSubmitOtpTimerInterval = setInterval(() => {
-            autoSubmitOtpTimerIntervalCallbackReference.current();
-        }, 1000);
-    };
-
     const refCallback = textInputRef => node => {
         textInputRef.current = node;
     };
@@ -152,12 +132,6 @@ export const SignUpOTPVerication = props => {
         console.log('todo: Resend OTP');
     };
 
-    const onSubmitButtonPress = () => {
-        // API call
-        // todo
-        console.log('todo: Submit OTP');
-    };
-
     // this event won't be fired when text changes from '' to '' i.e. backspace is pressed
     // using onOtpKeyPress for this purpose
     const onOtpChange = index => {
@@ -172,16 +146,24 @@ export const SignUpOTPVerication = props => {
 
             // auto focus to next InputText if value is not blank
             if (value !== '') {
-                if (index === 0) {
-                    secondTextInputRef.current.focus();
-                } else if (index === 1) {
-                    thirdTextInputRef.current.focus();
-                } else if (index === 2) {
-                    fourthTextInputRef.current.focus();
-                } else if (index === 3) {
-                    fifthTextInputRef.current.focus();
-                } else if (index === 4) {
-                    sixththTextInputRef.current.focus();
+                switch (index) {
+                    case 0:
+                        secondTextInputRef.current.focus();
+                        break;
+                    case 1:
+                        thirdTextInputRef.current.focus();
+                        break;
+                    case 2:
+                        fourthTextInputRef.current.focus();
+                        break;
+                    case 3:
+                        fifthTextInputRef.current.focus();
+                        break;
+                    case 4:
+                        sixththTextInputRef.current.focus();
+                        break;
+                    default:
+                        break;
                 }
             }
         };
@@ -194,18 +176,25 @@ export const SignUpOTPVerication = props => {
         return ({ nativeEvent: { key: value } }) => {
             // auto focus to previous InputText if value is blank and existing value is also blank
             if (value === 'Backspace' && otpArray[index] === '') {
-                if (index === 1) {
-                    firstTextInputRef.current.focus();
-                } else if (index === 2) {
-                    secondTextInputRef.current.focus();
-                } else if (index === 3) {
-                    thirdTextInputRef.current.focus();
-                } else if (index === 4) {
-                    fourthTextInputRef.current.focus();
-                } else if (index === 5) {
-                    fifthTextInputRef.current.focus();
+                switch (index) {
+                    case 1:
+                        firstTextInputRef.current.focus();
+                        break;
+                    case 2:
+                        secondTextInputRef.current.focus();
+                        break;
+                    case 3:
+                        thirdTextInputRef.current.focus();
+                        break;
+                    case 4:
+                        fourthTextInputRef.current.focus();
+                        break;
+                    case 5:
+                        fifthTextInputRef.current.focus();
+                        break;
+                    default:
+                        break;
                 }
-
                 /**
                  * clear the focused text box as well only on Android because on mweb onOtpChange will be also called
                  * doing this thing for us
@@ -228,12 +217,13 @@ export const SignUpOTPVerication = props => {
                     {
                         [firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef,
                             sixththTextInputRef].map((textInputRef, index) => (
-                                <OTPInputText containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12]} value={otpArray[index]}
-                                    onKeyPress={onOtpKeyPress(index)} onChangeText={onOtpChange(index)} keyboardType={'numeric'}
+                                <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12]} value={otpArray[index]}
+                                    onKeyPress={onOtpKeyPress(index)} onChangeText={onOtpChange(index)} keyboardType={'number-pad'}
                                     maxLength={1} style={RVStyles.otpText} key={index} autoFocus={index === 0 && true || false}
                                     refCallback={refCallback(textInputRef)} />
                             ))}
                 </View>
+                <Text style={{ color: 'red' }}>{errors.otpInput?.message}</Text>
                 {
                     resendButtonDisabledTime > 0 && <OTPTimeText text={'Resend OTP in'} time={resendButtonDisabledTime} />
                     || <OTPResendButton text={'Resend OTP'} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}
@@ -247,6 +237,11 @@ export const SignUpOTPVerication = props => {
                 <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt12]}>
                     {attemptsRemaining || 0} Attempts remaining
                 </OTPTextView>
+                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 120, elevation: 8 }} onPress={handleSubmit(onSubmit)} >
+                    <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Proceed</Text>
+                    </LinearGradient>
+                </TouchableOpacity>
             </View>
         </Animated.View>
     );
