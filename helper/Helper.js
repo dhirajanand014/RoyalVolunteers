@@ -1,4 +1,6 @@
+import axios from "axios";
 import { Dimensions } from "react-native";
+import { urlConstants } from "../constants/Constants";
 
 const Screen = Dimensions.get('window');
 export const SCREEN_WIDTH = Screen.width;
@@ -18,3 +20,20 @@ export const logErrorWithMessage = (message, errorSource) => {
         console.log(message, errorSource);
     }
 };
+
+export const saveUserDetails = async (phoneNumber, secret) => {
+    try {
+        if (phoneNumber && secret) {
+            const signUpPayload = {
+                phone: phoneNumber,
+                secret: secret
+            }
+            const signUpPayloadString = JSON.stringify(signUpPayload);
+            const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
+            return saveResponse && saveResponse.data == `Success`;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}

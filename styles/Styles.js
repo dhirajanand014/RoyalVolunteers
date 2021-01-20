@@ -47,14 +47,14 @@ export const RVStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fcc200'
     },
-    signUpCenterAlign: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    signUpHeaderImage: {
+    headerImage: {
         marginTop: 40,
         alignItems: 'center',
         paddingVertical: 20
+    },
+    signUpCenterAlign: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     signUpTextHeader: {
         fontWeight: 'bold',
@@ -77,7 +77,7 @@ export const RVStyles = StyleSheet.create({
         color: '#05375a'
     },
     userInputView: {
-        paddingVertical: 20
+        paddingVertical: 10
     },
     userPasswordInputView: {
         paddingVertical: 10,
@@ -103,8 +103,6 @@ export const RVStyles = StyleSheet.create({
     mobileCountryCode: {
         marginHorizontal: 5,
         paddingHorizontal: 5,
-        borderRightColor: '#000000',
-        borderRightWidth: 2,
         color: '#05375a',
         fontSize: 18,
         paddingLeft: 5
@@ -132,7 +130,6 @@ export const RVStyles = StyleSheet.create({
         padding: 0,
     },
     otpText: {
-        fontWeight: 'bold',
         color: '#3543bf',
         fontSize: 18,
         width: '100%',

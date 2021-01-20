@@ -6,7 +6,6 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated from 'react-native-reanimated';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
-import { onChangeInput } from '../helper/Helper';
 import { SignUpContext } from '../App';
 import { RVStyles } from '../styles/Styles';
 import { formRequiredRules } from '../constants/Constants';
@@ -14,9 +13,9 @@ import { HeaderForm } from '../layouts/HeaderForm';
 export const SignUp = () => {
 
     const navigation = useNavigation();
-    const { handleSubmit, control, errors } = useForm();
+    const { handleSubmit, control, formState } = useForm();
 
-    const { width, height } = Dimensions.get(`window`);
+    const { width } = Dimensions.get(`window`);
 
     const onSubmit = (data) => {
         console.log(data, 'data');
@@ -27,7 +26,7 @@ export const SignUp = () => {
 
     return (
         <Animated.View style={RVStyles.headerContainer}>
-            <HeaderForm style={RVStyles.signUpHeaderImage} imagePath={require(`../assets/rv_home_logo.png`)} />
+            <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <View style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>SIGN UP</Text>
                 <Animated.ScrollView>
@@ -42,20 +41,20 @@ export const SignUp = () => {
                                             <Text style={RVStyles.mobileCountryCode}>+91</Text>
                                             <TextInput {...props} maxLength={10} value={signUpDetails.phoneNumber} autoCapitalize="none"
                                                 placeholder="Enter 10 digit Mobile Number"
-                                                keyboardType={"numeric"} style={RVStyles.signUpTextInput} placeholderTextColor="#999999"
+                                                keyboardType={"number-pad"} style={RVStyles.signUpTextInput} placeholderTextColor="#999999"
                                                 onChangeText={(value) => {
-                                                    props.onChange(value);
-                                                    setSignUpDetails({ ...signUpDetails, phoneNumber: value });
+                                                    props.onChange(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, ''));
+                                                    setSignUpDetails({ ...signUpDetails, phoneNumber: value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '') });
                                                 }} />
                                         </React.Fragment>
                                     )
                                 }} />
                         </View>
-                        <Text style={{ color: 'red' }}>{errors.phoneNumber?.message}</Text>
+                        <Text style={{ color: 'red' }}>{formState.errors.phoneNumber?.message}</Text>
                     </View>
                 </Animated.ScrollView>
                 <View>
-                    <Text style={RVStyles.signUpDescription}>We will send you a verification code toyour phone</Text>
+                    <Text style={RVStyles.signUpDescription}>We will send you a verification code to your phone</Text>
                 </View>
                 <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 120, elevation: 8 }} onPress={handleSubmit(onSubmit)} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>

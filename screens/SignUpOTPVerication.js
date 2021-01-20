@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator, Text, Dimensions } from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
@@ -13,29 +13,27 @@ import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useForm } from 'react-hook-form';
+import { stringConstants } from '../constants/Constants';
+import { useNavigation } from '@react-navigation/native';
 
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
 const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
+const OTP_INPUTS = 6
 let resendOtpTimerInterval;
 let autoSubmitOtpTimerInterval;
 
 const { width } = Dimensions.get(`window`);
 
-let otpInputs = [``, ``, ``, ``, ``, ``];
-
-const onSubmit = (data) => {
-    console.log(data, 'data');
-};
+let otpInputs = Array(OTP_INPUTS).fill(``);
 
 export const SignUpOTPVerication = props => {
     const { otpRequestData, attempts } = props;
     let [attemptsRemaining, setAttemptsRemaining] = useState(attempts);
     const [otpArray, setOtpArray] = useState(otpInputs);
     const [submittingOtp, setSubmittingOtp] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
-    const { handleSubmit, control, errors } = useForm();
-    errors && console.log(errors)
+    const navigation = useNavigation();
+    const { handleSubmit, control, setError, formState } = useForm();
 
     // in secs, if value is greater than 0 then button will be disabled
     const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
@@ -115,11 +113,28 @@ export const SignUpOTPVerication = props => {
     const refCallback = textInputRef => node => {
         textInputRef.current = node;
     };
+    const onSubmit = () => {
+
+        if (formState.isValid) {
+            navigation.navigate('SignUpSecret');
+        }
+
+        const otpString = otpArray.reduce((result, item) => {
+            return `${result}${item}`
+        }, stringConstants.EMPTY)
+
+        otpString && otpString.length < OTP_INPUTS && setError(`otpInput`, {
+            type: `length`,
+            message: `Please enter 6 digit OTP`
+        })
+    };
+
+    console.log(firstTextInputRef?.current?.value);
 
     const onResendOtpButtonPress = () => {
         // clear last OTP
         if (firstTextInputRef) {
-            setOtpArray(['', '', '', '', '', '']);
+            setOtpArray(Array(OTP_INPUTS).fill(` `));
             firstTextInputRef.current.focus();
         }
 
@@ -223,7 +238,7 @@ export const SignUpOTPVerication = props => {
                                     refCallback={refCallback(textInputRef)} />
                             ))}
                 </View>
-                <Text style={{ color: 'red' }}>{errors.otpInput?.message}</Text>
+                <Text style={{ color: 'red' }}>{formState.errors.otpInput?.message}</Text>
                 {
                     resendButtonDisabledTime > 0 && <OTPTimeText text={'Resend OTP in'} time={resendButtonDisabledTime} />
                     || <OTPResendButton text={'Resend OTP'} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}

@@ -1,5 +1,8 @@
 import { CardStyleInterpolators } from "@react-navigation/stack";
 
+export const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
+export const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
+
 export const stringConstants = {
     EMPTY: ``,
     NODE: {}
@@ -35,18 +38,14 @@ export const formRequiredRules = {
             message: `Please enter the password`
         }
     },
-}
-export const formLengthRules = {
-    mobileInputLengthRule: {
-        maxLength: {
-            value: true,
-            message: `Please enter mobile number`
-        }
-    },
-    passwordFormRule: {
+    otpFormRule: {
         required: {
             value: true,
-            message: `Please enter the password`
+            message: `Please enter 6 digit OTP received`
         }
-    },
+    }
+};
+
+export const urlConstants = {
+    SAVE_SIGNUP_DETAILS: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_sn_up.php`
 }
