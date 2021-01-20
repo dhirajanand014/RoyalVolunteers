@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Text, View, Dimensions, BackHandler } from 'react-native';
+import { Text, View, Dimensions, BackHandler, Animated } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated from 'react-native-reanimated';
 import { SignUpContext } from '../App';
 import { RVStyles } from '../styles/Styles';
 import { formRequiredRules, stringConstants } from '../constants/Constants';
@@ -43,7 +42,7 @@ export const SignUpConfirmSecret = () => {
             if (response) {
                 signUpDetails.secret = password;
                 signUpDetails.registrationSuccessful = true;
-                setSignUpDetails({ ...signUpDetails });
+                await setSignUpDetails({ ...signUpDetails });
             }
             return;
         }

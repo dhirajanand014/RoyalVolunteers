@@ -37,3 +37,9 @@ export const saveUserDetails = async (phoneNumber, secret) => {
     }
     return false;
 }
+
+export const saveRegistrationDetails = async (bloodGroup, pinCode, hospitalName, neededValue) => {
+    const regDetails = {
+
+    }
+}

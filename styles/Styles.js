@@ -71,7 +71,6 @@ export const RVStyles = StyleSheet.create({
     },
     signUpTextInput: {
         flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : 0,
         paddingLeft: 3,
         fontSize: 18,
         color: '#05375a'
@@ -168,9 +167,22 @@ export const RVStyles = StyleSheet.create({
     otpResendDisabled: {
         opacity: 0.5,
     },
-    buttonStyle: {
+    neededRadioCircle: {
+        height: 20,
+        width: 20,
+        padding: 8,
+        borderRadius: 20,
+        marginRight: 10,
+        borderWidth: 2,
+        borderColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    buttonTextStyle: {
+    neededSelectedRb: {
+        width: 10,
+        height: 10,
+        borderRadius: 40,
+        backgroundColor: 'black',
     }
 });
 

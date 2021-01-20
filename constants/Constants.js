@@ -55,7 +55,8 @@ export const formRequiredRules = {
         required: {
             value: true,
             message: `Please select a blood group`
-        }
+        },
+        validate: value => value === 0 && `Please select a value` || true
     },
     ageRule: {
         required: {
@@ -70,17 +71,25 @@ export const formRequiredRules = {
         },
         pattern: {
             value: /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/,
-            message: `Please enter valid pin code`
-        },
-        minLength: {
-            value: 6,
-            message: `Please enter atleast 6 digit pin code`
+            message: `Please enter valid 6 digit pin code`
         },
         maxLength: {
             value: 6,
-            message: `Pincode should not be more than 6 digits`
+            message: `Please enter atleast 6 digit pin code`
         }
     },
+    datePickerFormRule: {
+        required: {
+            value: true,
+            message: `Please select a date`
+        }
+    },
+    hospitalNameFormRule: {
+        required: {
+            value: true,
+            message: `Please enter a hospital`
+        }
+    }
 
 };
 
@@ -90,6 +99,9 @@ export const urlConstants = {
 
 export const bloodGroupsList = [
     {
+        label: `Select a blood group`,
+        value: 0
+    }, {
         label: `A−`,
         value: 1
     }, {
@@ -125,5 +137,15 @@ export const availablilityStatusOptions = [
         label: `No`,
         value: 'N',
         activeColor: colors.RED
+    }
+]
+
+export const neededOptions = [
+    {
+        label: `Immediate`,
+        value: `Immediate`
+    }, {
+        label: `Date`,
+        value: `Date`
     }
 ]

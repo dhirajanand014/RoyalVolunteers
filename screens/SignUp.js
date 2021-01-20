@@ -1,11 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as Animatable from 'react-native-animatable';
-import { Text, View, Dimensions } from 'react-native';
+import { Text, View, Dimensions, Animated } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated from 'react-native-reanimated';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
 import { SignUpContext } from '../App';
 import { RVStyles } from '../styles/Styles';
@@ -14,6 +13,9 @@ import { HeaderForm } from '../layouts/HeaderForm';
 export const SignUp = () => {
 
     const navigation = useNavigation();
+
+    const route = useRoute();
+
     const { handleSubmit, control, formState } = useForm();
 
     const { width } = Dimensions.get(`window`);
@@ -23,13 +25,16 @@ export const SignUp = () => {
         navigation.navigate(`SignUpOTPVerication`)
     };
 
-    const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
+    const isFromBloodRequestForm = route?.params?.isFromRequestForm;
 
+    const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
     return (
         <Animated.View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>SIGN UP</Text>
+                <Text style={RVStyles.signUpTextHeader}>   {
+                    isFromBloodRequestForm && `ENTER MOBILE NUMBER` || `SIGN UP`}
+                </Text>
                 <Animated.ScrollView>
                     <View style={RVStyles.userInputView}>
                         <Text style={RVStyles.userInputTextView}>Mobile Number</Text>

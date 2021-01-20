@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator, Text, Dimensions, Platform } from 'react-native';
+import { View, ActivityIndicator, Text, Dimensions, Platform, Animated } from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import { OTPInputText } from '../components/input/OTPInputText';
@@ -8,7 +8,6 @@ import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
 import { isAndroid, logErrorWithMessage } from '../helper/Helper';
-import Animated from 'react-native-reanimated';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -115,18 +114,23 @@ export const SignUpOTPVerication = props => {
     };
     const onSubmit = () => {
 
-        if (formState.isValid) {
-            navigation.navigate('SignUpSecret');
-        }
-
+        let isLengthValid = true;
         const otpString = otpArray.reduce((result, item) => {
             return `${result}${item}`
         }, stringConstants.EMPTY)
 
-        otpString && otpString.length < OTP_INPUTS && setError(`otpInput`, {
-            type: `length`,
-            message: `Please enter 6 digit OTP`
-        })
+        if (otpString.length < OTP_INPUTS) {
+            setError(`otpInput`, {
+                type: `length`,
+                message: `Please enter 6 digit OTP`
+            })
+            isLengthValid = false;
+        }
+
+        if (formState.isValid && isLengthValid) {
+            navigation.navigate('SignUpSecret');
+        }
+
         clearInterval(resendOtpTimerInterval);
     };
 

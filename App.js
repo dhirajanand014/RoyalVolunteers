@@ -9,6 +9,7 @@ import { SignUpOTPVerication } from './screens/SignUpOTPVerication';
 import { screenOptions, stackOptions } from './constants/Constants';
 import { SignUpConfirmSecret } from './screens/SignUpConfirmSecret';
 import { RVUserRegistration } from './screens/RVUserRegistration';
+import { RVBloodRequest } from './screens/RVBloodRequest';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
@@ -21,13 +22,16 @@ export default function App() {
     registrationSuccessful: false
   });
 
-  const usersDetailsStateContext = {
-    signUpDetails,
-    setSignUpDetails
-  };
+  const [requestForm, setRequestForm] = useState({
+    blood_group: 0,
+    needed_request: `Immediate`,
+    needed_request_date: ``,
+    pincode: ``,
+    hospital: ``
+  })
 
   return (
-    <SignUpContext.Provider value={usersDetailsStateContext}>
+    <SignUpContext.Provider value={{ signUpDetails, setSignUpDetails, requestForm, setRequestForm }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={`Home`} screenOptions={screenOptions}
           headerMode='float' animation="fade">
@@ -37,6 +41,7 @@ export default function App() {
           <Stack.Screen name="SignUpOTPVerication" component={SignUpOTPVerication} options={stackOptions} />
           <Stack.Screen name="SignUpSecret" component={SignUpConfirmSecret} options={stackOptions} />
           <Stack.Screen name="RVUserRegistration" component={RVUserRegistration} options={stackOptions} />
+          <Stack.Screen name="RVBloodRequest" component={RVBloodRequest} options={stackOptions} />
         </Stack.Navigator>
       </NavigationContainer>
     </SignUpContext.Provider>
