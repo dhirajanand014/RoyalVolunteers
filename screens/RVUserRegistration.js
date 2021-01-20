@@ -1,11 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Text, View, Dimensions } from 'react-native';
+import { Text, View, Dimensions, Animated } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated from 'react-native-reanimated';
-import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
 import { RVStyles } from '../styles/Styles';
 import { availablilityStatusOptions, bloodGroupsList, formRequiredRules } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
