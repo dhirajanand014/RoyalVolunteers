@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Text, View, Image, Dimensions } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { Text, View, Dimensions } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated from 'react-native-reanimated';
@@ -27,7 +28,7 @@ export const SignUp = () => {
     return (
         <Animated.View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
-            <View style={RVStyles.signUpFooter}>
+            <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>SIGN UP</Text>
                 <Animated.ScrollView>
                     <View style={RVStyles.userInputView}>
@@ -61,7 +62,7 @@ export const SignUp = () => {
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Proceed</Text>
                     </LinearGradient>
                 </TouchableOpacity>
-            </View>
+            </Animatable.View >
         </Animated.View>
     )
 }

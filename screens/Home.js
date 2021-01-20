@@ -46,7 +46,7 @@ export const Home = () => {
                     width: 300,
                     elevation: 3,
                     backgroundColor: "#DE1F25"
-                }}>
+                }} onPress={() => navigation.navigate('RVUserRegistration')}>
                     <Text style={{ color: 'white', textAlign: 'center' }}>Request form</Text>
                 </TouchableOpacity>
             </View>

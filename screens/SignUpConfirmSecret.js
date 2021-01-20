@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Text, View, Dimensions, BackHandler } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
@@ -16,10 +16,9 @@ export const SignUpConfirmSecret = () => {
     const navigation = useNavigation();
     const { handleSubmit, control, watch, setError, formState } = useForm();
 
-    const passwordRef = useRef({});
-    passwordRef.current = watch("password", stringConstants.EMPTY);
-
     const { width } = Dimensions.get(`window`);
+
+    const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
 
     useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", backAction);
@@ -30,6 +29,7 @@ export const SignUpConfirmSecret = () => {
 
     const backAction = () => {
         navigation.navigate(`Home`);
+        setSignUpDetails({ ...signUpDetails, phoneNumber: ``, secret: ``, registrationSuccessful: false });
         return true;
     }
 
@@ -37,12 +37,15 @@ export const SignUpConfirmSecret = () => {
         const password = data.password;
         const confirmedPassword = data.confirmPassword;
 
-        debugger
         if (formState.isValid || password === confirmedPassword) {
-            setSignUpDetails({ ...signUpDetails, secret: password });
             const { phoneNumber } = signUpDetails
-            const response = await saveUserDetails(phoneNumber, password,);
-            return true;
+            const response = await saveUserDetails(phoneNumber, password);
+            if (response) {
+                signUpDetails.secret = password;
+                signUpDetails.registrationSuccessful = true;
+                setSignUpDetails({ ...signUpDetails });
+            }
+            return;
         }
 
         confirmedPassword && confirmedPassword !== password && setError('confirmPassword', {
@@ -50,8 +53,6 @@ export const SignUpConfirmSecret = () => {
             message: `Passwords do not match`
         })
     };
-
-    const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
 
     return (
         <Animated.View style={RVStyles.headerContainer}>

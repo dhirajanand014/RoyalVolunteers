@@ -26,7 +26,7 @@ export const saveUserDetails = async (phoneNumber, secret) => {
         if (phoneNumber && secret) {
             const signUpPayload = {
                 phone: phoneNumber,
-                secret: secret
+                secret: encodeURIComponent(secret)
             }
             const signUpPayloadString = JSON.stringify(signUpPayload);
             const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);

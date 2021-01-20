@@ -77,7 +77,10 @@ export const RVStyles = StyleSheet.create({
         color: '#05375a'
     },
     userInputView: {
-        paddingVertical: 10
+        paddingVertical: 5
+    },
+    signInUserInputView: {
+        paddingVertical: 1
     },
     userPasswordInputView: {
         paddingVertical: 10,

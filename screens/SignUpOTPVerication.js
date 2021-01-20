@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator, Text, Dimensions } from 'react-native';
+import { View, ActivityIndicator, Text, Dimensions, Platform } from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import { OTPInputText } from '../components/input/OTPInputText';
@@ -64,32 +64,32 @@ export const SignUpOTPVerication = props => {
 
     useEffect(() => {
         // docs: https://github.com/faizalshap/react-native-otp-verify
+        Platform.OS === 'android' &&
+            RNOtpVerify.getOtp()
+                .then(p =>
+                    RNOtpVerify.addListener(message => {
+                        try {
+                            // if (message) {
+                            //     const messageArray = message.split('\n');
+                            //     if (messageArray[2]) {
+                            //         const otp = messageArray[2].split(' ')[0];
+                            //         if (otp.length === 6) {
+                            //             setOtpArray(otp.split(''));
 
-        RNOtpVerify.getOtp()
-            .then(p =>
-                RNOtpVerify.addListener(message => {
-                    try {
-                        // if (message) {
-                        //     const messageArray = message.split('\n');
-                        //     if (messageArray[2]) {
-                        //         const otp = messageArray[2].split(' ')[0];
-                        //         if (otp.length === 6) {
-                        //             setOtpArray(otp.split(''));
-
-                        //             // to auto submit otp in 4 secs
-                        //             setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
-                        //             startAutoSubmitOtpTimer();
-                        //         }
-                        //     }
-                        // }
-                    } catch (error) {
-                        logErrorWithMessage(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
-                    }
-                }),
-            )
-            .catch(error => {
-                logErrorWithMessage(error.message, 'RNOtpVerify.getOtp, OtpVerification',);
-            });
+                            //             // to auto submit otp in 4 secs
+                            //             setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
+                            //             startAutoSubmitOtpTimer();
+                            //         }
+                            //     }
+                            // }
+                        } catch (error) {
+                            logErrorWithMessage(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
+                        }
+                    }),
+                )
+                .catch(error => {
+                    logErrorWithMessage(error.message, 'RNOtpVerify.getOtp, OtpVerification',);
+                });
 
         // remove listener on unmount
         return () => {
@@ -127,6 +127,7 @@ export const SignUpOTPVerication = props => {
             type: `length`,
             message: `Please enter 6 digit OTP`
         })
+        clearInterval(resendOtpTimerInterval);
     };
 
     console.log(firstTextInputRef?.current?.value);
@@ -233,7 +234,7 @@ export const SignUpOTPVerication = props => {
                         [firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef,
                             sixththTextInputRef].map((textInputRef, index) => (
                                 <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12]} value={otpArray[index]}
-                                    onKeyPress={onOtpKeyPress(index)} onChangeText={onOtpChange(index)} keyboardType={'number-pad'}
+                                    onKeyPress={onOtpKeyPress(index)} onChangeText={onOtpChange(index)} keyboardType={'number-pad'} textContentType={`oneTimeCode`}
                                     maxLength={1} style={RVStyles.otpText} key={index} autoFocus={index === 0 && true || false}
                                     refCallback={refCallback(textInputRef)} />
                             ))}
@@ -267,6 +268,6 @@ SignUpOTPVerication.defaultProps = {
 };
 
 SignUpOTPVerication.propTypes = {
-    otpRequestData: PropTypes.object.isRequired,
+    otpRequestData: Platform.OS == `android` && PropTypes.object.isRequired || null,
     attempts: PropTypes.number.isRequired,
 };
