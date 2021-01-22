@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator, Text, Dimensions, Platform, Animated } from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
@@ -7,13 +7,15 @@ import { OTPInputText } from '../components/input/OTPInputText';
 import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
-import { isAndroid, logErrorWithMessage } from '../helper/Helper';
+import { isAndroid, logErrorWithMessage, notifyBloodDoners, saveBloodRequest, saveBloodRequestAndNotify } from '../helper/Helper';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useForm } from 'react-hook-form';
 import { stringConstants } from '../constants/Constants';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { SignUpContext } from '../App';
+import Snackbar from 'react-native-snackbar';
 
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
 const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
@@ -31,8 +33,12 @@ export const SignUpOTPVerication = props => {
     const [otpArray, setOtpArray] = useState(otpInputs);
     const [submittingOtp, setSubmittingOtp] = useState(false);
 
+    const route = useRoute();
+
+    const { requestForm, signUpDetails } = useContext(SignUpContext);
+
     const navigation = useNavigation();
-    const { handleSubmit, control, setError, formState } = useForm();
+    const { handleSubmit, control, setError, formState, clearErrors } = useForm({ mode: `onChange` });
 
     // in secs, if value is greater than 0 then button will be disabled
     const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
@@ -112,25 +118,38 @@ export const SignUpOTPVerication = props => {
     const refCallback = textInputRef => node => {
         textInputRef.current = node;
     };
-    const onSubmit = () => {
-
-        let isLengthValid = true;
+    const onSubmit = async () => {
         const otpString = otpArray.reduce((result, item) => {
             return `${result}${item}`
         }, stringConstants.EMPTY)
 
-        if (otpString.length < OTP_INPUTS) {
+        if (otpString === `` || otpString.length < OTP_INPUTS) {
             setError(`otpInput`, {
                 type: `length`,
                 message: `Please enter 6 digit OTP`
             })
-            isLengthValid = false;
+            return;
+        } else if (otpArray && otpArray.length === OTP_INPUTS) {
+            clearErrors(`otpInput`);
         }
 
-        if (formState.isValid && isLengthValid) {
-            navigation.navigate('SignUpSecret');
+        if (formState.isValid) {
+            if (route?.params?.isFromBloodRequestForm) {
+                const isNotified = notifyBloodDoners(signUpDetails, requestForm);
+                if (isNotified) {
+                    const saveResponse = await saveBloodRequest(signUpDetails, requestForm);
+                    Snackbar.show({ text: 'Notification sent to doners', duration: Snackbar.LENGTH_SHORT });
+                } else {
+                    Snackbar.show({ text: 'Could not notify doners', duration: Snackbar.LENGTH_SHORT });
+                }
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Home' }],
+                });
+            } else {
+                navigation.navigate('');
+            }
         }
-
         clearInterval(resendOtpTimerInterval);
     };
 
@@ -196,6 +215,7 @@ export const SignUpOTPVerication = props => {
         return ({ nativeEvent: { key: value } }) => {
             // auto focus to previous InputText if value is blank and existing value is also blank
             if (value === 'Backspace' && otpArray[index] === '') {
+                debugger
                 switch (index) {
                     case 1:
                         firstTextInputRef.current.focus();
@@ -225,6 +245,19 @@ export const SignUpOTPVerication = props => {
                     otpArrayCopy[index - 1] = ''; // clear the previous box which will be in focus
                     setOtpArray(otpArrayCopy);
                 }
+            }
+            const otpString = otpArray.reduce((result, item) => {
+                return `${result}${item}`
+            }, stringConstants.EMPTY)
+
+            if (otpString === `` || otpString.length < OTP_INPUTS) {
+                setError(`otpInput`, {
+                    type: `length`,
+                    message: `Please enter 6 digit OTP`
+                })
+                return;
+            } else if (otpArray && otpArray.length === OTP_INPUTS) {
+                clearErrors(`otpInput`);
             }
         };
     };

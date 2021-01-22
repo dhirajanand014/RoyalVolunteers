@@ -10,6 +10,8 @@ import { screenOptions, stackOptions } from './constants/Constants';
 import { SignUpConfirmSecret } from './screens/SignUpConfirmSecret';
 import { RVUserRegistration } from './screens/RVUserRegistration';
 import { RVBloodRequest } from './screens/RVBloodRequest';
+import { RVUserDashboard } from './screens/RVUserDashboard';
+
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
@@ -41,6 +43,7 @@ export default function App() {
           <Stack.Screen name="SignUpOTPVerication" component={SignUpOTPVerication} options={stackOptions} />
           <Stack.Screen name="SignUpSecret" component={SignUpConfirmSecret} options={stackOptions} />
           <Stack.Screen name="RVUserRegistration" component={RVUserRegistration} options={stackOptions} />
+          <Stack.Screen name="RVUserDashboard" component={RVUserDashboard} options={stackOptions} />
           <Stack.Screen name="RVBloodRequest" component={RVBloodRequest} options={stackOptions} />
         </Stack.Navigator>
       </NavigationContainer>

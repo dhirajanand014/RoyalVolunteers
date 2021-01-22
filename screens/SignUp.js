@@ -22,7 +22,9 @@ export const SignUp = () => {
 
     const onSubmit = (data) => {
         console.log(data, 'data');
-        navigation.navigate(`SignUpOTPVerication`)
+        navigation.navigate(`SignUpOTPVerication`, {
+            isFromBloodRequestForm: isFromBloodRequestForm
+        })
     };
 
     const isFromBloodRequestForm = route?.params?.isFromRequestForm;

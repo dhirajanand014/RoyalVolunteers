@@ -75,6 +75,13 @@ export const RVStyles = StyleSheet.create({
         fontSize: 18,
         color: '#05375a'
     },
+    underlineTextInput: {
+        flex: 1,
+        paddingLeft: 3,
+        alignItems: 'flex-end',
+        fontSize: 16,
+        color: '#05375a'
+    },
     userInputView: {
         paddingVertical: 5
     },

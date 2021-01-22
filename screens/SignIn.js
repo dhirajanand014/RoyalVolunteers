@@ -20,7 +20,7 @@ export const SignIn = () => {
 
     const onSubmit = (data) => {
         console.log(data, 'data');
-        navigation.navigate(`RVUserRegistration`);
+        navigation.navigate(`RVUserDashboard`);
     };
 
     return (

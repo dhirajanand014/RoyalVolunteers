@@ -94,7 +94,8 @@ export const formRequiredRules = {
 };
 
 export const urlConstants = {
-    SAVE_SIGNUP_DETAILS: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_sn_up.php`
+    SAVE_SIGNUP_DETAILS: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_sn_up.php`,
+    SAVE_BLOOD_REQUEST: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_rq_bld.php`
 }
 
 export const bloodGroupsList = [
@@ -134,7 +135,7 @@ export const availablilityStatusOptions = [
         value: 'Y',
         activeColor: colors.GREEN
     }, {
-        label: `No`,
+        label: `NO`,
         value: 'N',
         activeColor: colors.RED
     }

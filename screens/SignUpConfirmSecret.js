@@ -10,6 +10,7 @@ import { formRequiredRules, stringConstants } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import { saveUserDetails } from '../helper/Helper';
+import Snackbar from 'react-native-snackbar';
 export const SignUpConfirmSecret = () => {
 
     const navigation = useNavigation();
@@ -42,7 +43,14 @@ export const SignUpConfirmSecret = () => {
             if (response) {
                 signUpDetails.secret = password;
                 signUpDetails.registrationSuccessful = true;
-                await setSignUpDetails({ ...signUpDetails });
+                const isSaved = await setSignUpDetails({ ...signUpDetails });
+                if (isSaved) {
+                    Snackbar.show({ text: 'Registration successful', duration: Snackbar.LENGTH_SHORT });
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Home' }],
+                    });
+                }
             }
             return;
         }

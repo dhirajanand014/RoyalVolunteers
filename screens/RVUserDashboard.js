@@ -10,6 +10,8 @@ import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import { Picker } from '@react-native-picker/picker'
 import SwitchSelector from 'react-native-switch-selector';
+import { RVMenuIcon } from '../components/icons/RVMenuIcon';
+import { RVNotificationIcon } from '../components/icons/RVNotificationIcon';
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
@@ -20,12 +22,17 @@ export const RVUserRegistration = () => {
     const onSubmit = (data) => {
         console.log(data, 'data');
     };
-
     return (
         <View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
+            <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <RVMenuIcon />
+                <View style={{ flexDirection: `row` }}>
+                    <RVNotificationIcon />
+                </View>
+            </View>
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>USER REGISTRATION</Text>
+                <Text style={RVStyles.signUpTextHeader}>DASHBOARD</Text>
                 <Animated.ScrollView>
                     <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
                         <Text style={RVStyles.userInputTextView}>Name: </Text>

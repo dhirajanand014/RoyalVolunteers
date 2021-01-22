@@ -43,3 +43,27 @@ export const saveRegistrationDetails = async (bloodGroup, pinCode, hospitalName,
 
     }
 }
+
+export const saveBloodRequest = async (signUpDetails, requestForm) => {
+    try {
+        const bloodRequstData = {
+            phone: signUpDetails.phoneNumber,
+            ...requestForm
+        };
+
+        const requestBloodJSON = JSON.stringify(bloodRequstData);
+
+        const saveResponse = await axios.post(urlConstants.SAVE_BLOOD_REQUEST, requestBloodJSON);
+        return saveResponse && saveResponse.data === `Success`;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const notifyBloodDoners = async (signUpDetails, requestForm) => {
+    try {
+        return true;
+    } catch (error) {
+
+    }
+}
