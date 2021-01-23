@@ -36,7 +36,7 @@ export const SignUpConfirmSecret = () => {
     const onSubmit = async (data) => {
         const password = data.password;
         const confirmedPassword = data.confirmPassword;
-
+        debugger
         if (formState.isValid || password === confirmedPassword) {
             const { phoneNumber } = signUpDetails
             const response = await saveUserDetails(phoneNumber, password);

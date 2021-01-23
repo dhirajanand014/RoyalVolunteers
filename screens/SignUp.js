@@ -10,6 +10,7 @@ import { SignUpContext } from '../App';
 import { RVStyles } from '../styles/Styles';
 import { formRequiredRules } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
+import { getSignUpParams, handleUserSignUpOtp } from '../helper/Helper';
 export const SignUp = () => {
 
     const navigation = useNavigation();
@@ -19,13 +20,6 @@ export const SignUp = () => {
     const { handleSubmit, control, formState } = useForm();
 
     const { width } = Dimensions.get(`window`);
-
-    const onSubmit = (data) => {
-        console.log(data, 'data');
-        navigation.navigate(`SignUpOTPVerication`, {
-            isFromBloodRequestForm: isFromBloodRequestForm
-        })
-    };
 
     const isFromBloodRequestForm = route?.params?.isFromRequestForm;
 
@@ -64,7 +58,9 @@ export const SignUp = () => {
                 <View>
                     <Text style={RVStyles.signUpDescription}>We will send you a verification code to your phone</Text>
                 </View>
-                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 120, elevation: 8 }} onPress={handleSubmit(onSubmit)} >
+                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 120, elevation: 8 }} onPress={handleSubmit(data => {
+                    handleUserSignUpOtp(signUpDetails, setSignUpDetails, isFromBloodRequestForm, navigation);
+                })} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Proceed</Text>
                     </LinearGradient>

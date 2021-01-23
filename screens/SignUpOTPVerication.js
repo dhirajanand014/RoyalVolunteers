@@ -132,12 +132,12 @@ export const SignUpOTPVerication = props => {
         } else if (otpArray && otpArray.length === OTP_INPUTS) {
             clearErrors(`otpInput`);
         }
-
+        debugger
         if (formState.isValid) {
-            if (route?.params?.isFromBloodRequestForm) {
+            if (route.params?.isFromBloodRequestForm) {
                 const isNotified = notifyBloodDoners(signUpDetails, requestForm);
                 if (isNotified) {
-                    const saveResponse = await saveBloodRequest(signUpDetails, requestForm);
+                    await saveBloodRequest(signUpDetails, requestForm);
                     Snackbar.show({ text: 'Notification sent to doners', duration: Snackbar.LENGTH_SHORT });
                 } else {
                     Snackbar.show({ text: 'Could not notify doners', duration: Snackbar.LENGTH_SHORT });
@@ -146,8 +146,14 @@ export const SignUpOTPVerication = props => {
                     index: 0,
                     routes: [{ name: 'Home' }],
                 });
-            } else {
-                navigation.navigate('');
+            } else if (route.params?.rand_number) {
+                const number = route?.params?.rand_number;
+                if (parseInt(otpString) === number) {
+                    navigation.navigate('SignUpSecret');
+                }
+                else {
+                    Snackbar.show({ text: 'Incorrect OTP entered', duration: Snackbar.LENGTH_SHORT });
+                }
             }
         }
         clearInterval(resendOtpTimerInterval);
@@ -215,7 +221,6 @@ export const SignUpOTPVerication = props => {
         return ({ nativeEvent: { key: value } }) => {
             // auto focus to previous InputText if value is blank and existing value is also blank
             if (value === 'Backspace' && otpArray[index] === '') {
-                debugger
                 switch (index) {
                     case 1:
                         firstTextInputRef.current.focus();

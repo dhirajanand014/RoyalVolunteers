@@ -30,10 +30,17 @@ export default function App() {
     needed_request_date: ``,
     pincode: ``,
     hospital: ``
+  });
+
+  const [error, setError] = useState({
+    message: ``
   })
 
   return (
-    <SignUpContext.Provider value={{ signUpDetails, setSignUpDetails, requestForm, setRequestForm }}>
+    <SignUpContext.Provider value={{
+      signUpDetails, setSignUpDetails, requestForm, setRequestForm,
+      error, setError
+    }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={`Home`} screenOptions={screenOptions}
           headerMode='float' animation="fade">

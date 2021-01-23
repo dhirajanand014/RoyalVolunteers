@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Text, View, Dimensions, Animated } from 'react-native';
+import { Text, View, Dimensions, Animated, Alert } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
@@ -11,6 +11,8 @@ import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import CheckBox from '@react-native-community/checkbox';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
+import { SignUpContext } from '../App';
+import { handleUserLogin } from '../helper/Helper';
 export const SignIn = () => {
 
     const navigation = useNavigation();
@@ -18,10 +20,7 @@ export const SignIn = () => {
 
     const { width } = Dimensions.get(`window`);
 
-    const onSubmit = (data) => {
-        console.log(data, 'data');
-        navigation.navigate(`RVUserDashboard`);
-    };
+    const { error, setError } = useContext(SignUpContext);
 
     return (
         <View style={RVStyles.headerContainer}>
@@ -77,7 +76,28 @@ export const SignIn = () => {
                         </View>
                     </View>
                 </Animated.ScrollView>
-                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: `column`, alignItems: 'center', elevation: 8 }} onPress={handleSubmit(onSubmit)} >
+                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: `column`, alignItems: 'center', elevation: 8 }} onPress={handleSubmit(async data => {
+                    const responseNavigation = await handleUserLogin(data);
+                    debugger
+                    if (responseNavigation === `RVUserRegistration` || responseNavigation === `RVUserDashboard`)
+                        navigation.navigate(responseNavigation, {
+                            phoneNumber: phoneNumber
+                        })
+                    else if (responseNavigation === `invalidUser`)
+                        return (
+                            Alert.alert(
+                                'Login failed',
+                                'Invald credentials',
+                                [
+                                    {
+                                        text: 'Cancel',
+                                        style: 'cancel'
+                                    },
+                                    { text: 'OK' }
+                                ],
+                                { cancelable: false }
+                            ));
+                })} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center' }} colors={[`#FF00CC`, `red`]}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Sign In</Text>
                     </LinearGradient>
@@ -88,6 +108,6 @@ export const SignIn = () => {
                     </LinearGradient>
                 </TouchableOpacity>
             </Animatable.View>
-        </View>
+        </View >
     )
 }
