@@ -62,7 +62,7 @@ export const SignUp = () => {
                     handleUserSignUpOtp(signUpDetails, setSignUpDetails, isFromBloodRequestForm, navigation);
                 })} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Proceed</Text>
+                        <Text style={{ fontSize: 18, textAlign: 'center', color: 'white' }}>Proceed</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </Animatable.View >
