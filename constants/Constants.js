@@ -14,6 +14,18 @@ export const screenOptions = {
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
 };
 
+export const screenTitle = {
+    SIGN_IN: `SIGN IN`,
+    SIGN_UP: `SIGN UP`,
+    ENTER_MOBILE_NUMBER: `ENTER MOBILE NUMBER`,
+    REQUEST_BLOOD: `REQUEST BLOOD`,
+    USER_REGISTRATION: `USER REGISTRATION`,
+    ENTER_PASSWORD: `ENTER PASSWORD`,
+    ENTER_OTP: `ENTER OTP`
+}
+
+
+
 export const stackOptions = {
     headerShown: false
 }
@@ -49,6 +61,16 @@ export const formRequiredRules = {
         required: {
             value: true,
             message: `Please enter a name`
+        }
+    },
+    ageRule: {
+        required: {
+            value: true,
+            message: `Please enter a name`
+        },
+        maxLength: {
+            value: 3,
+            message: `Please enter a valid age`
         }
     },
     bloodGroupRule: {
@@ -160,3 +182,32 @@ export const neededOptions = [
         value: `Date`
     }
 ]
+
+export const valueTypeConstants = {
+    REPLACE: `replace`
+}
+
+export const numericConstants = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    FOUR: 4,
+    FIVE: 5,
+    TEN: 10,
+    THOUSAND: 1000
+}
+
+export const fieldControllerName = {
+    PHONE_NUMBER: `phoneNumber`,
+    SECRET: `secret`
+}
+
+export const placeHolderText = {
+    PHONE_NUMBER: `Enter 10 digit Mobile Number`,
+    SECRET: `Enter Password`
+}
+
+export const keyBoardTypeConst = {
+    DEFAULT: `default`,
+    NUMBER_PAD: `numeric`
+}

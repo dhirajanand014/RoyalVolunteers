@@ -1,25 +1,35 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Text, View, Dimensions, Animated } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVStyles } from '../styles/Styles';
-import { availablilityStatusOptions, bloodGroupsList, formRequiredRules } from '../constants/Constants';
+import { availablilityStatusOptions, bloodGroupsList, formRequiredRules, stringConstants } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import { Picker } from '@react-native-picker/picker'
 import SwitchSelector from 'react-native-switch-selector';
+import { handleUserSignUpRegistration } from '../helper/Helper';
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
     const { handleSubmit, control, formState } = useForm();
 
+    const route = useRoute();
+
     const { width } = Dimensions.get(`window`);
 
-    const onSubmit = (data) => {
-        console.log(data, 'data');
-    };
+    const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
+
+    const onSubmit = async (data) => {
+        const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, formState, true);
+        if (isUserRegistered) {
+            isUserRegistered && navigation.navigate(`RVUserDashboard`, {
+                phoneNumber: phoneNumber
+            });
+        }
+    }
 
     return (
         <View style={RVStyles.headerContainer}>
@@ -41,6 +51,20 @@ export const RVUserRegistration = () => {
                             }} />
                     </View>
                     <Text style={{ color: 'red' }}>{formState.errors.name?.message}</Text>
+                    <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
+                        <Text style={RVStyles.userInputTextView}>Age: </Text>
+                        <Controller name={"age"} control={control} defaultValue={``} rules={formRequiredRules.ageRule}
+                            render={(props) => {
+                                return (
+                                    <TextInput {...props} value={props.value} placeholder={`Enter Age`} maxLength={3} keyboardType={`numeric`}
+                                        style={RVStyles.underlineTextInput} placeholderTextColor="#999999"
+                                        onChangeText={(value) => {
+                                            props.onChange(value);
+                                        }} />
+                                )
+                            }} />
+                    </View>
+                    <Text style={{ color: 'red' }}>{formState.errors.age?.message}</Text>
                     <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
                         <Text style={RVStyles.userInputTextView}>Blood Group: </Text>
                         <Controller name={"bloodGroup"} control={control} defaultValue={``} rules={formRequiredRules.bloodGroupRule}
@@ -92,7 +116,7 @@ export const RVUserRegistration = () => {
                 </Animated.ScrollView>
                 <TouchableOpacity activeOpacity={.7} style={{ flexDirection: `column`, alignItems: 'center', elevation: 8 }} onPress={handleSubmit(onSubmit)} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center' }} colors={[`#FF00CC`, `red`]}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Submit</Text>
+                        <Text style={{ fontSize: 18, textAlign: 'center', color: 'white' }}>Submit</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </Animatable.View>

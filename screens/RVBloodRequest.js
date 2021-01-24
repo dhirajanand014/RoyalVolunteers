@@ -32,7 +32,7 @@ export const RVBloodRequest = () => {
         <View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>USER REGISTRATION</Text>
+                <Text style={RVStyles.signUpTextHeader}>REQUEST BLOOD</Text>
                 <Animated.ScrollView>
                     <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
                         <Text style={RVStyles.userInputTextView}>Blood Group: </Text>

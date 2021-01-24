@@ -78,6 +78,7 @@ export const RVStyles = StyleSheet.create({
     underlineTextInput: {
         flex: 1,
         paddingLeft: 3,
+        justifyContent: 'center',
         alignItems: 'flex-end',
         fontSize: 16,
         color: '#05375a'
@@ -94,20 +95,20 @@ export const RVStyles = StyleSheet.create({
     },
     userInputTextView: {
         color: '#05375a',
-        fontSize: 18,
+        fontSize: 16,
         paddingLeft: 18
     },
     userInput: {
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1.5,
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingTop: 2,
+        paddingBottom: 2,
         paddingStart: 15,
         borderColor: '#999999',
         borderRadius: 35,
         width: width / 1.15,
-        marginVertical: 10
+        marginVertical: 7
     },
     mobileCountryCode: {
         marginHorizontal: 5,
@@ -190,8 +191,37 @@ export const RVStyles = StyleSheet.create({
         height: 10,
         borderRadius: 40,
         backgroundColor: 'black',
+    },
+    signInLinks: {
+        flexDirection: 'row',
+        marginTop: 8
+    },
+    signInRememberPassword: {
+        flex: 0.5,
+        flexDirection: 'row',
+        alignItems: 'flex-start'
+    },
+    signInRememberPasswordLink: {
+        width: 20,
+        height: 20,
+        borderColor: `rgb(170,170,170)`
+    },
+    signInRememberPasswordText: {
+        marginHorizontal: 19,
+        marginLeft: 10
+    },
+    signInForgotPassword: {
+        flex: 0.5,
+        alignItems: 'flex-end'
+    },
+    signInForgotPasswordLink: {
+        flex: 0.5
+    },
+    signInForgotPasswordText: {
+        color: `#c08`
     }
 });
+
 
 export const colors = {
     BLUE: '#3543bf',

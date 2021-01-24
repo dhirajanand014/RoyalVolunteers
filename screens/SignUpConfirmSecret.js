@@ -9,7 +9,7 @@ import { RVStyles } from '../styles/Styles';
 import { formRequiredRules, stringConstants } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
-import { saveUserDetails } from '../helper/Helper';
+import { handleUserSignUpRegistration, saveUserDetails } from '../helper/Helper';
 import Snackbar from 'react-native-snackbar';
 export const SignUpConfirmSecret = () => {
 
@@ -34,27 +34,15 @@ export const SignUpConfirmSecret = () => {
     }
 
     const onSubmit = async (data) => {
-        const password = data.password;
-        const confirmedPassword = data.confirmPassword;
-        debugger
-        if (formState.isValid || password === confirmedPassword) {
-            const { phoneNumber } = signUpDetails
-            const response = await saveUserDetails(phoneNumber, password);
-            if (response) {
-                signUpDetails.secret = password;
-                signUpDetails.registrationSuccessful = true;
-                const isSaved = await setSignUpDetails({ ...signUpDetails });
-                if (isSaved) {
-                    Snackbar.show({ text: 'Registration successful', duration: Snackbar.LENGTH_SHORT });
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Home' }],
-                    });
-                }
-            }
+        const isUserRegistered = await handleUserSignUpRegistration(signUpDetails.phoneNumber, data, formState, false);
+        if (isUserRegistered) {
+            setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
+            Snackbar.show({ text: 'Successfully registered your details', duration: Snackbar.LENGTH_SHORT });
+            navigation.navigate(`RVUserRegistration`, {
+                phoneNumber: signUpDetails.phoneNumber
+            });
             return;
         }
-
         confirmedPassword && confirmedPassword !== password && setError('confirmPassword', {
             type: `mismatch`,
             message: `Passwords do not match`
@@ -104,7 +92,7 @@ export const SignUpConfirmSecret = () => {
                 </Animated.ScrollView>
                 <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 60, elevation: 8 }} onPress={handleSubmit(onSubmit)} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>Proceed</Text>
+                        <Text style={{ fontSize: 18, textAlign: 'center', color: 'white' }}>Proceed</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </View>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dimensions } from "react-native";
-import { urlConstants } from "../constants/Constants";
+import { stringConstants, urlConstants, valueTypeConstants } from "../constants/Constants";
 
 const Screen = Dimensions.get('window');
 export const SCREEN_WIDTH = Screen.width;
@@ -21,30 +21,16 @@ export const logErrorWithMessage = (message, errorSource) => {
     }
 };
 
-export const saveUserDetails = async (phoneNumber, password, signUpDetails, setSignUpDetails) => {
-    try {
-        if (phoneNumber && secret) {
-            const signUpPayload = {
-                phone: phoneNumber,
-                secret: secret
-            }
-            const signUpPayloadString = JSON.stringify(signUpPayload);
-            const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
-            debugger
-            if (saveResponse && saveResponse.data == `Success`) {
-                signUpDetails.secret = password;
-                signUpDetails.registrationSuccessful = true;
-                const isSaved = setSignUpDetails({ ...signUpDetails });
-                if (isSaved) {
-                    Snackbar.show({ text: 'Registration successful', duration: Snackbar.LENGTH_SHORT });
-                    navigation.navigate(`RVUserRegistration`)
-                }
-            }
-        }
-    } catch (error) {
-        console.log(error);
+export const saveUserRegistration = async (signUpDetails, setSignUpDetails, secret) => {
+    const { phoneNumber } = signUpDetails
+    const isSaved = await saveUserDetails(phoneNumber, secret, signUpDetails, setSignUpDetails);
+    if (isSaved) {
+        Snackbar.show({ text: 'Registration successful', duration: Snackbar.LENGTH_SHORT });
+        navigation.navigate(`RVUserRegistration`);
+    } else {
+        Snackbar.show({ text: 'User already registerd. Please sign in', duration: Snackbar.LENGTH_SHORT });
     }
-    return false;
+    return;
 }
 
 export const saveRegistrationDetails = async (bloodGroup, pinCode, hospitalName, neededValue) => {
@@ -101,14 +87,7 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
         let userDashboardDetails = await axios.get(url);
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
-            const userDetails = {
-                name: userDashboardDetails.user.name,
-                pincode: userDashboardDetails.user.pincode,
-                blood_group: userDashboardDetails.user.blood_group,
-                beneficiary_count: userDashboardDetails.user.beneficiary_count,
-                donor_count: userDashboardDetails.user.donor_count
-            }
-            setUserDashboard({ ...userDashboard, ...userDetails });
+            setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
         }
     } catch (error) {
         console.log(error);
@@ -132,15 +111,20 @@ const loginUser = async (phoneNumber, secret) => {
 }
 
 export const handleUserLogin = async (data) => {
-    const { phoneNumber, password } = data;
-    const isSuccessLogin = await loginUser(phoneNumber, password);
-    if (isSuccessLogin) {
-        if (isSuccessLogin == `Verified` || isSuccessLogin == `Registered`) {
-            return isSuccessLogin == `Verified` && `RVUserRegistration` || `RVUserDashboard`;
-        } else if (isSuccessLogin == `invalidUser`) {
-            return isSuccessLogin;
+    try {
+        const { phoneNumber, secret } = data;
+        const isSuccessLogin = await loginUser(phoneNumber, secret);
+        if (isSuccessLogin) {
+            if (isSuccessLogin == `Verified` || isSuccessLogin == `Registered`) {
+                return isSuccessLogin == `Verified` && `RVUserRegistration` || `RVUserDashboard`;
+            } else if (isSuccessLogin == `invalidUser`) {
+                return isSuccessLogin;
+            }
         }
+    } catch (error) {
+        console.log(error)
     }
+    return false;
 };
 
 export const handleUserSignUpOtp = async (signUpDetails, setSignUpDetails, isFromBloodRequestForm, navigation) => {
@@ -172,6 +156,53 @@ export const handleUserSignUpOtp = async (signUpDetails, setSignUpDetails, isFro
     return false;
 }
 
+export const handleUserSignUpRegistration = async (phoneNumber, data, formState, isFromBloodRegistration) => {
+    try {
+        let userRegistrationPayload;
+        let signUpPayloadString;
+        if (isFromBloodRegistration) {
+            userRegistrationPayload = {
+                phone: phoneNumber,
+                secret: null,
+                name: data.name,
+                blood_group: data.bloodGroup,
+                age: data.age,
+                pincode: data.pinCode,
+                availability_status: data.availabilityStatus
+            }
+            signUpPayloadString = JSON.stringify(userRegistrationPayload);
+        } else {
+            const password = data.password;
+            const confirmedPassword = data.confirmPassword;
+            if (formState.isValid || password === confirmedPassword) {
+                userRegistrationPayload = {
+                    phone: phoneNumber,
+                    secret: password
+                }
+                signUpPayloadString = JSON.stringify(userRegistrationPayload);
+            }
+        }
+        return signUpPayloadString && await saveUserDetails(signUpPayloadString) || false;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
+export const saveUserDetails = async (signUpPayloadString) => {
+    try {
+        const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
+        const saveResponseData = saveResponse.data;
+        if (saveResponseData && saveResponseData.message == `Success` && (saveResponseData.account_status == `Verified` ||
+            saveResponseData.account_status == `Registered`)) {
+            return true;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
 export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestForm) => {
     if (isFromBloodRequestForm)
         return {
@@ -182,4 +213,14 @@ export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestF
             phoneNumber: signUpDetails.phoneNumber,
             rand_number: random6Digit
         }
+}
+
+export const onChangeByValueType = (inputProps, value, valueType) => {
+    switch (valueType) {
+        case valueTypeConstants.REPLACE:
+            inputProps.onChange(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, stringConstants.EMPTY));
+            break;
+        default: inputProps.onChange(value);
+            break;
+    }
 }
