@@ -23,6 +23,18 @@ export const SignIn = props => {
 
     const { error, setError } = useContext(SignUpContext);
 
+    const submitDetails = async data => {
+        const responseNavigation = await handleUserLogin(data);
+        if (responseNavigation === `RVUserRegistration` || responseNavigation === `RVUserDashboard`) {
+            navigation.navigate(responseNavigation, {
+                phoneNumber: data.phoneNumber
+            })
+        } else if (responseNavigation === `invalidUser`) {
+            setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
+            Snackbar.show({ text: errorModalTitleConstants.LOGIN_FAILED, duration: Snackbar.LENGTH_SHORT });
+        }
+    }
+
     return (
         <View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
@@ -31,7 +43,7 @@ export const SignIn = props => {
                 <Animated.ScrollView>
                     <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
                         defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER}
-                        keyboardType={keyBoardTypeConst.NUMBER_PAD} valueType={valueTypeConstants.REPLACE} icon={<RVPhoneIcon />} formState={formState} />
+                        keyboardType={keyBoardTypeConst.NUMBER_PAD} icon={<RVPhoneIcon />} formState={formState} />
 
                     <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THOUSAND} placeHolderText={placeHolderText.SECRET}
@@ -44,17 +56,7 @@ export const SignIn = props => {
                         </View>
                     </View>
                 </Animated.ScrollView>
-                <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(async data => {
-                    const responseNavigation = await handleUserLogin(data);
-                    if (responseNavigation === `RVUserRegistration` || responseNavigation === `RVUserDashboard`) {
-                        navigation.navigate(responseNavigation, {
-                            phoneNumber: data.phoneNumber
-                        })
-                    } else if (responseNavigation === `invalidUser`) {
-                        setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
-                        Snackbar.show({ text: errorModalTitleConstants.LOGIN_FAILED, duration: Snackbar.LENGTH_SHORT });
-                    }
-                })} >
+                <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(submitDetails)} >
                     <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>
                         <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.SIGN_IN}</Text>
                     </LinearGradient>

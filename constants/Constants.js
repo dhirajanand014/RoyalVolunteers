@@ -190,11 +190,7 @@ export const neededOptions = [
         label: `Date`,
         value: `Date`
     }
-]
-
-export const valueTypeConstants = {
-    REPLACE: `replace`
-}
+];
 
 export const numericConstants = {
     ONE: 1,

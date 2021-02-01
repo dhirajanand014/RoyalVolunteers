@@ -71,7 +71,8 @@ export const RVStyles = StyleSheet.create({
     },
     signUpTextInput: {
         flex: 1,
-        marginTop: 2,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
         paddingLeft: 3,
         marginLeft: 3,
         fontSize: 18,
@@ -275,7 +276,7 @@ export const RVStyles = StyleSheet.create({
         borderRadius: 20,
         padding: 35,
         width: 300,
-        height: 160,
+        height: 250,
         alignItems: "center",
         shadowColor: 'black',
         shadowOffset: {

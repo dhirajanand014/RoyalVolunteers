@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dimensions } from "react-native";
-import { stringConstants, urlConstants, valueTypeConstants } from "../constants/Constants";
+import { fieldTextName, stringConstants, urlConstants, valueTypeConstants } from "../constants/Constants";
 
 const Screen = Dimensions.get('window');
 export const SCREEN_WIDTH = Screen.width;
@@ -216,9 +216,14 @@ export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestF
 }
 
 export const onChangeByValueType = (inputProps, value, valueType) => {
+    debugger
     switch (valueType) {
-        case valueTypeConstants.REPLACE:
-            inputProps.onChange(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, stringConstants.EMPTY));
+        case fieldTextName.MOBILE_NUMBER:
+            debugger
+            const numericRegex = /^([0-9]{1,100})+$/;
+            if (numericRegex.test(value)) {
+                inputProps.onChange(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, stringConstants.EMPTY));
+            }
             break;
         default: inputProps.onChange(value);
             break;

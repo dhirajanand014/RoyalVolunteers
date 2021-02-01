@@ -19,7 +19,7 @@ export const ImageFormTextInput = props => {
                         <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value}
                             autoCapitalize="none" placeholder={props.placeHolderText} secureTextEntry={props.isSecureTextEntry}
                             keyboardType={props.keyboardType} style={RVStyles.signUpTextInput} placeholderTextColor={colors.DARK_GREY}
-                            onChangeText={value => onChangeByValueType(inputProps, value, props.valueType)} />
+                            onChangeText={value => onChangeByValueType(inputProps, value, props.inputName)} />
                     </React.Fragment>
                 )
             }} />
