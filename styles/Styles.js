@@ -71,8 +71,11 @@ export const RVStyles = StyleSheet.create({
     },
     signUpTextInput: {
         flex: 1,
+        marginTop: 2,
         paddingLeft: 3,
+        marginLeft: 3,
         fontSize: 18,
+        textAlign: 'left',
         color: '#05375a'
     },
     underlineTextInput: {
@@ -87,7 +90,9 @@ export const RVStyles = StyleSheet.create({
         paddingVertical: 5
     },
     signInUserInputView: {
-        paddingVertical: 1
+        paddingVertical: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     userPasswordInputView: {
         paddingVertical: 10,
@@ -101,17 +106,20 @@ export const RVStyles = StyleSheet.create({
     userInput: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 1.5,
-        paddingTop: 2,
-        paddingBottom: 2,
+        borderWidth: 2,
         paddingStart: 15,
-        borderColor: '#999999',
         borderRadius: 35,
         width: width / 1.15,
-        marginVertical: 7
+        marginVertical: 4
+    },
+    errorInputBorder: {
+        borderColor: 'red',
+    },
+    normalInputBorder: {
+        borderColor: '#999999',
     },
     mobileCountryCode: {
-        marginHorizontal: 5,
+        marginHorizontal: 3,
         paddingHorizontal: 5,
         color: '#05375a',
         fontSize: 18,
@@ -196,22 +204,12 @@ export const RVStyles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 8
     },
-    signInRememberPassword: {
-        flex: 0.5,
-        flexDirection: 'row',
-        alignItems: 'flex-start'
-    },
-    signInRememberPasswordLink: {
-        width: 20,
-        height: 20,
-        borderColor: `rgb(170,170,170)`
-    },
     signInRememberPasswordText: {
         marginHorizontal: 19,
         marginLeft: 10
     },
     signInForgotPassword: {
-        flex: 0.5,
+        flex: 1,
         alignItems: 'flex-end'
     },
     signInForgotPasswordLink: {
@@ -219,9 +217,114 @@ export const RVStyles = StyleSheet.create({
     },
     signInForgotPasswordText: {
         color: `#c08`
+    },
+    actionButtonStyle: {
+        flexDirection: `column`,
+        alignItems: 'center',
+        elevation: 8
+    },
+    primaryActionButtonLinearGradient: {
+        width: width / 1.35,
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 20,
+        alignItems: 'center'
+    },
+    secondaryActionButtonLinearGradient: {
+        width: width / 1.35,
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 20,
+        alignItems: 'center',
+    },
+    primaryActionButtonButtonText: {
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white'
+    },
+    secondaryActionButtonText: {
+        fontSize: 18,
+        textAlign: 'center',
+        color: '#fe7d32'
+    },
+    formInputError: {
+        color: 'red'
+    },
+    secondaryActionButtonStyle: {
+        flexDirection: `column`,
+        alignItems: 'center',
+        marginBottom: 30,
+        marginTop: 20,
+        borderColor: `#fe7d32`,
+        borderWidth: 1,
+        width: width / 1.35,
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 20,
+        alignItems: 'center',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+        margin: 45
+    },
+    modalViewStyle: {
+        margin: 200,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        width: 300,
+        height: 160,
+        alignItems: "center",
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    modalTitleTextView: {
+        alignItems: 'center'
+    },
+    modalTitleTextStyle: {
+        fontSize: 20,
+        padding: 10
+    },
+    modalTitleDivider: {
+        width: 230,
+        height: 1,
+        backgroundColor: "lightgray"
+    },
+    modalMessageViewStyle: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modalMessageTextStyle: {
+        fontSize: 16,
+        textAlign: 'center',
+        padding: 10
+    },
+    modalOKButtonStyle: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        marginVertical: 15,
+        width: 150,
+        elevation: 3,
+        borderColor: 'white',
+        borderWidth: 1,
+        backgroundColor: '#fec72e'
+    },
+    modalButtonTextStyle: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 18
     }
 });
-
 
 export const colors = {
     BLUE: '#3543bf',

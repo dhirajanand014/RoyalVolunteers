@@ -224,3 +224,7 @@ export const onChangeByValueType = (inputProps, value, valueType) => {
             break;
     }
 }
+
+export const setErrorModal = (error, setError, title, message, showModal) => {
+    setError({ ...error, title: title, message: message, showModal: showModal });
+}

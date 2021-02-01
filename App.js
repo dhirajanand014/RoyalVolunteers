@@ -33,7 +33,9 @@ export default function App() {
   });
 
   const [error, setError] = useState({
-    message: ``
+    title: ``,
+    message: ``,
+    showModal: false
   })
 
   return (

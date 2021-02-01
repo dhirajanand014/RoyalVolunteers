@@ -24,7 +24,11 @@ export const screenTitle = {
     ENTER_OTP: `ENTER OTP`
 }
 
-
+export const actionButtonTextConstants = {
+    SIGN_IN: `Sign in`,
+    SIGN_UP: `Sign_up`,
+    OK: `OK`
+}
 
 export const stackOptions = {
     headerShown: false
@@ -131,6 +135,10 @@ export const urlConstants = {
     AUTHORIZE_ACCESS_TOKEN: `https://royalvolunteers.in/token.php`
 }
 
+export const countryCodesConstants = {
+    INDIA: `+91`
+}
+
 export const bloodGroupsList = [
     {
         label: `Select a blood group`,
@@ -203,6 +211,11 @@ export const fieldControllerName = {
     SECRET: `secret`
 }
 
+export const fieldTextName = {
+    MOBILE_NUMBER: `Mobile Number`,
+    PASSWORD: `Password`
+}
+
 export const placeHolderText = {
     PHONE_NUMBER: `Enter 10 digit Mobile Number`,
     SECRET: `Enter Password`
@@ -211,4 +224,12 @@ export const placeHolderText = {
 export const keyBoardTypeConst = {
     DEFAULT: `default`,
     NUMBER_PAD: `numeric`
+}
+
+export const errorModalTitleConstants = {
+    LOGIN_FAILED: `Login Failed`
+}
+
+export const errorModalMessageConstants = {
+    USER_LOGIN_FAILED: `Username and Password does not match`
 }
