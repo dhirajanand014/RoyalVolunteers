@@ -1,18 +1,28 @@
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { colors } from "../styles/Styles";
 
-export const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
+export const isIOS = Platform.OS === `ios`;
+export const isAndroid = Platform.OS === `android`;
+
+export const RESEND_OTP_TIME_LIMIT = 20; // 30 secs
 export const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
+export const OTP_INPUTS = 6;
 
 export const stringConstants = {
     EMPTY: ``,
     NODE: {}
 }
 
+export const routeConsts = {
+    HOME: `Home`,
+    SIGN_UP: `SignUp`
+}
+
 export const screenOptions = {
     gestureEnabled: true, gestureDirection: 'horizontal',
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
 };
+
 
 export const screenTitle = {
     SIGN_IN: `SIGN IN`,
@@ -27,6 +37,8 @@ export const screenTitle = {
 export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign_up`,
+    PROCEED: `Proceed`,
+    VERIFY: `Verify`,
     OK: `OK`
 }
 
@@ -47,6 +59,10 @@ export const formRequiredRules = {
         maxLength: {
             value: 10,
             message: `Please enter only 10 digits`
+        },
+        pattern: {
+            value: `/^([0-9]{1,100})+$/`,
+            message: `Please enter only digits`
         }
     },
     passwordFormRule: {
@@ -174,11 +190,11 @@ export const availablilityStatusOptions = [
     {
         label: `YES`,
         value: 'Y',
-        activeColor: colors.GREEN
+        activeColor: `#30a960`
     }, {
         label: `NO`,
         value: 'N',
-        activeColor: colors.RED
+        activeColor: `#f06159`
     }
 ]
 
@@ -193,6 +209,7 @@ export const neededOptions = [
 ];
 
 export const numericConstants = {
+    ZERO: 0,
     ONE: 1,
     TWO: 2,
     THREE: 3,
@@ -209,17 +226,31 @@ export const fieldControllerName = {
 
 export const fieldTextName = {
     MOBILE_NUMBER: `Mobile Number`,
-    PASSWORD: `Password`
+    PASSWORD: `Password`,
+    OTP_INPUT: `otpInput`
 }
 
 export const placeHolderText = {
     PHONE_NUMBER: `Enter 10 digit Mobile Number`,
-    SECRET: `Enter Password`
+    SECRET: `Enter Password`,
+    SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`
 }
 
 export const keyBoardTypeConst = {
     DEFAULT: `default`,
-    NUMBER_PAD: `numeric`
+    ANDROID_NUMERIC: `numeric`,
+    IOS_NUMERIC: `name-phone-pad`,
+    TELPHONETYPE: `telephoneNumber`,
+    ONETIMECODE: `oneTimeCode`,
+    PASSWORD: `password`
+}
+
+export const miscMessage = {
+    RESEND_OTP_IN: `Resend OTP in`,
+    RESEND_OTP: `Resend OTP`,
+    SUBMITTING_IN: `Submitting OTP in`,
+    RESET_NAVIGATION: `ResetNavigation`,
+    CONFIRM_SECRET: `SecretConfirm`
 }
 
 export const errorModalTitleConstants = {

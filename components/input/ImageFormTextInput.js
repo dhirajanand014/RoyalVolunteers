@@ -16,10 +16,11 @@ export const ImageFormTextInput = props => {
                             props.isPhoneNumberEntry &&
                             <Text style={RVStyles.mobileCountryCode}>{countryCodesConstants.INDIA}</Text>
                         }
-                        <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value}
+                        <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value} textContentType={props.textContentType}
                             autoCapitalize="none" placeholder={props.placeHolderText} secureTextEntry={props.isSecureTextEntry}
                             keyboardType={props.keyboardType} style={RVStyles.signUpTextInput} placeholderTextColor={colors.DARK_GREY}
-                            onChangeText={value => onChangeByValueType(inputProps, value, props.inputName)} />
+                            onChangeText={value => onChangeByValueType(inputProps, value, props)} autoFocus={props.autofocus}
+                            onSubmitEditing={props.onSubmitEditing} ref={props.refCallback} />
                     </React.Fragment>
                 )
             }} />

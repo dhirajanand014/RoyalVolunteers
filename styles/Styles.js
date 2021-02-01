@@ -1,6 +1,7 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
+import { isAndroid, isIOS } from '../constants/Constants';
 
-const { width, height } = Dimensions.get(`window`);
+const { width } = Dimensions.get(`window`);
 
 /**
  * mr - margin right
@@ -24,6 +25,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     mt24: {
         marginTop: 24,
+    },
+    mt36: {
+        marginTop: 36,
     },
     negativeText: {
         color: '#f06159',
@@ -60,7 +64,8 @@ export const RVStyles = StyleSheet.create({
         fontWeight: 'bold',
         justifyContent: 'flex-start',
         fontSize: 20,
-        paddingVertical: 25,
+        marginVertical: 10,
+        paddingVertical: 10,
     },
     signUpFooter: {
         flex: 3,
@@ -95,10 +100,6 @@ export const RVStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    userPasswordInputView: {
-        paddingVertical: 10,
-        paddingBottom: 10
-    },
     userInputTextView: {
         color: '#05375a',
         fontSize: 16,
@@ -111,7 +112,7 @@ export const RVStyles = StyleSheet.create({
         paddingStart: 15,
         borderRadius: 35,
         width: width / 1.15,
-        marginVertical: 4
+        marginVertical: 2
     },
     errorInputBorder: {
         borderColor: 'red',
@@ -130,8 +131,9 @@ export const RVStyles = StyleSheet.create({
         color: '#989898',
         textAlign: 'center',
         fontSize: 16,
-        marginTop: 40,
-        fontWeight: '500'
+        width: width / 1.15,
+        textAlign: 'center',
+        fontWeight: 'bold'
     },
     otpFieldRows: {
         flexDirection: 'row',
@@ -139,20 +141,13 @@ export const RVStyles = StyleSheet.create({
     },
     otpContainerStyle: {
         flexDirection: 'row',
-        borderColor: '#d4d4d4',
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderRadius: 5,
         marginHorizontal: 6,
         padding: 8,
     },
     otpInputStyle: {
         padding: 0,
-    },
-    otpText: {
-        color: '#3543bf',
-        fontSize: 18,
-        width: '100%',
-        alignItems: 'center',
     },
     otpResendTimerText: {
         fontSize: 12,
@@ -183,6 +178,11 @@ export const RVStyles = StyleSheet.create({
     },
     otpResendDisabled: {
         opacity: 0.5,
+    },
+    otpVerifyButton: {
+        alignItems: 'center',
+        elevation: 8,
+        marginTop: 20,
     },
     neededRadioCircle: {
         height: 20,
@@ -229,6 +229,7 @@ export const RVStyles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         borderRadius: 20,
+        marginBottom: 15,
         alignItems: 'center'
     },
     secondaryActionButtonLinearGradient: {
@@ -241,7 +242,8 @@ export const RVStyles = StyleSheet.create({
     primaryActionButtonButtonText: {
         fontSize: 18,
         textAlign: 'center',
-        color: 'white'
+        color: 'white',
+        fontWeight: 'bold'
     },
     secondaryActionButtonText: {
         fontSize: 18,
@@ -249,20 +251,23 @@ export const RVStyles = StyleSheet.create({
         color: '#fe7d32'
     },
     formInputError: {
-        color: 'red'
+        color: 'red',
+        marginBottom: 6,
+        marginHorizontal: 15
+    },
+    signInSecondaryButtonView: {
+        marginBottom: isIOS && 180 || 60,
+        marginTop: 20,
     },
     secondaryActionButtonStyle: {
         flexDirection: `column`,
         alignItems: 'center',
-        marginBottom: 30,
-        marginTop: 20,
         borderColor: `#fe7d32`,
         borderWidth: 1,
+        justifyContent: 'center',
         width: width / 1.35,
         height: 50,
-        justifyContent: 'center',
         borderRadius: 20,
-        alignItems: 'center',
     },
     modalContainer: {
         flex: 1,
@@ -324,6 +329,38 @@ export const RVStyles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontSize: 18
+    },
+    signUpPrimaryButtonView: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingVertical: 2,
+        marginBottom: isIOS && 370 || 220,
+    },
+    signUpActionButton: {
+        alignItems: 'center',
+        elevation: 8,
+        marginTop: 40
+    },
+    signUpActionButtonGradient: {
+        width: width / 1.35,
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 20,
+        alignItems: 'center'
+    },
+    otpVerifyActionButtonGradient: {
+        width: width / 1.35,
+        height: 50,
+        justifyContent: 'center',
+        borderRadius: 20,
+        alignItems: 'center'
+    },
+    otpErrorMessageStyle: {
+        marginVertical: 20,
+        color: 'red',
+        marginBottom: 6,
+        marginHorizontal: 15
     }
 });
 
