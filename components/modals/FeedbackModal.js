@@ -3,8 +3,8 @@ import { Controller, useForm } from "react-hook-form";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Snackbar from "react-native-snackbar";
-import { formRequiredRules, stringConstants } from "../../constants/Constants";
-import { saveFeedbackText } from "../../helper/Helper";
+import { formRequiredRules, miscMessage, stringConstants } from "../../constants/Constants";
+import { saveFeedbackText, showSnackBar } from "../../helper/Helper";
 import { colors } from "../../styles/Styles";
 
 export const FeedbackModal = props => {
@@ -64,7 +64,7 @@ export const FeedbackModal = props => {
                         }} onPress={handleSubmit(async data => {
                             const feedbackResponse = await saveFeedbackText(data.feedback, phoneNumber);
                             if (feedbackResponse)
-                                Snackbar.show(`Feedback submitted successfully`, Snackbar.LENGTH_SHORT);
+                                showSnackBar(miscMessage.FEEDBACK_SUBMITTED_SUCCESSFULLY, true);
                         })}>
                             <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
                         </TouchableOpacity>

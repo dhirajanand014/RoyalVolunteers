@@ -1,8 +1,10 @@
 import { CardStyleInterpolators } from "@react-navigation/stack";
-import { colors } from "../styles/Styles";
+import { Dimensions } from "react-native";
 
 export const isIOS = Platform.OS === `ios`;
 export const isAndroid = Platform.OS === `android`;
+
+export const { width, height } = Dimensions.get(`window`);
 
 export const RESEND_OTP_TIME_LIMIT = 20; // 30 secs
 export const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
@@ -15,7 +17,9 @@ export const stringConstants = {
 
 export const routeConsts = {
     HOME: `Home`,
-    SIGN_UP: `SignUp`
+    SIGN_UP: `SignUp`,
+    SIGN_UP_SECRET: `SignUpSecret`,
+    USER_REGISTRATION: `RVUserRegistration`
 }
 
 export const screenOptions = {
@@ -36,7 +40,7 @@ export const screenTitle = {
 
 export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
-    SIGN_UP: `Sign_up`,
+    SIGN_UP: `Sign up`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
     OK: `OK`
@@ -76,6 +80,10 @@ export const formRequiredRules = {
             value: true,
             message: `Please enter 6 digit OTP received`
         }
+    },
+    confirmPasswordRule: {
+        type: `mismatch`,
+        message: `Passwords do not match`
     },
     nameFormRule: {
         required: {
@@ -138,7 +146,6 @@ export const formRequiredRules = {
             message: `Please enter only 1000 characters`
         }
     }
-
 };
 
 export const urlConstants = {
@@ -221,18 +228,21 @@ export const numericConstants = {
 
 export const fieldControllerName = {
     PHONE_NUMBER: `phoneNumber`,
-    SECRET: `secret`
+    SECRET: `secret`,
+    CONFIRM_SECRET: `confirmSecret`
 }
 
 export const fieldTextName = {
     MOBILE_NUMBER: `Mobile Number`,
     PASSWORD: `Password`,
+    CONFIRM_PASSWORD: `Confirm Password`,
     OTP_INPUT: `otpInput`
 }
 
 export const placeHolderText = {
     PHONE_NUMBER: `Enter 10 digit Mobile Number`,
     SECRET: `Enter Password`,
+    CONFIRM_PASSWORD: `Confirm Password`,
     SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`
 }
 
@@ -250,13 +260,27 @@ export const miscMessage = {
     RESEND_OTP: `Resend OTP`,
     SUBMITTING_IN: `Submitting OTP in`,
     RESET_NAVIGATION: `ResetNavigation`,
-    CONFIRM_SECRET: `SecretConfirm`
+    CONFIRM_SECRET: `SecretConfirm`,
+    INCORRECT_OTP: `IncorrectOTP`,
+    SUCCESS: `Success`,
+    VERIFIED: `Verified`,
+    REGISTERED: `Registered`,
+    ERROR: `ERROR`,
+    DUPLICATE: `Duplicate`,
+    HARDWARE_BACK_PRESS: `hardwareBackPress`,
+    FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
+    REGISTRATION_SUCCESSFUL: `Registration successful`,
+    NOTIFICATION_SENT_DONERS: `Notification sent to doners`,
+    INCORRECT_OTP_ENTERED: `Incorrect OTP entered`,
+    SUCCESSFULLY_REGISTERED: `Successfully registered your details`
 }
 
 export const errorModalTitleConstants = {
-    LOGIN_FAILED: `Login Failed`
+    LOGIN_FAILED: `Login Failed`,
 }
 
 export const errorModalMessageConstants = {
-    USER_LOGIN_FAILED: `Username and Password does not match`
+    USER_LOGIN_FAILED: `Username and Password does not match`,
+    NOTIFICATION_FAIL_DONERS: `Could not notify doners`,
+    USER_ALREADY_REGISTERED: `User already registerd. Please sign in`,
 }

@@ -1,14 +1,14 @@
 import axios from "axios";
-import { Dimensions } from "react-native";
 import Snackbar from "react-native-snackbar";
 import {
-    fieldControllerName, fieldTextName, OTP_INPUTS,
-    RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants
+    fieldControllerName, fieldTextName, height, miscMessage, OTP_INPUTS,
+    RESEND_OTP_TIME_LIMIT, routeConsts, stringConstants, urlConstants, width,
+    errorModalMessageConstants
 } from "../constants/Constants";
+import { colors } from "../styles/Styles";
 
-const Screen = Dimensions.get('window');
-export const SCREEN_WIDTH = Screen.width;
-export const SCREEN_HEIGHT = Screen.height;
+export const SCREEN_WIDTH = width;
+export const SCREEN_HEIGHT = height;
 
 export const onChangeInput = (inKey, inValue, stateVariable, setState) => {
     setState({ ...stateVariable, [inKey]: inValue });
@@ -22,24 +22,6 @@ export const logErrorWithMessage = (message, errorSource) => {
         console.log(message, errorSource);
     }
 };
-
-export const saveUserRegistration = async (signUpDetails, setSignUpDetails, secret) => {
-    const { phoneNumber } = signUpDetails
-    const isSaved = await saveUserDetails(phoneNumber, secret, signUpDetails, setSignUpDetails);
-    if (isSaved) {
-        Snackbar.show({ text: 'Registration successful', duration: Snackbar.LENGTH_SHORT });
-        navigation.navigate(`RVUserRegistration`);
-    } else {
-        Snackbar.show({ text: 'User already registerd. Please sign in', duration: Snackbar.LENGTH_SHORT });
-    }
-    return;
-}
-
-export const saveRegistrationDetails = async (bloodGroup, pinCode, hospitalName, neededValue) => {
-    const regDetails = {
-
-    }
-}
 
 export const saveBloodRequest = async (signUpDetails, requestForm) => {
     try {
@@ -152,20 +134,20 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
             navigation.navigate(`SignUpOTPVerication`, params)
             return true;
         }
+        showSnackBar(`Successfully sent message!`);
     } catch (error) {
         console.log(error);
     }
     return false;
 }
 
-export const handleUserSignUpRegistration = async (phoneNumber, data, formState, isFromBloodRegistration) => {
+export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration) => {
     try {
         let userRegistrationPayload;
         let signUpPayloadString;
         if (isFromBloodRegistration) {
             userRegistrationPayload = {
                 phone: phoneNumber,
-                secret: null,
                 name: data.name,
                 blood_group: data.bloodGroup,
                 age: data.age,
@@ -174,15 +156,11 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, formState,
             }
             signUpPayloadString = JSON.stringify(userRegistrationPayload);
         } else {
-            const password = data.password;
-            const confirmedPassword = data.confirmPassword;
-            if (formState.isValid || password === confirmedPassword) {
-                userRegistrationPayload = {
-                    phone: phoneNumber,
-                    secret: password
-                }
-                signUpPayloadString = JSON.stringify(userRegistrationPayload);
+            userRegistrationPayload = {
+                phone: phoneNumber,
+                secret: data.secret
             }
+            signUpPayloadString = JSON.stringify(userRegistrationPayload);
         }
         return signUpPayloadString && await saveUserDetails(signUpPayloadString) || false;
     } catch (error) {
@@ -195,9 +173,13 @@ export const saveUserDetails = async (signUpPayloadString) => {
     try {
         const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
         const saveResponseData = saveResponse.data;
-        if (saveResponseData && saveResponseData.message == `Success` && (saveResponseData.account_status == `Verified` ||
-            saveResponseData.account_status == `Registered`)) {
-            return true;
+        if (!saveResponseData.includes(miscMessage.ERROR)) {
+            return saveResponseData && saveResponseData.message == miscMessage.SUCCESS && (saveResponseData.account_status == miscMessage.VERIFIED ||
+                saveResponseData.account_status == miscMessage.REGISTERED);
+        }
+        if (saveResponseData.includes(miscMessage.ERROR) && saveResponseData.includes(miscMessage.DUPLICATE)) {
+            showSnackBar(errorModalMessageConstants.USER_ALREADY_REGISTERED, false);
+            console.log(saveResponseData);
         }
     } catch (error) {
         console.log(error);
@@ -224,7 +206,9 @@ export const onChangeByValueType = (inputProps, value, props) => {
             inputProps.onChange(newValue);
             props.isSignUp && props.setSignUpDetails({ ...props.signUpDetails, phoneNumber: newValue });
             break;
-        default: inputProps.onChange(value);
+        default:
+            console.log(value)
+            inputProps.onChange(value);
             break;
     }
 }
@@ -348,21 +332,30 @@ export const verifyOtpRequest = async (otpString, isFromBloodRequestForm, signUp
         const isNotified = await notifyBloodDoners(signUpDetails, requestForm);
         if (isNotified) {
             await saveBloodRequest(signUpDetails, requestForm);
-            Snackbar.show({ text: 'Notification sent to doners', duration: Snackbar.LENGTH_SHORT });
+            showSnackBar(miscMessage.NOTIFICATION_SENT_DONERS, true);
         } else {
-            Snackbar.show({ text: 'Could not notify doners', duration: Snackbar.LENGTH_SHORT });
+            showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false);
         }
-        return `ResetNavigation`;
+        return miscMessage.RESET_NAVIGATION;
     } else if (randomNumber) {
         if (parseInt(otpString) === randomNumber) {
-            return `SecretConfirm`;
+            return miscMessage.CONFIRM_SECRET;
         }
-        Snackbar.show({ text: 'Incorrect OTP entered', duration: Snackbar.LENGTH_SHORT });
-        return `IncorrectOTP`;
+        showSnackBar(miscMessage.INCORRECT_OTP_ENTERED, false);
+        return miscMessage.INCORRECT_OTP;
     }
 }
 
 export const focusOnSecretIfFormInvalid = (formState, secretRef) => {
     if (!formState.isValid)
         secretRef?.current?.focus();
+}
+
+export const showSnackBar = (message, success) => {
+    Snackbar.show({
+        text: message,
+        textColor: colors.WHITE,
+        duration: Snackbar.LENGTH_SHORT,
+        backgroundColor: success && colors.GREEN || colors.RED
+    })
 }

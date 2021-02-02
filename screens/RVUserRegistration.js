@@ -1,11 +1,11 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Text, View, Dimensions, Animated } from 'react-native';
+import { Text, View, Animated } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVStyles } from '../styles/Styles';
-import { availablilityStatusOptions, bloodGroupsList, formRequiredRules, stringConstants } from '../constants/Constants';
+import { availablilityStatusOptions, bloodGroupsList, formRequiredRules, stringConstants, width } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import { Picker } from '@react-native-picker/picker'
@@ -18,12 +18,10 @@ export const RVUserRegistration = () => {
 
     const route = useRoute();
 
-    const { width } = Dimensions.get(`window`);
-
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     const onSubmit = async (data) => {
-        const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, formState, true);
+        const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, true);
         if (isUserRegistered) {
             isUserRegistered && navigation.navigate(`RVUserDashboard`, {
                 phoneNumber: phoneNumber

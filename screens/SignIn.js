@@ -15,10 +15,9 @@ import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import { SignUpContext } from '../App';
-import { focusOnSecretIfFormInvalid, handleUserLogin, setErrorModal } from '../helper/Helper';
+import { focusOnSecretIfFormInvalid, handleUserLogin, setErrorModal, showSnackBar } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 import { LoginUnsuccessful } from '../components/modals/LoginUnsuccessful';
-import Snackbar from 'react-native-snackbar';
 
 export const SignIn = props => {
     const navigation = useNavigation();
@@ -34,7 +33,6 @@ export const SignIn = props => {
     const { error, setError } = useContext(SignUpContext);
 
     const submitDetails = async data => {
-        debugger
         const responseNavigation = await handleUserLogin(data);
         if (responseNavigation === `RVUserRegistration` || responseNavigation === `RVUserDashboard`) {
             navigation.navigate(responseNavigation, {
@@ -42,7 +40,7 @@ export const SignIn = props => {
             })
         } else if (responseNavigation === `invalidUser`) {
             setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
-            Snackbar.show({ text: errorModalTitleConstants.LOGIN_FAILED, duration: Snackbar.LENGTH_SHORT });
+            showSnackBar(errorModalTitleConstants.LOGIN_FAILED, false);
         }
     }
 

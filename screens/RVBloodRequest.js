@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Text, View, Dimensions, Animated } from 'react-native';
+import { Text, View, Animated } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVStyles } from '../styles/Styles';
-import { bloodGroupsList, formRequiredRules, neededOptions } from '../constants/Constants';
+import { bloodGroupsList, formRequiredRules, neededOptions, width } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import { Picker } from '@react-native-picker/picker'
@@ -17,8 +17,6 @@ export const RVBloodRequest = () => {
     const { handleSubmit, control, formState } = useForm();
 
     const { requestForm, setRequestForm } = useContext(SignUpContext);
-
-    const { width } = Dimensions.get(`window`);
 
     const onSubmit = async (data) => {
         if (formState.isValid) {

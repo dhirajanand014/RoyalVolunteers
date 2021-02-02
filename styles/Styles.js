@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native'
-import { isAndroid, isIOS } from '../constants/Constants';
-
-const { width } = Dimensions.get(`window`);
+import { StyleSheet } from 'react-native'
+import { isAndroid, isIOS, width } from '../constants/Constants';
 
 /**
  * mr - margin right
@@ -361,6 +359,12 @@ export const RVStyles = StyleSheet.create({
         color: 'red',
         marginBottom: 6,
         marginHorizontal: 15
+    },
+    signUpConfirmSecretGradient: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 80,
+        elevation: 8
     }
 });
 

@@ -1,31 +1,32 @@
-import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator, Text, Dimensions, Platform, Animated } from 'react-native';
+import { View, ActivityIndicator, Text } from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
-import { RVGenericStyles, RVStyles } from '../styles/Styles';
+import { RVGenericStyles, RVStyles, colors } from '../styles/Styles';
 import { OTPInputText } from '../components/input/OTPInputText';
 import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
-import { isAndroid, logErrorWithMessage, notifyBloodDoners, saveBloodRequest, saveBloodRequestAndNotify } from '../helper/Helper';
+import {
+    logErrorWithMessageonOtpChange, onOtpKeyPress, onResendOtpButtonPress,
+    identifyOtpError, verifyOtpRequest, onOtpChange
+} from '../helper/Helper';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useForm } from 'react-hook-form';
-import { stringConstants } from '../constants/Constants';
+import {
+    AUTO_SUBMIT_OTP_TIME_LIMIT, keyBoardTypeConst, isAndroid,
+    RESEND_OTP_TIME_LIMIT, screenTitle, stringConstants, OTP_INPUTS,
+    numericConstants, actionButtonTextConstants, miscMessage, routeConsts
+} from '../constants/Constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SignUpContext } from '../App';
-import Snackbar from 'react-native-snackbar';
 
-const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
-const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
-const OTP_INPUTS = 6
 let resendOtpTimerInterval;
 let autoSubmitOtpTimerInterval;
 
-const { width } = Dimensions.get(`window`);
-
-let otpInputs = Array(OTP_INPUTS).fill(``);
+let otpInputs = Array(OTP_INPUTS).fill(stringConstants.EMPTY);
 
 export const SignUpOTPVerication = props => {
     const { otpRequestData, attempts } = props;
@@ -35,10 +36,12 @@ export const SignUpOTPVerication = props => {
 
     const route = useRoute();
 
+    const isFromBloodRequestForm = route.params?.isFromBloodRequestForm;
+
     const { requestForm, signUpDetails } = useContext(SignUpContext);
 
     const navigation = useNavigation();
-    const { handleSubmit, control, setError, formState, clearErrors } = useForm({ mode: `onChange` });
+    const { handleSubmit, control, setError, formState, clearErrors } = useForm();
 
     // in secs, if value is greater than 0 then button will be disabled
     const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
@@ -58,8 +61,10 @@ export const SignUpOTPVerication = props => {
     const fifthTextInputRef = useRef(null);
     const sixththTextInputRef = useRef(null);
 
+    const textInputs = { firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef }
+
     useEffect(() => {
-        startResendOtpTimer();
+        startResendOtpTimer()
         return () => {
             if (resendOtpTimerInterval) {
                 clearInterval(resendOtpTimerInterval);
@@ -69,10 +74,10 @@ export const SignUpOTPVerication = props => {
 
     useEffect(() => {
         // docs: https://github.com/faizalshap/react-native-otp-verify
-        Platform.OS === 'android' &&
+        isAndroid &&
             RNOtpVerify.getOtp()
-                .then(p =>
-                    RNOtpVerify.addListener(message => {
+                .then(() =>
+                    RNOtpVerify.addListener(() => {
                         try {
                             // if (message) {
                             //     const messageArray = message.split('\n');
@@ -98,7 +103,7 @@ export const SignUpOTPVerication = props => {
 
         // remove listener on unmount
         return () => {
-            RNOtpVerify.removeListener();
+            isAndroid && RNOtpVerify.removeListener();
         };
     }, []);
 
@@ -107,208 +112,89 @@ export const SignUpOTPVerication = props => {
             clearInterval(resendOtpTimerInterval);
         }
         resendOtpTimerInterval = setInterval(() => {
-            if (resendButtonDisabledTime <= 0) {
+            if (resendButtonDisabledTime <= numericConstants.ZERO) {
                 clearInterval(resendOtpTimerInterval);
             } else {
-                setResendButtonDisabledTime(resendButtonDisabledTime - 1);
+                setResendButtonDisabledTime(resendButtonDisabledTime - numericConstants.ONE);
             }
-        }, 1000);
+        }, numericConstants.THOUSAND);
     };
 
     const refCallback = textInputRef => node => {
         textInputRef.current = node;
     };
-    const onSubmit = async () => {
-        const otpString = otpArray.reduce((result, item) => {
-            return `${result}${item}`
-        }, stringConstants.EMPTY)
 
-        if (otpString === `` || otpString.length < OTP_INPUTS) {
-            setError(`otpInput`, {
-                type: `length`,
-                message: `Please enter 6 digit OTP`
-            })
-            return;
-        } else if (otpArray && otpArray.length === OTP_INPUTS) {
-            clearErrors(`otpInput`);
-        }
-        if (formState.isValid) {
-            if (route.params?.isFromBloodRequestForm) {
-                const isNotified = notifyBloodDoners(signUpDetails, requestForm);
-                if (isNotified) {
-                    await saveBloodRequest(signUpDetails, requestForm);
-                    Snackbar.show({ text: 'Notification sent to doners', duration: Snackbar.LENGTH_SHORT });
-                } else {
-                    Snackbar.show({ text: 'Could not notify doners', duration: Snackbar.LENGTH_SHORT });
-                }
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Home' }],
-                });
-            } else if (route.params?.rand_number) {
-                const number = route?.params?.rand_number;
-                if (parseInt(otpString) === number) {
-                    navigation.navigate('SignUpSecret');
-                }
-                else {
-                    Snackbar.show({ text: 'Incorrect OTP entered', duration: Snackbar.LENGTH_SHORT });
-                }
+    const onSubmit = async () => {
+        const otpString = otpArray.reduce((result, item) => { return `${result}${item}` }, stringConstants.EMPTY);
+        const isValid = identifyOtpError(otpString, otpArray, setError, clearErrors);
+        if (isValid) {
+            const randomNumber = route.params?.rand_number || false;
+            const navigationResponse = await verifyOtpRequest(otpString, isFromBloodRequestForm, signUpDetails, requestForm, randomNumber);
+            if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.CONFIRM_SECRET == navigationResponse) {
+                clearInterval(resendOtpTimerInterval);
+                if (miscMessage.RESET_NAVIGATION == navigationResponse)
+                    navigation.reset({ index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }], });
+                else if (miscMessage.CONFIRM_SECRET == navigationResponse)
+                    navigation.navigate(routeConsts.SIGN_UP_SECRET);
             }
         }
-        clearInterval(resendOtpTimerInterval);
     };
 
     console.log(firstTextInputRef?.current?.value);
 
-    const onResendOtpButtonPress = () => {
-        // clear last OTP
-        if (firstTextInputRef) {
-            setOtpArray(Array(OTP_INPUTS).fill(` `));
-            firstTextInputRef.current.focus();
-        }
-
-        setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
-        setAttemptsRemaining(--attemptsRemaining);
-        startResendOtpTimer();
-
-        // resend OTP Api call
-        // todo
-        console.log('todo: Resend OTP');
-    };
-
-    // this event won't be fired when text changes from '' to '' i.e. backspace is pressed
-    // using onOtpKeyPress for this purpose
-    const onOtpChange = index => {
-        return value => {
-            if (isNaN(Number(value))) {
-                // do nothing when a non digit is pressed
-                return;
-            }
-            const otpArrayCopy = otpArray.concat();
-            otpArrayCopy[index] = value;
-            setOtpArray(otpArrayCopy);
-
-            // auto focus to next InputText if value is not blank
-            if (value !== '') {
-                switch (index) {
-                    case 0:
-                        secondTextInputRef.current.focus();
-                        break;
-                    case 1:
-                        thirdTextInputRef.current.focus();
-                        break;
-                    case 2:
-                        fourthTextInputRef.current.focus();
-                        break;
-                    case 3:
-                        fifthTextInputRef.current.focus();
-                        break;
-                    case 4:
-                        sixththTextInputRef.current.focus();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-    };
-
-    // only backspace key press event is fired on Android
-    // to have consistency, using this event just to detect backspace key press and
-    // onOtpChange for other digits press
-    const onOtpKeyPress = index => {
-        return ({ nativeEvent: { key: value } }) => {
-            // auto focus to previous InputText if value is blank and existing value is also blank
-            if (value === 'Backspace' && otpArray[index] === '') {
-                switch (index) {
-                    case 1:
-                        firstTextInputRef.current.focus();
-                        break;
-                    case 2:
-                        secondTextInputRef.current.focus();
-                        break;
-                    case 3:
-                        thirdTextInputRef.current.focus();
-                        break;
-                    case 4:
-                        fourthTextInputRef.current.focus();
-                        break;
-                    case 5:
-                        fifthTextInputRef.current.focus();
-                        break;
-                    default:
-                        break;
-                }
-                /**
-                 * clear the focused text box as well only on Android because on mweb onOtpChange will be also called
-                 * doing this thing for us
-                 * todo check this behaviour on ios
-                 */
-                if (isAndroid && index > 0) {
-                    const otpArrayCopy = otpArray.concat();
-                    otpArrayCopy[index - 1] = ''; // clear the previous box which will be in focus
-                    setOtpArray(otpArrayCopy);
-                }
-            }
-            const otpString = otpArray.reduce((result, item) => {
-                return `${result}${item}`
-            }, stringConstants.EMPTY)
-
-            if (otpString === `` || otpString.length < OTP_INPUTS) {
-                setError(`otpInput`, {
-                    type: `length`,
-                    message: `Please enter 6 digit OTP`
-                })
-                return;
-            } else if (otpArray && otpArray.length === OTP_INPUTS) {
-                clearErrors(`otpInput`);
-            }
-        };
-    };
     return (
-        <Animated.View style={RVStyles.headerContainer}>
-            <HeaderForm style={RVStyles.signUpHeaderImage} imagePath={require(`../assets/rv_home_logo.png`)} />
+        <View style={RVStyles.headerContainer}>
+            <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <View style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>Enter OTP</Text>
+                <Text style={RVStyles.signUpTextHeader}>{screenTitle.ENTER_OTP}</Text>
                 <View style={[RVStyles.otpFieldRows, RVGenericStyles.mt12]}>
                     {
                         [firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef,
                             sixththTextInputRef].map((textInputRef, index) => (
-                                <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12]} value={otpArray[index]}
-                                    onKeyPress={onOtpKeyPress(index)} onChangeText={onOtpChange(index)} keyboardType={'number-pad'} textContentType={`oneTimeCode`}
-                                    maxLength={1} style={RVStyles.otpText} key={index} autoFocus={index === 0 && true || false}
-                                    refCallback={refCallback(textInputRef)} />
+                                <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12,
+                                { borderColor: otpArray[index] && colors.GREEN || textInputRef?.current?.isFocused() && !otpArray[index] && colors.BLUE || colors.ORANGE }]} value={otpArray[index].toString()}
+                                    onKeyPress={onOtpKeyPress(index, otpArray, firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
+                                        fifthTextInputRef, setOtpArray, setError, clearErrors)} onChangeText={onOtpChange(index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
+                                            fifthTextInputRef, sixththTextInputRef)} keyboardType={keyBoardTypeConst.NUMERIC} textContentType={keyBoardTypeConst.ONETIMECODE}
+                                    keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} refCallback={refCallback(textInputRef)}
+                                    maxLength={numericConstants.ONE} key={index} autoFocus={index === numericConstants.ZERO && true || false} />
                             ))}
                 </View>
-                <Text style={{ color: 'red' }}>{formState.errors.otpInput?.message}</Text>
+                <Text style={RVStyles.otpErrorMessageStyle}>{formState.errors.otpInput?.message}</Text>
                 {
-                    resendButtonDisabledTime > 0 && <OTPTimeText text={'Resend OTP in'} time={resendButtonDisabledTime} />
-                    || <OTPResendButton text={'Resend OTP'} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}
-                        onPress={onResendOtpButtonPress} />
+                    resendButtonDisabledTime > numericConstants.ZERO && <OTPTimeText text={miscMessage.RESEND_OTP_IN} time={resendButtonDisabledTime} />
+                    || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}
+                        onPress={async () => await onResendOtpButtonPress(firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
+                            attemptsRemaining, startResendOtpTimer, signUpDetails, isFromBloodRequestForm, navigation, clearErrors)} />
                 }
                 <View style={RVGenericStyles.fill} />
-                {submittingOtp && <ActivityIndicator />}
-                {autoSubmitOtpTime > 0 &&
-                    autoSubmitOtpTime < AUTO_SUBMIT_OTP_TIME_LIMIT && <OTPTimeText text={'Submitting OTP in'}
-                        time={autoSubmitOtpTime} />}
-                <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt12]}>
-                    {attemptsRemaining || 0} Attempts remaining
-                </OTPTextView>
-                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 120, elevation: 8 }} onPress={handleSubmit(onSubmit)} >
-                    <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center', marginTop: 50 }} colors={[`#FF00CC`, `red`]}>
-                        <Text style={{ fontSize: 18, textAlign: 'center', color: 'white' }}>Proceed</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
+                {
+                    submittingOtp && <ActivityIndicator />
+                }
+                {
+                    autoSubmitOtpTime > numericConstants.ZERO && autoSubmitOtpTime < AUTO_SUBMIT_OTP_TIME_LIMIT &&
+                    <OTPTimeText text={miscMessage.SUBMITTING_IN} time={autoSubmitOtpTime} />
+                }
+                <View style={RVStyles.signUpPrimaryButtonView}>
+                    <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt36]}>
+                        {attemptsRemaining || numericConstants.ZERO} Attempts remaining
+                    </OTPTextView>
+                    <TouchableOpacity activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
+                        <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
+                            <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.VERIFY}</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </Animated.View>
+        </View>
     );
 };
 
 SignUpOTPVerication.defaultProps = {
-    attempts: 3
+    attempts: numericConstants.THREE
 };
 
 SignUpOTPVerication.propTypes = {
-    otpRequestData: Platform.OS == `android` && PropTypes.object.isRequired || null,
+    otpRequestData: isAndroid && PropTypes.object.isRequired || null,
     attempts: PropTypes.number.isRequired,
 };
