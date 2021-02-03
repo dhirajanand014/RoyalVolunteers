@@ -34,7 +34,7 @@ export const SignIn = props => {
 
     const submitDetails = async data => {
         const responseNavigation = await handleUserLogin(data);
-        if (responseNavigation === `RVUserRegistration` || responseNavigation === `RVUserDashboard`) {
+        if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === `RVUserDashboard`) {
             navigation.navigate(responseNavigation, {
                 phoneNumber: data.phoneNumber
             })

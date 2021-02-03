@@ -75,7 +75,7 @@ export const RVStyles = StyleSheet.create({
     signUpTextInput: {
         flex: 1,
         paddingHorizontal: 12,
-        paddingVertical: 12,
+        paddingVertical: 10,
         paddingLeft: 3,
         marginLeft: 3,
         fontSize: 18,
@@ -86,7 +86,9 @@ export const RVStyles = StyleSheet.create({
         flex: 1,
         paddingLeft: 3,
         justifyContent: 'center',
-        alignItems: 'flex-end',
+        marginTop: isIOS && 0 || -12,
+        paddingVertical: 5,
+        borderBottomWidth: 1,
         fontSize: 16,
         color: '#05375a'
     },
@@ -98,10 +100,36 @@ export const RVStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    registrationUserInputView: {
+        paddingVertical: isIOS && 5 || 2,
+        justifyContent: 'center',
+        width: width / 1.10
+    },
+    registrationUserInputPickerView: {
+        marginTop: isIOS && 25 || 0,
+        paddingVertical: isIOS && 10 || 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
+    },
+    pickerItemStyleIOS: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'Times New Roman'
+    },
+    registrationUserInputPickerText: {
+        color: 'black',
+        fontSize: 15
+    },
     userInputTextView: {
         color: '#05375a',
         fontSize: 16,
         paddingLeft: 18
+    },
+    registrationUserInputTextView: {
+        color: 'black',
+        fontSize: 15,
+        paddingLeft: 3
     },
     userInput: {
         flexDirection: 'row',
@@ -115,8 +143,14 @@ export const RVStyles = StyleSheet.create({
     errorInputBorder: {
         borderColor: 'red',
     },
+    authenticatedErrorInputBorder: {
+        borderBottomColor: 'red',
+    },
     normalInputBorder: {
         borderColor: '#999999',
+    },
+    authenticatedNormalInputBorder: {
+        borderBottomColor: '#999999',
     },
     mobileCountryCode: {
         marginHorizontal: 3,
@@ -253,6 +287,12 @@ export const RVStyles = StyleSheet.create({
         marginBottom: 6,
         marginHorizontal: 15
     },
+    registrationFormInputError: {
+        color: 'red',
+        marginVertical: isIOS && 5 || 2,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     signInSecondaryButtonView: {
         marginBottom: isIOS && 180 || 60,
         marginTop: 20,
@@ -364,6 +404,23 @@ export const RVStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 80,
+        elevation: 8
+    },
+    authenticatedUserInputViewStyle: {
+        marginTop: 10,
+    },
+    bloodGroupPickerStyle: {
+        borderWidth: isAndroid && 1 || 0,
+        justifyContent: 'center',
+        width: 215,
+        height: 20
+    },
+    availabilityStatusStyle: {
+        width: 150
+    },
+    userRegistrationSubmitButton: {
+        marginBottom: isIOS && 90 || 20,
+        alignItems: 'center',
         elevation: 8
     }
 });

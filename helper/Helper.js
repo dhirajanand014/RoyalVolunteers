@@ -143,6 +143,7 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
 
 export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration) => {
     try {
+        debugger
         let userRegistrationPayload;
         let signUpPayloadString;
         if (isFromBloodRegistration) {
@@ -171,6 +172,7 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
 
 export const saveUserDetails = async (signUpPayloadString) => {
     try {
+        debugger
         const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
         const saveResponseData = saveResponse.data;
         if (!saveResponseData.includes(miscMessage.ERROR)) {
@@ -202,10 +204,12 @@ export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestF
 export const onChangeByValueType = (inputProps, value, props) => {
     switch (props.inputName) {
         case fieldControllerName.PHONE_NUMBER:
-            const newValue = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, stringConstants.EMPTY);
+            const newValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
             inputProps.onChange(newValue);
             props.isSignUp && props.setSignUpDetails({ ...props.signUpDetails, phoneNumber: newValue });
             break;
+        case fieldControllerName.PINCODE:
+            inputProps.onChange(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
         default:
             console.log(value)
             inputProps.onChange(value);
@@ -228,7 +232,7 @@ export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, set
     setAttemptsRemaining(--attemptsRemaining);
     startResendOtpTimer();
     await handleUserSignUpOtp(signUpDetails, isFromBloodRequestForm, navigation, true);
-    clearErrors(fieldTextName.OTP_INPUT);
+    clearErrors(fieldControllerName.OTP_INPUT);
 };
 
 // only backspace key press event is fired on Android
@@ -314,14 +318,14 @@ export const onOtpChange = (index, otpArray, setOtpArray, secondTextInputRef, th
 
 export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => {
     if (otpString === `` || otpString.length < OTP_INPUTS) {
-        setError(fieldTextName.OTP_INPUT, {
+        setError(fieldControllerName.OTP_INPUT, {
             type: `length`,
             message: `Please enter 6 digit OTP`
         })
         return false;
     }
     if (otpArray && otpArray.length === OTP_INPUTS) {
-        clearErrors(fieldTextName.OTP_INPUT);
+        clearErrors(fieldControllerName.OTP_INPUT);
         return true;
     }
     return false;

@@ -1,16 +1,21 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Text, View, Animated } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import { RVStyles } from '../styles/Styles';
-import { availablilityStatusOptions, bloodGroupsList, formRequiredRules, stringConstants, width } from '../constants/Constants';
+import { colors, RVStyles } from '../styles/Styles';
+import {
+    availablilityStatusOptions, bloodGroupsList, fieldControllerName,
+    fieldTextName, formRequiredRules, screenTitle, stringConstants,
+    keyBoardTypeConst, numericConstants, isAndroid, placeHolderText, actionButtonTextConstants
+} from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
-import { Picker } from '@react-native-picker/picker'
-import SwitchSelector from 'react-native-switch-selector';
 import { handleUserSignUpRegistration } from '../helper/Helper';
+import { AuthenticatedInputText } from '../components/input/AuthenticatedInputText';
+import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInputPicker';
+import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
@@ -21,6 +26,7 @@ export const RVUserRegistration = () => {
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     const onSubmit = async (data) => {
+        debugger
         const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, true);
         if (isUserRegistered) {
             isUserRegistered && navigation.navigate(`RVUserDashboard`, {
@@ -33,90 +39,35 @@ export const RVUserRegistration = () => {
         <View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>USER REGISTRATION</Text>
+                <Text style={RVStyles.signUpTextHeader}>{screenTitle.USER_REGISTRATION}</Text>
                 <Animated.ScrollView>
-                    <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
-                        <Text style={RVStyles.userInputTextView}>Name: </Text>
-                        <Controller name={"name"} control={control} defaultValue={``} rules={formRequiredRules.nameFormRule}
-                            render={(props) => {
-                                return (
-                                    <TextInput {...props} value={props.value} placeholder={`Enter Name`}
-                                        style={RVStyles.underlineTextInput} placeholderTextColor="#999999"
-                                        onChangeText={(value) => {
-                                            props.onChange(value);
-                                        }} />
-                                )
-                            }} />
-                    </View>
-                    <Text style={{ color: 'red' }}>{formState.errors.name?.message}</Text>
-                    <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
-                        <Text style={RVStyles.userInputTextView}>Age: </Text>
-                        <Controller name={"age"} control={control} defaultValue={``} rules={formRequiredRules.ageRule}
-                            render={(props) => {
-                                return (
-                                    <TextInput {...props} value={props.value} placeholder={`Enter Age`} maxLength={3} keyboardType={`numeric`}
-                                        style={RVStyles.underlineTextInput} placeholderTextColor="#999999"
-                                        onChangeText={(value) => {
-                                            props.onChange(value);
-                                        }} />
-                                )
-                            }} />
-                    </View>
-                    <Text style={{ color: 'red' }}>{formState.errors.age?.message}</Text>
-                    <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
-                        <Text style={RVStyles.userInputTextView}>Blood Group: </Text>
-                        <Controller name={"bloodGroup"} control={control} defaultValue={``} rules={formRequiredRules.bloodGroupRule}
-                            render={(props) => {
-                                return (
-                                    <Picker selectedValue={props.value} style={{ width: 220, height: 50 }}
-                                        onValueChange={(itemValue) => {
-                                            props.onChange(itemValue);
-                                        }}>
-                                        {
-                                            bloodGroupsList.map((bloodGroup) => {
-                                                return (
-                                                    <Picker.Item label={bloodGroup.label} value={bloodGroup.value} />
-                                                )
-                                            })
-                                        }
-                                    </Picker>
-                                )
-                            }} />
-                    </View>
-                    <Text style={{ color: 'red' }}>{formState.errors.bloodGroup?.message}</Text>
-                    <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
-                        <Text style={RVStyles.userInputTextView}>Pincode: </Text>
-                        <Controller name={"pinCode"} control={control} defaultValue={``} rules={formRequiredRules.pinCodeRule}
-                            render={(props) => {
-                                return (
-                                    <TextInput maxLength={6} {...props} value={props.value} autoCapitalize="none"
-                                        placeholder="Enter your area pincode" keyboardType={"number-pad"}
-                                        style={RVStyles.signUpTextInput} placeholderTextColor="#999999"
-                                        onChangeText={(value) => {
-                                            props.onChange(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, ''));
-                                        }} />
-                                )
-                            }} />
-                    </View>
-                    <Text style={{ color: 'red' }}>{formState.errors.pinCode?.message}</Text>
-                    <View style={[RVStyles.signInUserInputView, { flexDirection: 'row', alignItems: 'center' }]}>
-                        <Text style={RVStyles.userInputTextView}>Status of availability :</Text>
-                        <Controller name={"availabilityStatus"} control={control} defaultValue={``}
-                            render={(props) => {
-                                return (
-                                    <SwitchSelector initial={0} onPress={value => props.onChange(value)} initial={1}
-                                        hasPadding options={availablilityStatusOptions} fontSize={12} style={{ width: 150 }}
-                                    />
-                                )
-                            }} />
-                        <Text style={{ color: 'red' }}>{formState.errors.availabilityStatus?.message}</Text>
-                    </View>
+                    <AuthenticatedInputText inputTextName={fieldTextName.NAME} inputName={fieldControllerName.NAME} control={control} rules={formRequiredRules.nameFormRule}
+                        defaultValue={stringConstants.EMPTY} autofocus={true} placHol keyboardType={keyBoardTypeConst.DEFAULT} textContentType={keyBoardTypeConst.NAME}
+                        formState={formState} placeHolderText={placeHolderText.NAME} />
+
+                    <AuthenticatedInputText inputTextName={fieldTextName.AGE} inputName={fieldControllerName.AGE} control={control} rules={formRequiredRules.ageRule}
+                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THREE} placeHolderText={placeHolderText.AGE}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
+
+                    <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule}
+                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
+
+                    <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
+                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList} />
+
+                    <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
+                        defaultValue={stringConstants.EMPTY} formState={formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
+                        initial={numericConstants.ZERO} />
+
                 </Animated.ScrollView>
-                <TouchableOpacity activeOpacity={.7} style={{ flexDirection: `column`, alignItems: 'center', elevation: 8 }} onPress={handleSubmit(onSubmit)} >
-                    <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center' }} colors={[`#FF00CC`, `red`]}>
-                        <Text style={{ fontSize: 18, textAlign: 'center', color: 'white' }}>Submit</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
+                <View style={RVStyles.userRegistrationSubmitButton}>
+                    <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(onSubmit)} >
+                        <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>
+                            <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.SUBMIT}</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
             </Animatable.View>
         </View>
     )

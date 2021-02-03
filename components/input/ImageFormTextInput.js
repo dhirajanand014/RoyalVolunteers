@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { Text } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { countryCodesConstants } from '../../constants/Constants';
+import { countryCodesConstants, miscMessage } from '../../constants/Constants';
 import { onChangeByValueType } from '../../helper/Helper';
 import { colors, RVStyles } from '../../styles/Styles';
 
@@ -17,7 +17,7 @@ export const ImageFormTextInput = props => {
                             <Text style={RVStyles.mobileCountryCode}>{countryCodesConstants.INDIA}</Text>
                         }
                         <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value} textContentType={props.textContentType}
-                            autoCapitalize="none" placeholder={props.placeHolderText} secureTextEntry={props.isSecureTextEntry}
+                            autoCapitalize={miscMessage.NONE} placeholder={props.placeHolderText} secureTextEntry={props.isSecureTextEntry}
                             keyboardType={props.keyboardType} style={RVStyles.signUpTextInput} placeholderTextColor={colors.DARK_GREY}
                             onChangeText={value => onChangeByValueType(inputProps, value, props)} autoFocus={props.autofocus}
                             onSubmitEditing={props.onSubmitEditing} ref={props.refCallback} />

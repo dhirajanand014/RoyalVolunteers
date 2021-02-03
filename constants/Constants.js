@@ -12,7 +12,8 @@ export const OTP_INPUTS = 6;
 
 export const stringConstants = {
     EMPTY: ``,
-    NODE: {}
+    NODE: {},
+    REPLACE_REGEX: /[- #*;,.<>\{\}\[\]\\\/]/gi
 }
 
 export const routeConsts = {
@@ -35,12 +36,14 @@ export const screenTitle = {
     REQUEST_BLOOD: `REQUEST BLOOD`,
     USER_REGISTRATION: `USER REGISTRATION`,
     ENTER_PASSWORD: `ENTER PASSWORD`,
-    ENTER_OTP: `ENTER OTP`
+    ENTER_OTP: `ENTER OTP`,
+    USER_REGISTRATION: `USER REGISTRATION`
 }
 
 export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
+    SUBMIT: `Submit`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
     OK: `OK`
@@ -222,26 +225,41 @@ export const numericConstants = {
     THREE: 3,
     FOUR: 4,
     FIVE: 5,
+    SIX: 6,
     TEN: 10,
+    TWELVE: 12,
     THOUSAND: 1000
 }
 
 export const fieldControllerName = {
     PHONE_NUMBER: `phoneNumber`,
     SECRET: `secret`,
-    CONFIRM_SECRET: `confirmSecret`
+    CONFIRM_SECRET: `confirmSecret`,
+    OTP_INPUT: `otpInput`,
+    NAME: `name`,
+    AGE: `age`,
+    PINCODE: `pinCode`,
+    BLOOD_GROUP: `bloodGroup`,
+    AVAILABILITY_STATUS: `availabilityStatus`
 }
 
 export const fieldTextName = {
     MOBILE_NUMBER: `Mobile Number`,
     PASSWORD: `Password`,
     CONFIRM_PASSWORD: `Confirm Password`,
-    OTP_INPUT: `otpInput`
+    NAME: `Name : `,
+    AGE: `Age : `,
+    PINCODE: `Pincode : `,
+    BLOOD_GROUP: `Blood Group : `,
+    AVAILABILITY_STATUS: `Status of availability : `
 }
 
 export const placeHolderText = {
     PHONE_NUMBER: `Enter 10 digit Mobile Number`,
+    NAME: `Enter Name`,
+    AGE: `Enter Age`,
     SECRET: `Enter Password`,
+    PINCODE: `Enter 6 digit pincode`,
     CONFIRM_PASSWORD: `Confirm Password`,
     SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`
 }
@@ -252,6 +270,7 @@ export const keyBoardTypeConst = {
     IOS_NUMERIC: `name-phone-pad`,
     TELPHONETYPE: `telephoneNumber`,
     ONETIMECODE: `oneTimeCode`,
+    NAME: `name`,
     PASSWORD: `password`
 }
 
@@ -267,6 +286,8 @@ export const miscMessage = {
     REGISTERED: `Registered`,
     ERROR: `ERROR`,
     DUPLICATE: `Duplicate`,
+    NONE: `none`,
+    WORDS: `words`,
     HARDWARE_BACK_PRESS: `hardwareBackPress`,
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
     REGISTRATION_SUCCESSFUL: `Registration successful`,
