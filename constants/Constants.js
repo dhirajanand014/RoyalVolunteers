@@ -33,11 +33,11 @@ export const screenTitle = {
     SIGN_IN: `SIGN IN`,
     SIGN_UP: `SIGN UP`,
     ENTER_MOBILE_NUMBER: `ENTER MOBILE NUMBER`,
-    REQUEST_BLOOD: `REQUEST BLOOD`,
     USER_REGISTRATION: `USER REGISTRATION`,
     ENTER_PASSWORD: `ENTER PASSWORD`,
     ENTER_OTP: `ENTER OTP`,
-    USER_REGISTRATION: `USER REGISTRATION`
+    USER_REGISTRATION: `USER REGISTRATION`,
+    REQUEST_FOR_BLOOD: `REQUEST FOR BLOOD`
 }
 
 export const actionButtonTextConstants = {
@@ -46,7 +46,8 @@ export const actionButtonTextConstants = {
     SUBMIT: `Submit`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
-    OK: `OK`
+    OK: `OK`,
+    DATE: `Date`
 }
 
 export const stackOptions = {
@@ -240,7 +241,9 @@ export const fieldControllerName = {
     AGE: `age`,
     PINCODE: `pinCode`,
     BLOOD_GROUP: `bloodGroup`,
-    AVAILABILITY_STATUS: `availabilityStatus`
+    AVAILABILITY_STATUS: `availabilityStatus`,
+    DATE_PICKER: `datePicker`,
+    HOSPITAL_NAME: `hospitalName`
 }
 
 export const fieldTextName = {
@@ -251,7 +254,9 @@ export const fieldTextName = {
     AGE: `Age : `,
     PINCODE: `Pincode : `,
     BLOOD_GROUP: `Blood Group : `,
-    AVAILABILITY_STATUS: `Status of availability : `
+    AVAILABILITY_STATUS: `Status of availability : `,
+    NEEDED_OPTIONS: ` Needed : `,
+    HOSPITAL_NAME: `Hospital`
 }
 
 export const placeHolderText = {
@@ -261,7 +266,8 @@ export const placeHolderText = {
     SECRET: `Enter Password`,
     PINCODE: `Enter 6 digit pincode`,
     CONFIRM_PASSWORD: `Confirm Password`,
-    SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`
+    SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`,
+    HOSPITAL_NAME: `Enter Hospital name`
 }
 
 export const keyBoardTypeConst = {
@@ -288,6 +294,9 @@ export const miscMessage = {
     DUPLICATE: `Duplicate`,
     NONE: `none`,
     WORDS: `words`,
+    DATE: `date`,
+    TRANSPARENT: `transparent`,
+    DATE_PICKER_FORMAT: `DD/MM/YYYY`,
     HARDWARE_BACK_PRESS: `hardwareBackPress`,
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
     REGISTRATION_SUCCESSFUL: `Registration successful`,

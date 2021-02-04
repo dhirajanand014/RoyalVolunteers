@@ -208,10 +208,22 @@ export const onChangeByValueType = (inputProps, value, props) => {
             inputProps.onChange(newValue);
             props.isSignUp && props.setSignUpDetails({ ...props.signUpDetails, phoneNumber: newValue });
             break;
+        case fieldControllerName.BLOOD_GROUP:
+            inputProps.onChange(value);
+            props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, blood_group: value });
+            break;
         case fieldControllerName.PINCODE:
             inputProps.onChange(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
+            props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, pincode: value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY) });
+            break;
+        case fieldControllerName.DATE_PICKER:
+            inputProps.onChange(value);
+            props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, needed_request_date: value });
+            break;
+        case fieldControllerName.HOSPITAL_NAME:
+            inputProps.onChange(value);
+            props.setRequestForm({ ...props.requestForm, hospital: value });
         default:
-            console.log(value)
             inputProps.onChange(value);
             break;
     }

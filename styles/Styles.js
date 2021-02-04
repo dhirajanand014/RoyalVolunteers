@@ -422,6 +422,23 @@ export const RVStyles = StyleSheet.create({
         marginBottom: isIOS && 90 || 20,
         alignItems: 'center',
         elevation: 8
+    },
+    neededOptionsView: {
+        flexDirection: 'row',
+        paddingVertical: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    neededOptionsLabel: {
+        marginRight: 35,
+        fontSize: 14
+    },
+    RVDatePickerView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        marginTop: 10
     }
 });
 

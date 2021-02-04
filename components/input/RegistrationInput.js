@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { TextInput } from 'react-native-gesture-handler';
-import { fieldControllerName, miscMessage } from '../../constants/Constants';
+import { miscMessage } from '../../constants/Constants';
 import { onChangeByValueType } from '../../helper/Helper';
 import { colors, RVStyles } from '../../styles/Styles';
 
@@ -15,7 +15,7 @@ export const RegistrationInput = props => {
                         keyboardType={props.keyboardType} style={[RVStyles.underlineTextInput, props.formState.errors[props.inputName]?.message && RVStyles.errorInputBorder ||
                             RVStyles.normalInputBorder]} placeholderTextColor={colors.DARK_GREY} placeHolderText={props.placeHolderText}
                         onChangeText={value => onChangeByValueType(inputProps, value, props)} autoFocus={props.autofocus}
-                        onSubmitEditing={props.onSubmitEditing} ref={props.refCallback} />
+                        onSubmitEditing={props.onSubmitEditing} ref={props.refCallback} multiline={props.multiline} numberOfLines={props.numberOfLines} />
                 )
             }} />
     )
