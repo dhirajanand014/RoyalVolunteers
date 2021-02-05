@@ -26,10 +26,9 @@ export const RVUserRegistration = () => {
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     const onSubmit = async (data) => {
-        debugger
         const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, true);
         if (isUserRegistered) {
-            isUserRegistered && navigation.navigate(`RVUserDashboard`, {
+            navigation.navigate(`RVUserDashboard`, {
                 phoneNumber: phoneNumber
             });
         }

@@ -436,9 +436,29 @@ export const RVStyles = StyleSheet.create({
     RVDatePickerView: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         marginRight: 10,
         marginTop: 10
+    },
+    androidDatePickerViewStyle: {
+        flexDirection: `row`,
+        width: 120,
+        marginVertical: 2,
+        backgroundColor: `white`,
+        borderBottomWidth: 1,
+        paddingBottom: 5,
+        alignItems: 'center',
+        marginHorizontal: 25,
+        justifyContent: 'flex-end',
+    },
+    androidDatePickerCalenderIcon: {
+        width: 25,
+        height: 25,
+        marginLeft: 10
+    },
+    iosDatePickerStyle: {
+        width: 180,
+        marginVertical: 5
     }
 });
 

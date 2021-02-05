@@ -13,7 +13,9 @@ export const OTP_INPUTS = 6;
 export const stringConstants = {
     EMPTY: ``,
     NODE: {},
-    REPLACE_REGEX: /[- #*;,.<>\{\}\[\]\\\/]/gi
+    REPLACE_REGEX: /[- #*;,.<>\{\}\[\]\\\/]/gi,
+    STRING: `string`,
+    OBJECT: `object`
 }
 
 export const routeConsts = {
@@ -256,7 +258,7 @@ export const fieldTextName = {
     BLOOD_GROUP: `Blood Group : `,
     AVAILABILITY_STATUS: `Status of availability : `,
     NEEDED_OPTIONS: ` Needed : `,
-    HOSPITAL_NAME: `Hospital`
+    HOSPITAL_NAME: `Hospital : `
 }
 
 export const placeHolderText = {
@@ -295,12 +297,14 @@ export const miscMessage = {
     NONE: `none`,
     WORDS: `words`,
     DATE: `date`,
+    SET: `set`,
     TRANSPARENT: `transparent`,
     DATE_PICKER_FORMAT: `DD/MM/YYYY`,
     HARDWARE_BACK_PRESS: `hardwareBackPress`,
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
     REGISTRATION_SUCCESSFUL: `Registration successful`,
     NOTIFICATION_SENT_DONERS: `Notification sent to doners`,
+    SELECT_DATE: `Select a Date`,
     INCORRECT_OTP_ENTERED: `Incorrect OTP entered`,
     SUCCESSFULLY_REGISTERED: `Successfully registered your details`
 }

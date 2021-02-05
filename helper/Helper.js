@@ -1,9 +1,11 @@
 import axios from "axios";
+import moment from 'moment';
 import Snackbar from "react-native-snackbar";
 import {
-    fieldControllerName, fieldTextName, height, miscMessage, OTP_INPUTS,
-    RESEND_OTP_TIME_LIMIT, routeConsts, stringConstants, urlConstants, width,
-    errorModalMessageConstants
+    fieldControllerName, height, miscMessage, OTP_INPUTS,
+    RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
+    errorModalMessageConstants,
+    isIOS
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 
@@ -143,7 +145,6 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
 
 export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration) => {
     try {
-        debugger
         let userRegistrationPayload;
         let signUpPayloadString;
         if (isFromBloodRegistration) {
@@ -172,14 +173,15 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
 
 export const saveUserDetails = async (signUpPayloadString) => {
     try {
-        debugger
+
         const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
         const saveResponseData = saveResponse.data;
-        if (!saveResponseData.includes(miscMessage.ERROR)) {
+        if (typeof (saveResponseData) === stringConstants.OBJECT && !saveResponseData.includes(miscMessage.ERROR)) {
             return saveResponseData && saveResponseData.message == miscMessage.SUCCESS && (saveResponseData.account_status == miscMessage.VERIFIED ||
                 saveResponseData.account_status == miscMessage.REGISTERED);
         }
-        if (saveResponseData.includes(miscMessage.ERROR) && saveResponseData.includes(miscMessage.DUPLICATE)) {
+        if (typeof (saveResponseData) === stringConstants.STRING && saveResponseData.includes(miscMessage.ERROR) &&
+            saveResponseData.includes(miscMessage.DUPLICATE)) {
             showSnackBar(errorModalMessageConstants.USER_ALREADY_REGISTERED, false);
             console.log(saveResponseData);
         }
@@ -204,17 +206,18 @@ export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestF
 export const onChangeByValueType = (inputProps, value, props) => {
     switch (props.inputName) {
         case fieldControllerName.PHONE_NUMBER:
-            const newValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
-            inputProps.onChange(newValue);
-            props.isSignUp && props.setSignUpDetails({ ...props.signUpDetails, phoneNumber: newValue });
+            const phoneValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
+            inputProps.onChange(phoneValue);
+            props.isSignUp && props.setSignUpDetails({ ...props.signUpDetails, phoneNumber: phoneValue });
             break;
         case fieldControllerName.BLOOD_GROUP:
             inputProps.onChange(value);
             props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, blood_group: value });
             break;
         case fieldControllerName.PINCODE:
-            inputProps.onChange(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
-            props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, pincode: value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY) });
+            const pinCodeValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
+            inputProps.onChange(pinCodeValue);
+            props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, pincode: pinCodeValue });
             break;
         case fieldControllerName.DATE_PICKER:
             inputProps.onChange(value);
@@ -374,4 +377,18 @@ export const showSnackBar = (message, success) => {
         duration: Snackbar.LENGTH_SHORT,
         backgroundColor: success && colors.GREEN || colors.RED
     })
+}
+
+export const convertDate = (event, datePickerProps, props, date) => {
+    const formatedDate = datePickerConvert(event, date);
+    formatedDate && onChangeByValueType(datePickerProps, formatedDate, props);
+}
+
+const datePickerConvert = (event, date) => {
+    if (!event.type && isIOS) {
+        return date;
+    } else if (miscMessage.SET == event.type) {
+        return isIOS && date || moment(event.nativeEvent.timestamp).toDate();
+    }
+    return false;
 }

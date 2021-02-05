@@ -16,8 +16,8 @@ export const InputPicker = props => {
                         {
                             props.list.map((item, index) => {
                                 return (
-                                    <Picker.Item key={index} color={item.value == numericConstants.ZERO && colors.LIGHT_GREY || colors.DARK_GREY
-                                    } label={item.label} value={item.value} />
+                                    <Picker.Item key={index} color={item.value == numericConstants.ZERO && colors.LIGHT_GREY || colors.DARK_RED}
+                                        label={item.label} value={item.value} />
                                 )
                             })
                         }

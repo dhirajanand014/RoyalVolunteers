@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { RVStyles } from '../styles/Styles';
 import {
     bloodGroupsList, fieldControllerName, fieldTextName,
-    formRequiredRules, isAndroid, keyBoardTypeConst,
+    formRequiredRules, isAndroid, isIOS, keyBoardTypeConst,
     miscMessage,
     neededOptions, numericConstants, placeHolderText,
     screenTitle, stringConstants, width
@@ -54,9 +54,9 @@ export const RVBloodRequest = () => {
                         defaultValue={stringConstants.EMPTY} requestForm={requestForm} setRequestForm={setRequestForm}
                         isFromBloodRequestForm={true} formState={formState} mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={`default`} />
 
-                    <AuthenticatedInputText inputTextName={fieldTextName.HOSPITAL} inputName={fieldControllerName.HOSPITAL_NAME} control={control} rules={formRequiredRules.hospitalNameFormRule}
+                    <AuthenticatedInputText inputTextName={fieldTextName.HOSPITAL_NAME} inputName={fieldControllerName.HOSPITAL_NAME} control={control} rules={formRequiredRules.hospitalNameFormRule}
                         defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.HOSPITAL_NAME} requestForm={requestForm} setRequestForm={setRequestForm}
-                        isFromBloodRequestForm={true} formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={3} />
+                        isFromBloodRequestForm={true} formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO} />
                 </Animated.ScrollView>
                 <TouchableOpacity activeOpacity={.7} style={{ flexDirection: `column`, alignItems: 'center', marginBottom: 50, elevation: 8 }} onPress={handleSubmit(onSubmit)} >
                     <LinearGradient style={{ width: width / 1.35, height: 50, justifyContent: 'center', borderRadius: 20, alignItems: 'center' }} colors={[`#FF00CC`, `red`]}>
