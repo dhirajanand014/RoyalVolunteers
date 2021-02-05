@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { convertDate } from '../../helper/Helper';
 import { SafeAreaView } from 'react-native';
 import { RVStyles } from '../../styles/Styles';
-export const RVDatePickerIOS = props => {
+export const RVIOSDatePicker = props => {
     return (
         <SafeAreaView>
             <Controller name={props.inputName} control={props.control} defaultValue={props.defaultValue} rules={props.rules} render={(datePickerProps) => (

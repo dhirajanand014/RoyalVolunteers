@@ -291,7 +291,7 @@ export const RVStyles = StyleSheet.create({
         color: 'red',
         marginVertical: isIOS && 5 || 2,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     signInSecondaryButtonView: {
         marginBottom: isIOS && 180 || 60,
@@ -454,11 +454,21 @@ export const RVStyles = StyleSheet.create({
     androidDatePickerCalenderIcon: {
         width: 25,
         height: 25,
-        marginLeft: 10
+        marginLeft: 10,
+        alignItems: 'center'
     },
     iosDatePickerStyle: {
         width: 180,
-        marginVertical: 5
+        marginVertical: 4
+    },
+    hospiatalTextHeight: {
+        justifyContent: 'center',
+        maxHeight: 50
+    },
+    requestBloodButtonStyle: {
+        marginBottom: isIOS && 180 || 70,
+        alignItems: 'center',
+        elevation: 8
     }
 });
 

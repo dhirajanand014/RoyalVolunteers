@@ -21,7 +21,7 @@ export const RVAndroidDatePicker = props => {
                         && moment(props.requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT) || miscMessage.SELECT_DATE}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setShow(true)}>
-                    <Image source={image} style={[RVStyles.androidDatePickerCalenderIcon, RVGenericStyles.centerAlignedText]} />
+                    <Image source={image} style={RVStyles.androidDatePickerCalenderIcon} />
                 </TouchableOpacity>
                 {
                     show &&

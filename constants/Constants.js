@@ -46,6 +46,7 @@ export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
     SUBMIT: `Submit`,
+    REQUEST: `Request`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
     OK: `OK`,
