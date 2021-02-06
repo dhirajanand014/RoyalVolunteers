@@ -22,7 +22,8 @@ export const routeConsts = {
     HOME: `Home`,
     SIGN_UP: `SignUp`,
     SIGN_UP_SECRET: `SignUpSecret`,
-    USER_REGISTRATION: `RVUserRegistration`
+    USER_REGISTRATION: `RVUserRegistration`,
+    BLOOD_REQUEST: `RVBloodRequest`
 }
 
 export const screenOptions = {
@@ -39,18 +40,20 @@ export const screenTitle = {
     ENTER_PASSWORD: `ENTER PASSWORD`,
     ENTER_OTP: `ENTER OTP`,
     USER_REGISTRATION: `USER REGISTRATION`,
-    REQUEST_FOR_BLOOD: `REQUEST FOR BLOOD`
+    REQUEST_FOR_BLOOD: `REQUEST FOR BLOOD`,
+    WELCOME: `Welcome`
 }
 
 export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
     SUBMIT: `Submit`,
-    REQUEST: `Request`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
     OK: `OK`,
-    DATE: `Date`
+    DATE: `Date`,
+    SEND_FEEDBACK: `Send Feedback`,
+    REQUEST_FOR_BLOOD: `Request for blood`
 }
 
 export const stackOptions = {
@@ -251,6 +254,7 @@ export const fieldControllerName = {
 
 export const fieldTextName = {
     MOBILE_NUMBER: `Mobile Number`,
+    MOBILE_NUMBER_TEXT: `Mobile Number : `,
     PASSWORD: `Password`,
     CONFIRM_PASSWORD: `Confirm Password`,
     NAME: `Name : `,
@@ -259,7 +263,10 @@ export const fieldTextName = {
     BLOOD_GROUP: `Blood Group : `,
     AVAILABILITY_STATUS: `Status of availability : `,
     NEEDED_OPTIONS: ` Needed : `,
-    HOSPITAL_NAME: `Hospital : `
+    HOSPITAL_NAME: `Hospital : `,
+    BENIFITERS: `Benifiters`,
+    VOLUNTEERS: `Volunteers`,
+    BLOOD_TYPE: `Blood Type`
 }
 
 export const placeHolderText = {

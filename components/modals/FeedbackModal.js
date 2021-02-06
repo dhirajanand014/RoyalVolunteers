@@ -17,7 +17,6 @@ export const FeedbackModal = props => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 22
         }} >
             <Modal animationType="fade" transparent visible={userDashboardState.showFeedbackModal} onRequestClose={() => {
                 setUserDashboadState({ ...userDashboardState, showFeedbackModal: false })

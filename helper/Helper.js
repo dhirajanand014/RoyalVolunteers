@@ -173,14 +173,11 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
 
 export const saveUserDetails = async (signUpPayloadString) => {
     try {
-
         const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
         const saveResponseData = saveResponse.data;
-        if (typeof (saveResponseData) === stringConstants.OBJECT && !saveResponseData.includes(miscMessage.ERROR)) {
-            return saveResponseData && saveResponseData.message == miscMessage.SUCCESS && (saveResponseData.account_status == miscMessage.VERIFIED ||
-                saveResponseData.account_status == miscMessage.REGISTERED);
-        }
-        if (typeof (saveResponseData) === stringConstants.STRING && saveResponseData.includes(miscMessage.ERROR) &&
+        if (saveResponseData && typeof (saveResponseData) === stringConstants.OBJECT && saveResponseData.message == miscMessage.SUCCESS) {
+            return (saveResponseData.account_status == miscMessage.VERIFIED || saveResponseData.account_status == miscMessage.REGISTERED);
+        } else if (saveResponseData && typeof (saveResponseData) === stringConstants.STRING && saveResponseData.includes(miscMessage.ERROR) &&
             saveResponseData.includes(miscMessage.DUPLICATE)) {
             showSnackBar(errorModalMessageConstants.USER_ALREADY_REGISTERED, false);
             console.log(saveResponseData);

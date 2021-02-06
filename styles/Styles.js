@@ -12,6 +12,12 @@ export const RVGenericStyles = StyleSheet.create({
     fill: {
         flex: 1,
     },
+    fill_half: {
+        flex: 0.5,
+    },
+    fill_75: {
+        flex: 0.75
+    },
     bold: {
         fontWeight: 'bold',
     },
@@ -27,6 +33,30 @@ export const RVGenericStyles = StyleSheet.create({
     mt36: {
         marginTop: 36,
     },
+    ft16: {
+        fontSize: 16
+    },
+    ft18: {
+        fontSize: 18
+    },
+    ft20: {
+        fontSize: 20
+    },
+    ft25: {
+        fontSize: 25
+    },
+    ft30: {
+        fontSize: 30
+    },
+    marginVertical5: {
+        marginVertical: 6
+    },
+    borderBottomWidth1: {
+        borderBottomWidth: 1
+    },
+    justifyContentSpaceBetween: {
+        justifyContent: 'space-between'
+    },
     negativeText: {
         color: '#f06159',
     },
@@ -35,6 +65,39 @@ export const RVGenericStyles = StyleSheet.create({
     },
     textBlackColor: {
         color: '#0b0b0b'
+    },
+    rowFlexDirection: {
+        flexDirection: `row`
+    },
+    justifyContentCenter: {
+        justifyContent: 'center'
+    },
+    paddingHorizontal10: {
+        paddingHorizontal: 10
+    },
+    textLeftAlign: {
+        textAlign: 'left'
+    },
+    textRightAlign: {
+        textAlign: 'right'
+    },
+    alignItemsCenter: {
+        alignItems: 'center'
+    },
+    colorBlack: {
+        color: `black`
+    },
+    colorGreen: {
+        color: `green`
+    },
+    colorWhite: {
+        color: `white`
+    },
+    ml_24: {
+        marginLeft: 24
+    },
+    marginHorizontal4: {
+        marginHorizontal: 4
     }
 });
 
@@ -66,6 +129,13 @@ export const RVStyles = StyleSheet.create({
         paddingVertical: 10,
     },
     signUpFooter: {
+        flex: 3,
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30
+    },
+    dashBoardFooter: {
         flex: 3,
         alignItems: 'center',
         backgroundColor: 'white',
@@ -469,6 +539,91 @@ export const RVStyles = StyleSheet.create({
         marginBottom: isIOS && 180 || 70,
         alignItems: 'center',
         elevation: 8
+    },
+    dashBoardUserDetailsTextView: {
+        flexDirection: 'row',
+        width: width / 1.1,
+        paddingVertical: 12,
+        borderBottomWidth: 0.5,
+        paddingLeft: 8
+    },
+    dashBoardUserTextStyle: {
+        flex: 0.5,
+        alignItems: 'flex-start'
+    },
+    dashBoardUserValueStyle: {
+        flex: 0.5,
+        alignItems: 'flex-start',
+    },
+    dashBoardMenuStyle: {
+        padding: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    dashBoardHeaderStyle: {
+        paddingVertical: 2,
+        alignItems: 'center'
+    },
+    dashBoardCountsViewStyle: {
+        alignSelf: 'center',
+        borderColor: 'red',
+        borderWidth: 2,
+        borderRadius: 20,
+        backgroundColor: 'white',
+        width: width / 1.05,
+        marginVertical: 10
+    },
+    dashBoardCountsView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+        overflow: 'hidden'
+    },
+    dashBoardFooterTopView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 18,
+        width: width / 1.03,
+        elevation: 8
+    },
+    dasBoardFooterViewBloodTypeView: {
+        flex: 0.25,
+        borderWidth: 1,
+        borderRadius: 12,
+        overflow: 'hidden'
+    },
+    dashBoardFooterBloodTypeText: {
+        borderBottomWidth: 1,
+        fontWeight: 'bold',
+        color: 'white',
+        backgroundColor: 'red',
+        paddingVertical: 1
+    },
+    dashBoardFooterBloodTypeValue: {
+        textTransform: 'uppercase',
+        fontSize: 35,
+        height: 50,
+        paddingVertical: 1,
+        backgroundColor: 'white'
+    },
+    sendFeedBackButtonStyle: {
+        borderRadius: 25,
+        paddingVertical: 15,
+        marginHorizontal: 20,
+        width: 140,
+        elevation: 3,
+        backgroundColor: '#fec72e'
+    },
+    dashBoardRequestBlood: {
+        borderRadius: 25,
+        paddingVertical: 15,
+        width: 150,
+        elevation: 3,
+        backgroundColor: "#DE1F25"
+    },
+    dashBoardEdit: {
+        fontSize: 18,
+        marginLeft: 95
     }
 });
 
