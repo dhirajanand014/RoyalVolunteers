@@ -316,6 +316,7 @@ export const miscMessage = {
     DATE: `date`,
     SET: `set`,
     NO: `N`,
+    ON_CHANGE: `onChange`,
     SUCCESSFUL: `Successful`,
     UNSUCCESSFUL: `Unsuccessful`,
     INVALID_USER: `invalidUser`,

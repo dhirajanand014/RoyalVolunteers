@@ -6,12 +6,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors, RVStyles } from '../styles/Styles';
 import {
-    actionButtonTextConstants,
-    bloodGroupsList, fieldControllerName, fieldTextName,
-    formRequiredRules, isAndroid, isIOS, keyBoardTypeConst,
-    miscMessage,
-    neededOptions, numericConstants, placeHolderText,
-    screenTitle, stringConstants, width
+    actionButtonTextConstants, bloodGroupsList, fieldControllerName,
+    fieldTextName, formRequiredRules, isAndroid,
+    keyBoardTypeConst, miscMessage, neededOptions,
+    numericConstants, placeHolderText, routeConsts,
+    screenTitle, stringConstants
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
@@ -23,13 +22,13 @@ import { RVDatePickerView } from '../components/view/RVDatePickerView';
 export const RVBloodRequest = () => {
 
     const navigation = useNavigation();
-    const { handleSubmit, control, formState } = useForm();
+    const { handleSubmit, control, formState } = useForm({ mode: miscMessage.ON_CHANGE });
 
     const { requestForm, setRequestForm } = useContext(SignUpContext);
 
     const onSubmit = async (data) => {
         if (formState.isValid) {
-            navigation.navigate('SignUp', {
+            navigation.navigate(routeConsts.SIGN_UP, {
                 isFromRequestForm: true
             })
         }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "661328225266",
+    "project_id": "royalvolunteer-49e09",
+    "storage_bucket": "royalvolunteer-49e09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661328225266:android:a799b966979123739f416b",
+        "android_client_info": {
+          "package_name": "com.royalvolunteers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661328225266-80gdvt32fqi7hjge57jpltmvl09q31j1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.royalvolunteers",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "661328225266-g3nm3nacn2s0k707g9flkvs9kvh070d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBod8S_1rt1kPAC1HINOmX2H2GqLR3ifFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661328225266-g3nm3nacn2s0k707g9flkvs9kvh070d1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

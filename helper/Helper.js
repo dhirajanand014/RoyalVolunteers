@@ -72,7 +72,6 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
     try {
         const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}?ph=${phoneNumber}`;
         let userDashboardDetails = await axios.get(url);
-        debugger
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
@@ -147,7 +146,6 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
 
 export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration) => {
     try {
-        debugger
         let userRegistrationPayload;
         let signUpPayloadString;
         if (isFromBloodRegistration) {
@@ -225,7 +223,6 @@ export const onChangeByValueType = async (inputProps, value, props) => {
             break;
         case fieldControllerName.AVAILABILITY_STATUS:
             inputProps.onChange(value);
-            debugger
             if (props.isFromDashBoard) {
                 props.setUserDashboard({ ...props.userDashboard, availability: value });
                 await handleUserSignUpRegistration(props.userDashboard.phone, props.userDashboard, true);

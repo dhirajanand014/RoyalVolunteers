@@ -40,7 +40,6 @@ export const RVUserDashboard = () => {
 
     useEffect(async () => {
         await fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
-        debugger
     }, []);
 
     return (
