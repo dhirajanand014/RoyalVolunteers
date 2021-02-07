@@ -33,6 +33,12 @@ export const RVGenericStyles = StyleSheet.create({
     mt36: {
         marginTop: 36,
     },
+    mv20: {
+        marginVertical: 30,
+    },
+    width120: {
+        width: 120
+    },
     ft16: {
         fontSize: 16
     },
@@ -624,6 +630,46 @@ export const RVStyles = StyleSheet.create({
     dashBoardEdit: {
         fontSize: 18,
         marginLeft: 95
+    },
+    feedBackModalView: {
+        margin: 250,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 45,
+        width: 370,
+        height: 285,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    feedBackModalTextInput: {
+        borderWidth: 2,
+        borderRadius: 8,
+        width: 310,
+        paddingLeft: 3,
+        paddingVertical: 5,
+        borderBottomWidth: 1,
+        height: 150,
+        fontSize: 16,
+        color: '#05375a'
+    },
+    feedBackCancelText: {
+        color: 'grey',
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+    },
+    feedBackSubmitButton: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        marginVertical: 15,
+        width: 120,
+        elevation: 3,
+        backgroundColor: '#fec72e'
     }
 });
 

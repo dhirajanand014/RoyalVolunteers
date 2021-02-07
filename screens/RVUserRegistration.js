@@ -8,7 +8,7 @@ import { colors, RVStyles } from '../styles/Styles';
 import {
     availablilityStatusOptions, bloodGroupsList, fieldControllerName,
     fieldTextName, formRequiredRules, screenTitle, stringConstants,
-    keyBoardTypeConst, numericConstants, isAndroid, placeHolderText, actionButtonTextConstants
+    keyBoardTypeConst, numericConstants, isAndroid, placeHolderText, actionButtonTextConstants, routeConsts
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
@@ -28,7 +28,7 @@ export const RVUserRegistration = () => {
     const onSubmit = async (data) => {
         const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, true);
         if (isUserRegistered) {
-            navigation.navigate(`RVUserDashboard`, {
+            navigation.navigate(routeConsts.USER_DASHBOARD, {
                 phoneNumber: phoneNumber
             });
         }
@@ -57,7 +57,7 @@ export const RVUserRegistration = () => {
 
                     <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
                         defaultValue={stringConstants.EMPTY} formState={formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
-                        initial={numericConstants.ZERO} />
+                        initial={numericConstants.ZERO} isFromDashBoard={false} />
 
                 </Animated.ScrollView>
                 <View style={RVStyles.userRegistrationSubmitButton}>

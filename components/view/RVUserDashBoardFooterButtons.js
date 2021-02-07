@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { actionButtonTextConstants, routeConsts } from '../../constants/Constants';
+import { actionButtonTextConstants, routeConsts, stringConstants } from '../../constants/Constants';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 
 export const RVUserDashBoardFooterButtons = props => {

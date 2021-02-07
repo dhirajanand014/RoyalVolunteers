@@ -4,9 +4,11 @@ import { View, Animated } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
 import { fetchUserDashboardDetails } from '../helper/Helper';
-import { availablilityStatusOptions, bloodGroupsList, fieldTextName, numericConstants, stringConstants } from '../constants/Constants';
+import {
+    availablilityStatusOptions, bloodGroupsList, fieldTextName,
+    miscMessage, numericConstants, stringConstants
+} from '../constants/Constants';
 import { useForm } from 'react-hook-form';
-import SwitchSelector from 'react-native-switch-selector';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
 import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';
 import { RVUserDashBoardAgeText } from '../components/texts/RVUserDashBoardAgeText';
@@ -28,7 +30,7 @@ export const RVUserDashboard = () => {
         benefiters_count: numericConstants.ZERO,
         donor_count: numericConstants.ZERO,
         phone: stringConstants.EMPTY,
-        availability: stringConstants.EMPTY,
+        availability_status: stringConstants.EMPTY,
         showFeedbackModal: false,
         editText: stringConstants.EMPTY,
         isAgeEdit: false,
@@ -36,9 +38,9 @@ export const RVUserDashboard = () => {
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
-    useEffect(() => {
-        fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
-        console.log(userDashboard);
+    useEffect(async () => {
+        await fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
+        debugger
     }, []);
 
     return (
@@ -48,7 +50,6 @@ export const RVUserDashboard = () => {
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
 
                 <RVUserDashBoardFooterTopView name={userDashboard.name} blood_group={userDashboard.blood_group} />
-
                 <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phone} />
 
@@ -60,11 +61,11 @@ export const RVUserDashboard = () => {
 
                     <RVUserDashboardDetailsText text={fieldTextName.BLOOD_GROUP} value={bloodGroupsList.find(bloodGroup => bloodGroup.value == userDashboard.blood_group).label} />
 
-                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={availablilityStatusOptions.find(status => status.value == `N`).label} />
+                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={availablilityStatusOptions.find(status => status.value == miscMessage.NO).value}
+                        formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
                 </Animated.ScrollView>
-
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
-                <FeedbackModal userDashboardState={userDashboard} setUserDashboardState={setUserDashboard} route={route} />
+                <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
             </Animatable.View>
         </View>
 

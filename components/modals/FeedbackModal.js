@@ -1,72 +1,51 @@
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import Snackbar from "react-native-snackbar";
-import { formRequiredRules, miscMessage, stringConstants } from "../../constants/Constants";
+import {
+    fieldControllerName, formRequiredRules, miscMessage,
+    stringConstants, placeHolderText, numericConstants, actionButtonTextConstants
+} from "../../constants/Constants";
 import { saveFeedbackText, showSnackBar } from "../../helper/Helper";
-import { colors } from "../../styles/Styles";
+import { RVGenericStyles, RVStyles } from "../../styles/Styles";
+import { RegistrationInput } from "../input/RegistrationInput";
 
 export const FeedbackModal = props => {
 
-    const { handleSubmit, control } = useForm();
-    const { userDashboardState, setUserDashboadState, phoneNumber } = props;
+    const { handleSubmit, control, formState } = useForm();
+    const { userDashboard, setUserDashboard, phoneNumber } = props;
 
     return (
-        <View style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-        }} >
-            <Modal animationType="fade" transparent visible={userDashboardState.showFeedbackModal} onRequestClose={() => {
-                setUserDashboadState({ ...userDashboardState, showFeedbackModal: false })
-            }} >
-                <View style={{
-                    flex: 1, justifyContent: "flex-start", alignItems: "center", marginTop: 22
-                }}>
-                    <View style={{
-                        margin: 200,
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        padding: 35,
-                        width: 300,
-                        height: 300,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5
-                    }}>
-                        <Controller name={"feedback"} control={control} defaultValue={``} rules={formRequiredRules.feedBackInputRule}
-                            render={(props) => {
-                                return (
-                                    <TextInput {...props} value={props.value} placeholder={`Enter Feedback`} maxLength={1000}
-                                        style={{ borderWidth: 1, borderRadius: 5, width: '100%', height: '80%', justifyContent: 'center' }} placeholderTextColor="#999999" numberOfLines={4}
-                                        onChangeText={(value) => {
-                                            props.onChange(value);
-                                            console.log(props.value)
-                                        }} />
-                                )
-                            }} />
-                        <TouchableOpacity activeOpacity={.7} style={{
-                            borderRadius: 25,
-                            paddingHorizontal: 20,
-                            paddingVertical: 15,
-                            marginVertical: 15,
-                            width: 150,
-                            elevation: 3,
-                            backgroundColor: colors.YELLOW
-                        }} onPress={handleSubmit(async data => {
-                            const feedbackResponse = await saveFeedbackText(data.feedback, phoneNumber);
-                            if (feedbackResponse)
-                                showSnackBar(miscMessage.FEEDBACK_SUBMITTED_SUCCESSFULLY, true);
-                        })}>
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
-                        </TouchableOpacity>
+        <View style={[RVGenericStyles.fill, RVGenericStyles.justifyContentCenter]} >
+            <Modal animationType="fade" transparent visible={userDashboard.showFeedbackModal}
+                onRequestClose={() => setUserDashboard({ ...userDashboard, showFeedbackModal: false })} >
+                <View style={RVGenericStyles.alignItemsCenter}>
+                    <View style={[RVStyles.feedBackModalView, RVGenericStyles.alignItemsCenter]}>
+                        <RegistrationInput inputName={fieldControllerName.FEEDBACK} control={control} rules={formRequiredRules.feedBackInputRule}
+                            defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.FEEDBACK} extraStyles={RVStyles.hospiatalTextHeight}
+                            formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO}
+                            extraStyles={[RVStyles.feedBackModalTextInput, RVGenericStyles.justifyContentCenter]} isFeedbackInput={true} />
+
+                        <View style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentSpaceBetween]}>
+                            <View>
+                                <TouchableOpacity activeOpacity={.2} style={[RVGenericStyles.width120, RVGenericStyles.mv20]}
+                                    onPress={() => setUserDashboard({ ...userDashboard, showFeedbackModal: false })}>
+                                    <Text style={RVStyles.feedBackCancelText}>{actionButtonTextConstants.CANCEL}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View>
+                                <TouchableOpacity activeOpacity={.7} style={RVStyles.feedBackSubmitButton}
+                                    onPress={handleSubmit(async data => {
+                                        const feedbackResponse = await saveFeedbackText(data.feedback, phoneNumber);
+                                        feedbackResponse == miscMessage.SUCCESS &&
+                                            setTimeout(() => showSnackBar(miscMessage.FEEDBACK_SUBMITTED_SUCCESSFULLY, true), numericConstants.THREE_HUNDRED);
+                                        feedbackResponse == miscMessage.ERROR &&
+                                            setTimeout(() => showSnackBar(errorModalMessageConstants.FEEDBACK_SUBMITTED_UNSUCCESSFULLY, false), numericConstants.THREE_HUNDRED);
+                                        setUserDashboard({ ...userDashboard, showFeedbackModal: false })
+                                    })}>
+                                    <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.SUBMIT}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </Modal>

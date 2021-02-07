@@ -12,7 +12,7 @@ export const RegistrationInput = props => {
                 return (
                     <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value} textContentType={props.textContentType}
                         autoCapitalize={miscMessage.WORDS} placeholder={props.placeHolderText} secureTextEntry={props.isSecureTextEntry}
-                        keyboardType={props.keyboardType} style={[RVStyles.underlineTextInput, props.formState.errors[props.inputName]?.message && RVStyles.errorInputBorder ||
+                        keyboardType={props.keyboardType} style={[!props.isFeedbackInput && RVStyles.underlineTextInput, props.formState.errors[props.inputName]?.message && RVStyles.errorInputBorder ||
                             RVStyles.normalInputBorder, props.extraStyles]} placeholderTextColor={colors.DARK_GREY} placeHolderText={props.placeHolderText}
                         onChangeText={value => onChangeByValueType(inputProps, value, props)} autoFocus={props.autofocus} underlineColorAndroid={props.underlineColorAndroid}
                         onSubmitEditing={props.onSubmitEditing} ref={props.refCallback} multiline={props.multiline} numberOfLines={props.numberOfLines} />

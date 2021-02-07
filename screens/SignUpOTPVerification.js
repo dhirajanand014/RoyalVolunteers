@@ -28,7 +28,7 @@ let autoSubmitOtpTimerInterval;
 
 let otpInputs = Array(OTP_INPUTS).fill(stringConstants.EMPTY);
 
-export const SignUpOTPVerication = props => {
+export const SignUpOTPVerification = props => {
     const { otpRequestData, attempts } = props;
     let [attemptsRemaining, setAttemptsRemaining] = useState(attempts);
     const [otpArray, setOtpArray] = useState(otpInputs);
@@ -190,11 +190,11 @@ export const SignUpOTPVerication = props => {
     );
 };
 
-SignUpOTPVerication.defaultProps = {
+SignUpOTPVerification.defaultProps = {
     attempts: numericConstants.THREE
 };
 
-SignUpOTPVerication.propTypes = {
+SignUpOTPVerification.propTypes = {
     otpRequestData: isAndroid && PropTypes.object.isRequired || null,
     attempts: PropTypes.number.isRequired,
 };

@@ -9,7 +9,7 @@ export const InputSelector = props => {
         <Controller name={props.inputName} control={props.control} defaultValue={props.defaultValue}
             render={(selectorProps) => {
                 return (
-                    <SwitchSelector initial={props.initial} onPress={value => onChangeByValueType(selectorProps, value, props)}
+                    <SwitchSelector initial={props.initial} onPress={value => onChangeByValueType(selectorProps, value, props)} value={props.value}
                         hasPadding={props.hasPadding} options={props.options} fontSize={props.fontSize} style={RVStyles.availabilityStatusStyle}
                     />
                 )

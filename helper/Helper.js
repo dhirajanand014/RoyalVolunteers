@@ -5,7 +5,8 @@ import {
     fieldControllerName, height, miscMessage, OTP_INPUTS,
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
     errorModalMessageConstants,
-    isIOS
+    isIOS,
+    routeConsts
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 
@@ -35,7 +36,7 @@ export const saveBloodRequest = async (signUpDetails, requestForm) => {
         const requestBloodJSON = JSON.stringify(bloodRequstData);
 
         const saveResponse = await axios.post(urlConstants.SAVE_BLOOD_REQUEST, requestBloodJSON);
-        return saveResponse && saveResponse.data === `Success`;
+        return saveResponse && saveResponse.data === miscMessage.SUCCESS;
     } catch (error) {
         console.log(error)
     }
@@ -57,20 +58,21 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
             phone: phoneNumber,
             feedback: feedBackTextValue
         }
-
         const feedbackJSON = JSON.stringify(feedbackRequest);
         const feedbackResponse = await axios.post(urlConstants.SAVE_FEEDBACK, feedbackJSON);
-        return feedbackResponse && feedbackResponse.data == `Success`;
+        return feedbackResponse && feedbackResponse.data == miscMessage.SUCCESS &&
+            miscMessage.SUCCESS || miscMessage.ERROR;
     } catch (error) {
         console.log(error);
     }
-    return false;
+    return miscMessage.ERROR;
 }
 
 export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber) => {
     try {
         const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}?ph=${phoneNumber}`;
         let userDashboardDetails = await axios.get(url);
+        debugger
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
@@ -86,8 +88,8 @@ const loginUser = async (phoneNumber, secret) => {
         const loginResponse = await axios.post(urlConstants.LOGIN_USER, loginUserJSON);
         if (loginResponse && loginResponse.data) {
             const response = loginResponse.data;
-            if (response.message == `Successful` || response.message == `Unsuccessful` &&
-                response.account_status == `invalidUser`)
+            if (response.message == miscMessage.SUCCESSFUL || response.message == miscMessage.UNSUCCESSFUL &&
+                response.account_status == miscMessage.INVALID_USER)
                 return response.account_status;
         }
     } catch (error) {
@@ -101,9 +103,9 @@ export const handleUserLogin = async (data) => {
         const { phoneNumber, secret } = data;
         const isSuccessLogin = await loginUser(phoneNumber, secret);
         if (isSuccessLogin) {
-            if (isSuccessLogin == `Verified` || isSuccessLogin == `Registered`) {
-                return isSuccessLogin == `Verified` && `RVUserRegistration` || `RVUserDashboard`;
-            } else if (isSuccessLogin == `invalidUser`) {
+            if (isSuccessLogin == miscMessage.VERIFIED || isSuccessLogin == miscMessage.REGISTERED) {
+                return isSuccessLogin == miscMessage.VERIFIED && routeConsts.USER_REGISTRATION || routeConsts.USER_DASHBOARD;
+            } else if (isSuccessLogin == miscMessage.INVALID_USER) {
                 return isSuccessLogin;
             }
         }
@@ -133,10 +135,10 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
 
         if (response && response.data && !isResendOtp) {
             const params = getSignUpParams(signUpDetails, random6Digit, isFromBloodRequestForm);
-            navigation.navigate(`SignUpOTPVerication`, params)
+            navigation.navigate(routeConsts.OTP_VERIFICATION, params)
             return true;
         }
-        showSnackBar(`Successfully sent message!`);
+        showSnackBar(miscMessage.SENT_SMS_SUCCESSFULLY, true);
     } catch (error) {
         console.log(error);
     }
@@ -145,16 +147,13 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
 
 export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration) => {
     try {
+        debugger
         let userRegistrationPayload;
         let signUpPayloadString;
         if (isFromBloodRegistration) {
             userRegistrationPayload = {
+                ...data,
                 phone: phoneNumber,
-                name: data.name,
-                blood_group: data.bloodGroup,
-                age: data.age,
-                pincode: data.pinCode,
-                availability_status: data.availabilityStatus
             }
             signUpPayloadString = JSON.stringify(userRegistrationPayload);
         } else {
@@ -200,7 +199,7 @@ export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestF
         }
 }
 
-export const onChangeByValueType = (inputProps, value, props) => {
+export const onChangeByValueType = async (inputProps, value, props) => {
     switch (props.inputName) {
         case fieldControllerName.PHONE_NUMBER:
             const phoneValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
@@ -223,6 +222,14 @@ export const onChangeByValueType = (inputProps, value, props) => {
         case fieldControllerName.HOSPITAL_NAME:
             inputProps.onChange(value);
             props.setRequestForm({ ...props.requestForm, hospital: value });
+            break;
+        case fieldControllerName.AVAILABILITY_STATUS:
+            inputProps.onChange(value);
+            debugger
+            if (props.isFromDashBoard) {
+                props.setUserDashboard({ ...props.userDashboard, availability: value });
+                await handleUserSignUpRegistration(props.userDashboard.phone, props.userDashboard, true);
+            }
         default:
             inputProps.onChange(value);
             break;

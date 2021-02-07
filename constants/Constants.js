@@ -23,6 +23,8 @@ export const routeConsts = {
     SIGN_UP: `SignUp`,
     SIGN_UP_SECRET: `SignUpSecret`,
     USER_REGISTRATION: `RVUserRegistration`,
+    OTP_VERIFICATION: `SignUpOTPVerification`,
+    USER_DASHBOARD: `RVUserDashboard`,
     BLOOD_REQUEST: `RVBloodRequest`
 }
 
@@ -30,7 +32,6 @@ export const screenOptions = {
     gestureEnabled: true, gestureDirection: 'horizontal',
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
 };
-
 
 export const screenTitle = {
     SIGN_IN: `SIGN IN`,
@@ -48,6 +49,7 @@ export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
     SUBMIT: `Submit`,
+    CANCEL: `Cancel`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
     OK: `OK`,
@@ -154,6 +156,10 @@ export const formRequiredRules = {
         maxLength: {
             value: 1000,
             message: `Please enter only 1000 characters`
+        },
+        required: {
+            value: true,
+            message: `Please enter a value`
         }
     }
 };
@@ -235,6 +241,7 @@ export const numericConstants = {
     SIX: 6,
     TEN: 10,
     TWELVE: 12,
+    THREE_HUNDRED: 300,
     THOUSAND: 1000
 }
 
@@ -245,11 +252,12 @@ export const fieldControllerName = {
     OTP_INPUT: `otpInput`,
     NAME: `name`,
     AGE: `age`,
-    PINCODE: `pinCode`,
-    BLOOD_GROUP: `bloodGroup`,
-    AVAILABILITY_STATUS: `availabilityStatus`,
+    PINCODE: `pincode`,
+    BLOOD_GROUP: `blood_group`,
+    AVAILABILITY_STATUS: `availability_status`,
     DATE_PICKER: `datePicker`,
-    HOSPITAL_NAME: `hospitalName`
+    HOSPITAL_NAME: `hospitalName`,
+    FEEDBACK: `feedback`
 }
 
 export const fieldTextName = {
@@ -277,7 +285,8 @@ export const placeHolderText = {
     PINCODE: `Enter 6 digit pincode`,
     CONFIRM_PASSWORD: `Confirm Password`,
     SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`,
-    HOSPITAL_NAME: `Enter Hospital name`
+    HOSPITAL_NAME: `Enter Hospital name`,
+    FEEDBACK: `Enter Feedback`
 }
 
 export const keyBoardTypeConst = {
@@ -306,10 +315,15 @@ export const miscMessage = {
     WORDS: `words`,
     DATE: `date`,
     SET: `set`,
+    NO: `N`,
+    SUCCESSFUL: `Successful`,
+    UNSUCCESSFUL: `Unsuccessful`,
+    INVALID_USER: `invalidUser`,
     TRANSPARENT: `transparent`,
     DATE_PICKER_FORMAT: `DD/MM/YYYY`,
     HARDWARE_BACK_PRESS: `hardwareBackPress`,
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
+    SENT_SMS_SUCCESSFULLY: `Successfully sent message!`,
     REGISTRATION_SUCCESSFUL: `Registration successful`,
     NOTIFICATION_SENT_DONERS: `Notification sent to doners`,
     SELECT_DATE: `Select a Date`,
@@ -324,5 +338,6 @@ export const errorModalTitleConstants = {
 export const errorModalMessageConstants = {
     USER_LOGIN_FAILED: `Username and Password does not match`,
     NOTIFICATION_FAIL_DONERS: `Could not notify doners`,
+    FEEDBACK_SUBMITTED_UNSUCCESSFULLY: `Could not submit feedback`,
     USER_ALREADY_REGISTERED: `User already registerd. Please sign in`,
 }
