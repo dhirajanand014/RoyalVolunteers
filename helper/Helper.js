@@ -208,9 +208,14 @@ export const onChangeByValueType = async (inputProps, value, props) => {
             inputProps.onChange(value);
             props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, blood_group: value });
             break;
+        case fieldControllerName.AGE:
+            inputProps.onChange(value);
+            props.isFromDashBoard && props.setUserDashboard({ ...props.userDashboard, age: value });
+            break;
         case fieldControllerName.PINCODE:
             const pinCodeValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
             inputProps.onChange(pinCodeValue);
+            props.isFromDashBoard && props.setUserDashboard({ ...props.userDashboard, pincode: pinCodeValue });
             props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, pincode: pinCodeValue });
             break;
         case fieldControllerName.DATE_PICKER:
@@ -223,21 +228,24 @@ export const onChangeByValueType = async (inputProps, value, props) => {
             break;
         case fieldControllerName.AVAILABILITY_STATUS:
             inputProps.onChange(value);
-            if (props.isFromDashBoard) {
-                props.userDashboard.availability_status = value;
-                const dashboardData = {
-                    ...props.userDashboard,
-                    blood_group: bloodGroupsList.find(blood_group =>
-                        blood_group.label == props.userDashboard.blood_group).value
-                }
-                await handleUserSignUpRegistration(props.userDashboard.phone, dashboardData, true);
-                showSnackBar(`Updated your availability successfully!`, true);
-                props.setUserDashboard({ ...props.userDashboard });
-            }
+            props.isFromDashBoard && await updateDataFromDashBoard(props.userDashboard, props.setUserDashboard,
+                fieldControllerName.AVAILABILITY_STATUS, value);
         default:
             inputProps.onChange(value);
             break;
     }
+}
+
+export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, property, value) => {
+    userDashboard[property] = value;
+    const dashboardData = {
+        ...userDashboard,
+        blood_group: bloodGroupsList.find(blood_group =>
+            blood_group.label == userDashboard.blood_group).value
+    }
+    await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
+    showSnackBar(`Updated your availability successfully!`, true);
+    setUserDashboard({ ...userDashboard });
 }
 
 export const setErrorModal = (error, setError, title, message, showModal) => {

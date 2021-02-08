@@ -7,7 +7,8 @@ import { InputSelector } from '../input/InputSelector';
 export const AuthenticatedSelectorInput = props => {
     return (
         <React.Fragment>
-            <View style={RVStyles.registrationUserInputPickerView}>
+            <View style={[props.isFromDashBoard && RVStyles.userDashBoardPickerView
+                || RVStyles.registrationUserInputPickerView]}>
                 <Text style={RVStyles.registrationUserInputPickerText}>{!props.isFromDashBoard && props.inputTextName || stringConstants.EMPTY}</Text>
                 <InputSelector {...props} />
             </View>

@@ -27,7 +27,7 @@ export const FeedbackModal = props => {
 
                         <View style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View>
-                                <TouchableOpacity activeOpacity={.2} style={[RVGenericStyles.width120, RVGenericStyles.mv20]}
+                                <TouchableOpacity activeOpacity={.2} style={[RVGenericStyles.width120, RVGenericStyles.mv30]}
                                     onPress={() => setUserDashboard({ ...userDashboard, showFeedbackModal: false })}>
                                     <Text style={RVStyles.feedBackCancelText}>{actionButtonTextConstants.CANCEL}</Text>
                                 </TouchableOpacity>

@@ -3,28 +3,29 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
-    fieldControllerName, fieldTextName, formRequiredRules,
-    isAndroid, keyBoardTypeConst, numericConstants, placeHolderText,
-    stringConstants
+    fieldControllerName, formRequiredRules, stringConstants,
+    isAndroid, keyBoardTypeConst, numericConstants, placeHolderText
 } from '../../constants/Constants';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { updateDataFromDashBoard } from '../../helper/Helper';
 import { RVEditIcon } from '../icons/RVEditIcon';
 import { RVSaveIcon } from '../icons/RVSaveIcon';
 import { RVUserDashboardTextInput } from '../input/RVUserDashboardTextInput';
 
 export const RVUserDashBoardAgeText = props => {
     const { userDashboard, setUserDashboard } = props;
+
     return (
-        <View style={RVStyles.dashBoardUserDetailsTextView}>
+        <View style={[RVStyles.dashBoardUserDetailsTextView, RVGenericStyles.borderBottomWidthpt5]}>
             <View style={RVStyles.dashBoardUserTextStyle}>
                 <Text style={RVGenericStyles.ft18}>{props.text}</Text>
             </View>
             {
                 userDashboard.isAgeEdit &&
-                <RVUserDashboardTextInput inputTextName={props.text} inputName={fieldControllerName.AGE} control={props.control} rules={formRequiredRules.ageRule}
-                    defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THREE} placeHolderText={placeHolderText.AGE} userDashboard={userDashboard} value={userDashboard.age}
+                <RVUserDashboardTextInput inputName={fieldControllerName.AGE} control={props.control} rules={formRequiredRules.ageRule}
+                    defaultValue={props.value} maxLength={numericConstants.THREE} placeHolderText={placeHolderText.AGE} userDashboard={userDashboard} value={userDashboard.age}
                     keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={props.formState} setUserDashboard={setUserDashboard}
-                    style={RVStyles.dashBoardEdit} />
+                    extraStyles={RVStyles.dashBoardEdit} autofocus={true} isFromDashBoard={true} />
                 ||
                 <View style={[RVGenericStyles.ml_24, RVStyles.dashBoardUserValueStyle]}>
                     <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold]}>{props.value}</Text>
@@ -35,7 +36,10 @@ export const RVUserDashBoardAgeText = props => {
                     <TouchableOpacity onPress={() => setUserDashboard({ ...userDashboard, isAgeEdit: true, editText: props.text })}>
                         <RVEditIcon />
                     </TouchableOpacity> || userDashboard.isAgeEdit &&
-                    <TouchableOpacity onPress={() => setUserDashboard({ ...userDashboard, isAgeEdit: false, editText: stringConstants.EMPTY })}>
+                    <TouchableOpacity onPress={props.handleSubmit(async data => {
+                        await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.AGE, userDashboard.age);
+                        setUserDashboard({ ...userDashboard, isAgeEdit: false, editText: stringConstants.EMPTY });
+                    })}>
                         <RVSaveIcon />
                     </TouchableOpacity>
                 )

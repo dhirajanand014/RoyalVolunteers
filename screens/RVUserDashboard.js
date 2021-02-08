@@ -4,7 +4,7 @@ import { View, Animated } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
 import { fetchUserDashboardDetails } from '../helper/Helper';
-import { fieldTextName, numericConstants, stringConstants } from '../constants/Constants';
+import { fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
 import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';
@@ -17,7 +17,7 @@ export const RVUserDashboard = () => {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { control, formState } = useForm();
+    const { control, formState, handleSubmit } = useForm({ mode: miscMessage.ON_CHANGE });
 
     const [userDashboard, setUserDashboard] = useState({
         name: stringConstants.EMPTY,
@@ -49,13 +49,11 @@ export const RVUserDashboard = () => {
                 <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phone} />
 
-                    <RVUserDashBoardAgeText text={fieldTextName.AGE} userDashboard={userDashboard} editText={userDashboard.editText}
+                    <RVUserDashBoardAgeText text={fieldTextName.AGE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
                         setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.age} />
 
-                    <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText}
+                    <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
                         setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} />
-
-                    <RVUserDashboardDetailsText text={fieldTextName.BLOOD_GROUP} value={userDashboard.blood_group} />
 
                     <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status}
                         formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />

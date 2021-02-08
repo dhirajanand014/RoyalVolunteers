@@ -33,8 +33,11 @@ export const RVGenericStyles = StyleSheet.create({
     mt36: {
         marginTop: 36,
     },
-    mv20: {
+    mv30: {
         marginVertical: 30,
+    },
+    mb30: {
+        marginBottom: 35,
     },
     width120: {
         width: 120
@@ -54,11 +57,20 @@ export const RVGenericStyles = StyleSheet.create({
     ft30: {
         fontSize: 30
     },
+    marginVertical2: {
+        marginVertical: 2
+    },
+    marginVertical5: {
+        marginVertical: 5
+    },
     marginVertical5: {
         marginVertical: 6
     },
     borderBottomWidth1: {
         borderBottomWidth: 1
+    },
+    borderBottomWidthpt5: {
+        borderBottomWidth: 0.5
     },
     justifyContentSpaceBetween: {
         justifyContent: 'space-between'
@@ -183,10 +195,15 @@ export const RVStyles = StyleSheet.create({
     },
     registrationUserInputPickerView: {
         marginTop: isIOS && 25 || 0,
-        paddingVertical: isIOS && 10 || 3,
+        paddingVertical: isIOS && 10 || 0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start'
+    },
+    userDashBoardPickerView: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'center'
     },
     pickerItemStyleIOS: {
         alignItems: 'center',
@@ -492,7 +509,8 @@ export const RVStyles = StyleSheet.create({
         height: 20
     },
     availabilityStatusStyle: {
-        width: 150
+        width: 100,
+        marginHorizontal: 3
     },
     userRegistrationSubmitButton: {
         marginBottom: isIOS && 90 || 20,
@@ -549,8 +567,7 @@ export const RVStyles = StyleSheet.create({
     dashBoardUserDetailsTextView: {
         flexDirection: 'row',
         width: width / 1.1,
-        paddingVertical: 12,
-        borderBottomWidth: 0.5,
+        paddingVertical: 10,
         paddingLeft: 8
     },
     dashBoardUserTextStyle: {
@@ -588,7 +605,7 @@ export const RVStyles = StyleSheet.create({
     dashBoardFooterTopView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 18,
+        padding: 16,
         width: width / 1.03,
         elevation: 8
     },
@@ -614,22 +631,22 @@ export const RVStyles = StyleSheet.create({
     },
     sendFeedBackButtonStyle: {
         borderRadius: 25,
-        paddingVertical: 15,
-        marginHorizontal: 20,
+        paddingVertical: 12,
+        marginHorizontal: 12,
         width: 140,
         elevation: 3,
         backgroundColor: '#fec72e'
     },
     dashBoardRequestBlood: {
         borderRadius: 25,
-        paddingVertical: 15,
+        paddingVertical: 12,
         width: 150,
         elevation: 3,
         backgroundColor: "#DE1F25"
     },
     dashBoardEdit: {
         fontSize: 18,
-        marginLeft: 95
+        marginLeft: 95,
     },
     feedBackModalView: {
         margin: 250,

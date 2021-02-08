@@ -9,9 +9,9 @@ export const RVUserDashboardTextInput = props => {
         <Controller name={props.inputName} control={props.control} defaultValue={props.defaultValue} rules={props.rules}
             render={inputProps => {
                 return (
-                    <TextInput {...inputProps} maxLength={props.maxLength} value={props.value} placeholderTextColor={colors.DARK_GREY}
+                    <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value} placeholderTextColor={colors.DARK_GREY}
                         keyboardType={props.keyboardType} style={[RVStyles.underlineTextInput, props.formState.errors[props.inputName]?.message && RVStyles.errorInputBorder ||
-                            RVStyles.normalInputBorder, props.extraStyles, props.style]} placeHolderText={props.placeHolderText} onSubmitEditing={props.onSubmitEditing}
+                            RVStyles.normalInputBorder, props.extraStyles]} placeHolderText={props.placeHolderText} onSubmitEditing={props.onSubmitEditing}
                         onChangeText={value => onChangeByValueType(inputProps, value, props)} autoFocus={props.autofocus} underlineColorAndroid={props.underlineColorAndroid}
                     />
                 )

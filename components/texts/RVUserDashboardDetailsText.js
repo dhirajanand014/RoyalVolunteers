@@ -10,9 +10,11 @@ import { AuthenticatedSelectorInput } from '../picker/AuthenticatedSelectorInput
 
 export const RVUserDashboardDetailsText = props => {
     return (
-        <View style={RVStyles.dashBoardUserDetailsTextView}>
+        <View style={[RVStyles.dashBoardUserDetailsTextView, props.text != fieldTextName.AVAILABILITY_STATUS &&
+            RVGenericStyles.borderBottomWidthpt5]}>
             <View style={RVStyles.dashBoardUserTextStyle}>
-                <Text style={RVGenericStyles.ft18}>{props.text}</Text>
+                <Text style={[props.text == fieldTextName.AVAILABILITY_STATUS && RVGenericStyles.marginVertical2,
+                RVGenericStyles.ft18]}>{props.text}</Text>
             </View>
             <View style={RVStyles.dashBoardUserValueStyle}>
                 {
