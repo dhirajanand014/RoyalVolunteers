@@ -9,7 +9,7 @@ import { colors, RVStyles } from '../styles/Styles';
 import {
     actionButtonTextConstants, errorModalMessageConstants, errorModalTitleConstants,
     fieldControllerName, fieldTextName, formRequiredRules, keyBoardTypeConst,
-    numericConstants, placeHolderText, stringConstants, isAndroid, screenTitle, routeConsts
+    numericConstants, placeHolderText, stringConstants, isAndroid, screenTitle, routeConsts, miscMessage
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
@@ -34,11 +34,15 @@ export const SignIn = props => {
 
     const submitDetails = async data => {
         const responseNavigation = await handleUserLogin(data);
-        if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === `RVUserDashboard`) {
-            navigation.navigate(responseNavigation, {
-                phoneNumber: data.phoneNumber
-            })
-        } else if (responseNavigation === `invalidUser`) {
+        if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
+            navigation.reset({
+                index: numericConstants.ZERO, routes: [{
+                    name: responseNavigation, params: {
+                        phoneNumber: data.phoneNumber
+                    }
+                }]
+            });
+        } else if (responseNavigation === miscMessage.INVALID_USER) {
             setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
             showSnackBar(errorModalTitleConstants.LOGIN_FAILED, false);
         }
