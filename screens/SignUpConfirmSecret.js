@@ -55,8 +55,12 @@ export const SignUpConfirmSecret = () => {
             if (isUserRegistered) {
                 setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
                 showSnackBar(miscMessage.SUCCESSFULLY_REGISTERED, true);
-                navigation.navigate(routeConsts.USER_REGISTRATION, {
-                    phoneNumber: signUpDetails.phoneNumber
+                navigation.reset({
+                    index: numericConstants.ZERO, routes: [{
+                        name: routeConsts.USER_REGISTRATION, params: {
+                            phoneNumber: signUpDetails.phoneNumber
+                        }
+                    }]
                 });
             }
         }

@@ -8,7 +8,8 @@ import { colors, RVStyles } from '../styles/Styles';
 import {
     availablilityStatusOptions, bloodGroupsList, fieldControllerName,
     fieldTextName, formRequiredRules, screenTitle, stringConstants,
-    keyBoardTypeConst, numericConstants, isAndroid, placeHolderText, actionButtonTextConstants, routeConsts
+    keyBoardTypeConst, numericConstants, isAndroid, placeHolderText,
+    actionButtonTextConstants, routeConsts, miscMessage
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
@@ -56,7 +57,7 @@ export const RVUserRegistration = () => {
                         defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList} />
 
                     <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
-                        defaultValue={stringConstants.EMPTY} formState={formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
+                        defaultValue={miscMessage.YES} formState={formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
                         initial={numericConstants.ZERO} isFromDashBoard={false} />
 
                 </Animated.ScrollView>

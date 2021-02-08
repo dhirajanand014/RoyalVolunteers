@@ -4,9 +4,7 @@ import Snackbar from "react-native-snackbar";
 import {
     fieldControllerName, height, miscMessage, OTP_INPUTS,
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
-    errorModalMessageConstants,
-    isIOS,
-    routeConsts
+    errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 
@@ -152,6 +150,8 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
             userRegistrationPayload = {
                 ...data,
                 phone: phoneNumber,
+                blood_group: bloodGroupsList.find(bloodGroup =>
+                    bloodGroup.value == data.blood_group).label
             }
             signUpPayloadString = JSON.stringify(userRegistrationPayload);
         } else {
@@ -172,7 +172,7 @@ export const saveUserDetails = async (signUpPayloadString) => {
     try {
         const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
         const saveResponseData = saveResponse.data;
-        if (saveResponseData && typeof (saveResponseData) === stringConstants.OBJECT && saveResponseData.message == miscMessage.SUCCESS) {
+        if (saveResponseData && saveResponseData.message && saveResponseData.message == miscMessage.SUCCESS) {
             return (saveResponseData.account_status == miscMessage.VERIFIED || saveResponseData.account_status == miscMessage.REGISTERED);
         } else if (saveResponseData && typeof (saveResponseData) === stringConstants.STRING && saveResponseData.includes(miscMessage.ERROR) &&
             saveResponseData.includes(miscMessage.DUPLICATE)) {
@@ -224,8 +224,15 @@ export const onChangeByValueType = async (inputProps, value, props) => {
         case fieldControllerName.AVAILABILITY_STATUS:
             inputProps.onChange(value);
             if (props.isFromDashBoard) {
-                props.setUserDashboard({ ...props.userDashboard, availability: value });
-                await handleUserSignUpRegistration(props.userDashboard.phone, props.userDashboard, true);
+                props.userDashboard.availability_status = value;
+                const dashboardData = {
+                    ...props.userDashboard,
+                    blood_group: bloodGroupsList.find(blood_group =>
+                        blood_group.label == props.userDashboard.blood_group).value
+                }
+                await handleUserSignUpRegistration(props.userDashboard.phone, dashboardData, true);
+                showSnackBar(`Updated your availability successfully!`, true);
+                props.setUserDashboard({ ...props.userDashboard });
             }
         default:
             inputProps.onChange(value);

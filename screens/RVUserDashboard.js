@@ -4,10 +4,7 @@ import { View, Animated } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
 import { fetchUserDashboardDetails } from '../helper/Helper';
-import {
-    availablilityStatusOptions, bloodGroupsList, fieldTextName,
-    miscMessage, numericConstants, stringConstants
-} from '../constants/Constants';
+import { fieldTextName, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
 import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';
@@ -38,8 +35,8 @@ export const RVUserDashboard = () => {
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
-    useEffect(async () => {
-        await fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
+    useEffect(() => {
+        fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
     }, []);
 
     return (
@@ -58,9 +55,9 @@ export const RVUserDashboard = () => {
                     <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText}
                         setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} />
 
-                    <RVUserDashboardDetailsText text={fieldTextName.BLOOD_GROUP} value={bloodGroupsList.find(bloodGroup => bloodGroup.value == userDashboard.blood_group).label} />
+                    <RVUserDashboardDetailsText text={fieldTextName.BLOOD_GROUP} value={userDashboard.blood_group} />
 
-                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={availablilityStatusOptions.find(status => status.value == miscMessage.NO).value}
+                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status}
                         formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
                 </Animated.ScrollView>
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
