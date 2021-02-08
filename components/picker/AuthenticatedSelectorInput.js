@@ -5,8 +5,6 @@ import { stringConstants } from '../../constants/Constants';
 import { RVStyles } from '../../styles/Styles';
 import { InputSelector } from '../input/InputSelector';
 export const AuthenticatedSelectorInput = props => {
-
-    console.log(props.initial, props.value)
     return (
         <React.Fragment>
             <View style={RVStyles.registrationUserInputPickerView}>

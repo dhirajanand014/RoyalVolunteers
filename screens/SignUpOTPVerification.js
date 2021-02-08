@@ -140,8 +140,6 @@ export const SignUpOTPVerification = props => {
         }
     };
 
-    console.log(firstTextInputRef?.current?.value);
-
     return (
         <View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
