@@ -10,11 +10,14 @@ import {
     actionButtonTextConstants,
     fieldControllerName, fieldTextName, formRequiredRules,
     keyBoardTypeConst, miscMessage, numericConstants, placeHolderText,
-    routeConsts, screenTitle, stringConstants, stringConstantscolors
+    routeConsts, screenTitle, stringConstants, tokenRequestResponseConst
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
-import { focusOnSecretIfFormInvalid, handleUserSignUpRegistration, showSnackBar } from '../helper/Helper';
+import {
+    focusOnSecretIfFormInvalid, handleUserSignUpRegistration, prepareTokenRequest,
+    requestForToken, showSnackBar, validateAndSaveToken
+} from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 export const SignUpConfirmSecret = () => {
 
@@ -47,21 +50,31 @@ export const SignUpConfirmSecret = () => {
         return true;
     }
 
+    const navigateUser = (data) => {
+        setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
+        showSnackBar(miscMessage.SUCCESSFULLY_REGISTERED, true);
+        navigation.reset({
+            index: numericConstants.ZERO, routes: [{
+                name: routeConsts.USER_REGISTRATION, params: {
+                    phoneNumber: signUpDetails.phoneNumber
+                }
+            }]
+        });
+    }
+
     const onSubmit = async (data) => {
         if (data.confirmSecret !== data.secret) {
             setError(fieldControllerName.CONFIRM_SECRET, formRequiredRules.confirmPasswordRule)
         } else if (data.confirmSecret === data.secret) {
-            const isUserRegistered = await handleUserSignUpRegistration(signUpDetails.phoneNumber, data, false);
+            const phoneNumber = signUpDetails.phoneNumber;
+            const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, false);
             if (isUserRegistered) {
-                setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
-                showSnackBar(miscMessage.SUCCESSFULLY_REGISTERED, true);
-                navigation.reset({
-                    index: numericConstants.ZERO, routes: [{
-                        name: routeConsts.USER_REGISTRATION, params: {
-                            phoneNumber: signUpDetails.phoneNumber
-                        }
-                    }]
-                });
+                const token_request = prepareTokenRequest(phoneNumber, data, tokenRequestResponseConst.TYPE_NEW);
+                const token_response = await requestForToken(token_request);
+                if (token_response) {
+                    await validateAndSaveToken(phoneNumber, token_response);
+                }
+                navigateUser(data)
             }
         }
     };

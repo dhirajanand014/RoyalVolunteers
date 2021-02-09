@@ -171,7 +171,8 @@ export const urlConstants = {
     GET_USER_DASHBOARD_DETAILS: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_dash.php`,
     LOGIN_USER: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_usr_snin.php`,
     TRIGGER_SMS_OTP: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_rv_otp_generator.php`,
-    AUTHORIZE_ACCESS_TOKEN: `https://royalvolunteers.in/token.php`
+    AUTHORIZE_ACCESS_TOKEN: `https://royalvolunteers.in/token.php`,
+    VALIDATE_TOKEN: `https://royalvolunteers.in/resource_validate.php`,
 }
 
 export const countryCodesConstants = {
@@ -241,7 +242,9 @@ export const numericConstants = {
     SIX: 6,
     TEN: 10,
     TWELVE: 12,
+    TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
+    FOUR_HUNDRED_ONE: 401,
     THOUSAND: 1000
 }
 
@@ -342,4 +345,23 @@ export const errorModalMessageConstants = {
     NOTIFICATION_FAIL_DONERS: `Could not notify doners`,
     FEEDBACK_SUBMITTED_UNSUCCESSFULLY: `Could not submit feedback`,
     USER_ALREADY_REGISTERED: `User already registerd. Please sign in`,
+}
+
+export const tokenRequestResponseConst = {
+    GRANT_TYPE: `grant_type`,
+    ACCESS_TOKEN_GRANT_TYPE_VALUE: `password`,
+    CLIENT_ID: `client_id`,
+    CLIENT_ID_VALUE: `RV_`,
+    CLIENT_SECRET: `client_secret`,
+    CLIENT_SECRET_VALUE: `royalvolunteer`,
+    USERNAME: `username`,
+    PASSWORD: `password`,
+    ACCESS_TOKEN: `access_token`,
+    REFRESH_TOKEN: `refresh_token`,
+    EXPIRES_IN: `expires_in`,
+    AUTHORIZATION_BEARER: `Authorization`,
+    BEARER: `Bearer `,
+    REFRESH_TOKEN_GRANT_TYPE_VALUE: `refresh_token`,
+    TYPE_NEW: `NEW`,
+    TYPE_REFRESH: `REFRESH`
 }

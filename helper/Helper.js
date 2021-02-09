@@ -4,9 +4,11 @@ import Snackbar from "react-native-snackbar";
 import {
     fieldControllerName, height, miscMessage, OTP_INPUTS,
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
-    errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList
+    errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList,
+    tokenRequestResponseConst, numericConstants
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
+import * as Keychain from 'react-native-keychain';
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -401,10 +403,116 @@ export const convertDate = (event, datePickerProps, props, date) => {
 }
 
 const datePickerConvert = (event, date) => {
-    if (!event.type && isIOS) {
-        return date;
-    } else if (miscMessage.SET == event.type) {
-        return isIOS && date || moment(event.nativeEvent.timestamp).toDate();
+    try {
+        if (!event.type && isIOS) {
+            return date;
+        } else if (miscMessage.SET == event.type) {
+            return isIOS && date || moment(event.nativeEvent.timestamp).toDate();
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    return false;
+}
+
+export const prepareTokenRequest = (phoneNumber, data, type) => {
+    try {
+        let tokenRequest = {};
+        switch (type) {
+            case tokenRequestResponseConst.TYPE_NEW:
+                const secret = data.secret;
+                tokenRequest[tokenRequestResponseConst.GRANT_TYPE] = tokenRequestResponseConst.ACCESS_TOKEN_GRANT_TYPE_VALUE;
+                tokenRequest[tokenRequestResponseConst.USERNAME] = phoneNumber;
+                tokenRequest[tokenRequestResponseConst.PASSWORD] = secret;
+                break;
+            case tokenRequestResponseConst.TYPE_REFRESH:
+                const refresh_token = data.refresh_token
+                tokenRequest[tokenRequestResponseConst.GRANT_TYPE] = tokenRequestResponseConst.REFRESH_TOKEN_GRANT_TYPE_VALUE;
+                tokenRequest[tokenRequestResponseConst.REFRESH_TOKEN_GRANT_TYPE_VALUE] = refresh_token
+                break;
+            default:
+                break;
+        }
+        tokenRequest[tokenRequestResponseConst.CLIENT_ID] = `${tokenRequestResponseConst.CLIENT_ID_VALUE}${phoneNumber}`;
+        tokenRequest[tokenRequestResponseConst.CLIENT_SECRET] = tokenRequestResponseConst.CLIENT_SECRET_VALUE;
+        return tokenRequest;
+    } catch (error) {
+        console.log(error);
     }
     return false;
+}
+
+export const requestForToken = async (request_token) => {
+    try {
+        const response_token = await axios.post(urlConstants.AUTHORIZE_ACCESS_TOKEN, request_token);
+        if (response_token) {
+            if (numericConstants.TWO_HUNDRED == response_token.status) {
+                console.log(`Access Token retrieved successfully!`, response_token.status);
+                return response_token.data;
+            } else if (numericConstants.FOUR_HUNDRED_ONE == response_token.status) {
+                console.log(`Access Token could not be retrieved!`, response_token.status);
+                console.log(`Error : `, response_token.data.error_description);
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+}
+
+export const validateAndSaveToken = async (phoneNumber, response_token) => {
+    try {
+        const request_token = response_token.access_token;
+        console.log(`Validating Access Token!`);
+        const token_validate_response = await validateToken(request_token);
+        if (`TokenValid` == token_validate_response) {
+            await saveTokenData(phoneNumber, response_token);
+        } else if (`TokenExpired` == token_validate_response) {
+            const token_request = prepareTokenRequest(phoneNumber, response_token,
+                tokenRequestResponseConst.TYPE_REFRESH);
+            const response_refresh_token = await requestForToken(token_request);
+            await validateAndSaveToken(phoneNumber, response_refresh_token);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const validateToken = async (token) => {
+    let tokenResponseData;
+    try {
+        const headerParam = { headers: { [tokenRequestResponseConst.AUTHORIZATION_BEARER]: tokenRequestResponseConst.BEARER + token } };
+        const token_validation = await axios.options(urlConstants.VALIDATE_TOKEN, headerParam);
+        if (token_validation && token_validation.status == numericConstants.TWO_HUNDRED) {
+            tokenResponseData = token_validation.data;
+            return tokenResponseData.success && `TokenValid` || `TokenInvalid`;
+        }
+    } catch (error) {
+        console.log(error);
+        if (error.response.status == numericConstants.FOUR_HUNDRED_ONE) {
+            tokenResponseData = error.response.data;
+            tokenResponseData.error_description && console.log(`Error : `, tokenResponseData.error_description);
+            return tokenResponseData.error == `invalid_token` && tokenResponseData.error_description.includes(`expired`) &&
+                `TokenExpired`;
+        }
+    }
+    return `InvalidRequest`;
+}
+
+export const saveTokenData = async (phoneNumber, response_token) => {
+    try {
+        const token_data = {
+            [tokenRequestResponseConst.ACCESS_TOKEN]: response_token.access_token,
+            [tokenRequestResponseConst.REFRESH_TOKEN]: response_token.refresh_token,
+            [tokenRequestResponseConst.EXPIRES_IN]: response_token.expires_in
+        }
+        const token_JSONString = JSON.stringify(token_data);
+
+        const savedResult = await Keychain.setGenericPassword(`${tokenRequestResponseConst.CLIENT_ID_VALUE}${phoneNumber}`,
+            token_JSONString, { service: phoneNumber });
+        savedResult && savedResult.service && console.log(`Successfully saved token`);
+    } catch (error) {
+        console.log(error);
+    }
 }
