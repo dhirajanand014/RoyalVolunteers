@@ -11,7 +11,7 @@ import { SignUpConfirmSecret } from './screens/SignUpConfirmSecret';
 import { RVUserRegistration } from './screens/RVUserRegistration';
 import { RVBloodRequest } from './screens/RVBloodRequest';
 import { RVUserDashboard } from './screens/RVUserDashboard';
-
+import { SplashScreen } from './screens/SplashScreen';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
@@ -40,12 +40,12 @@ export default function App() {
 
   return (
     <SignUpContext.Provider value={{
-      signUpDetails, setSignUpDetails, requestForm, setRequestForm,
-      error, setError
+      signUpDetails, setSignUpDetails, requestForm, setRequestForm, error, setError
     }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={`Home`} screenOptions={screenOptions}
+        <Stack.Navigator initialRouteName={`SplashScreen`} screenOptions={screenOptions}
           headerMode='float' animation="fade">
+          <Stack.Screen name="SplashScreen" component={SplashScreen} options={stackOptions} />
           <Stack.Screen name="Home" component={Home} options={stackOptions} />
           <Stack.Screen name="SignIn" component={SignIn} options={stackOptions} />
           <Stack.Screen name="SignUp" component={SignUp} options={stackOptions} />

@@ -363,5 +363,6 @@ export const tokenRequestResponseConst = {
     BEARER: `Bearer `,
     REFRESH_TOKEN_GRANT_TYPE_VALUE: `refresh_token`,
     TYPE_NEW: `NEW`,
-    TYPE_REFRESH: `REFRESH`
+    TYPE_REFRESH: `REFRESH`,
+    SAVED_DATE: `saved_date`
 }

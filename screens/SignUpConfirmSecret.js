@@ -10,13 +10,13 @@ import {
     actionButtonTextConstants,
     fieldControllerName, fieldTextName, formRequiredRules,
     keyBoardTypeConst, miscMessage, numericConstants, placeHolderText,
-    routeConsts, screenTitle, stringConstants, tokenRequestResponseConst
+    routeConsts, screenTitle, stringConstants
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import {
-    focusOnSecretIfFormInvalid, handleUserSignUpRegistration, prepareTokenRequest,
-    requestForToken, showSnackBar, validateAndSaveToken
+    access_token_request_response, focusOnSecretIfFormInvalid,
+    handleUserSignUpRegistration, setErrorModal, showSnackBar
 } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 export const SignUpConfirmSecret = () => {
@@ -24,7 +24,7 @@ export const SignUpConfirmSecret = () => {
     const navigation = useNavigation();
     const { handleSubmit, control, setError, formState } = useForm();
 
-    const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
+    const { signUpDetails, setSignUpDetails, error, setError: setErrorMod } = useContext(SignUpContext);
 
     useEffect(() => {
         BackHandler.addEventListener(miscMessage.HARDWARE_BACK_PRESS, signUpSecretBackAction);
@@ -53,6 +53,7 @@ export const SignUpConfirmSecret = () => {
     const navigateUser = (data) => {
         setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
         showSnackBar(miscMessage.SUCCESSFULLY_REGISTERED, true);
+        console.log(`Navigating user to registration!`);
         navigation.reset({
             index: numericConstants.ZERO, routes: [{
                 name: routeConsts.USER_REGISTRATION, params: {
@@ -69,12 +70,9 @@ export const SignUpConfirmSecret = () => {
             const phoneNumber = signUpDetails.phoneNumber;
             const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, false);
             if (isUserRegistered) {
-                const token_request = prepareTokenRequest(phoneNumber, data, tokenRequestResponseConst.TYPE_NEW);
-                const token_response = await requestForToken(token_request);
-                if (token_response) {
-                    await validateAndSaveToken(phoneNumber, token_response);
-                }
-                navigateUser(data)
+                const isValidRequest = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
+                isValidRequest && navigateUser(data) || setErrorModal(error, setErrorMod, `Unexpected Error`,
+                    `Oops.. something went wrong`, true);
             }
         }
     };

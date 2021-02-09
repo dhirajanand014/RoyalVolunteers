@@ -9,15 +9,20 @@ import { colors, RVStyles } from '../styles/Styles';
 import {
     actionButtonTextConstants, errorModalMessageConstants, errorModalTitleConstants,
     fieldControllerName, fieldTextName, formRequiredRules, keyBoardTypeConst,
-    numericConstants, placeHolderText, stringConstants, isAndroid, screenTitle, routeConsts, miscMessage
+    numericConstants, placeHolderText, stringConstants, isAndroid, screenTitle,
+    routeConsts, miscMessage
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import { SignUpContext } from '../App';
-import { focusOnSecretIfFormInvalid, handleUserLogin, setErrorModal, showSnackBar } from '../helper/Helper';
+import {
+    access_token_request_response, validateAndSaveToken,
+    focusOnSecretIfFormInvalid, getSavedToken, handleUserLogin,
+    setErrorModal, showSnackBar,
+} from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
-import { LoginUnsuccessful } from '../components/modals/LoginUnsuccessful';
+import { ErrorModal } from '../components/modals/ErrorModal';
 
 export const SignIn = props => {
     const navigation = useNavigation();
@@ -28,20 +33,27 @@ export const SignIn = props => {
     const refCallback = node => {
         secretRef.current = node;
     };
-
-
     const { error, setError } = useContext(SignUpContext);
+
+
+    const navigateUser = (responseNavigation, data) => {
+        navigation.reset({
+            index: numericConstants.ZERO, routes: [{
+                name: responseNavigation, params: {
+                    phoneNumber: data.phoneNumber
+                }
+            }]
+        })
+    }
 
     const submitDetails = async data => {
         const responseNavigation = await handleUserLogin(data);
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
-            navigation.reset({
-                index: numericConstants.ZERO, routes: [{
-                    name: responseNavigation, params: {
-                        phoneNumber: data.phoneNumber
-                    }
-                }]
-            });
+            const savedToken = await getSavedToken(data.phoneNumber, error, setErrorModal);
+            const isValidRequest = savedToken && await validateAndSaveToken(data.phoneNumber, savedToken, error, setError, false) ||
+                await access_token_request_response(data.phoneNumber, data, error, setError, true);
+            isValidRequest && isValidRequest == `TokenValid` && navigateUser(responseNavigation, data) ||
+                setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
         } else if (responseNavigation === miscMessage.INVALID_USER) {
             setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
             showSnackBar(errorModalTitleConstants.LOGIN_FAILED, false);
@@ -81,7 +93,7 @@ export const SignIn = props => {
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
-            <LoginUnsuccessful error={error} setError={setError} />
+            <ErrorModal error={error} setError={setError} />
         </View >
     )
 }

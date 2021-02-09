@@ -410,7 +410,7 @@ export const RVStyles = StyleSheet.create({
         margin: 200,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 25,
         width: 300,
         height: 250,
         alignItems: "center",
@@ -428,7 +428,7 @@ export const RVStyles = StyleSheet.create({
     },
     modalTitleTextStyle: {
         fontSize: 20,
-        padding: 10
+        padding: 4
     },
     modalTitleDivider: {
         width: 230,
@@ -444,6 +444,11 @@ export const RVStyles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         padding: 10
+    },
+    modalErrorImage: {
+        width: 35,
+        height: 35,
+        tintColor: 'red'
     },
     modalOKButtonStyle: {
         borderRadius: 25,

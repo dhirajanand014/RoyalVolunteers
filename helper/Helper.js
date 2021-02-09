@@ -416,6 +416,22 @@ const datePickerConvert = (event, date) => {
     return false;
 }
 
+export const access_token_request_response = async (phoneNumber, data, error, setErrorMod, isValidateNewToken) => {
+    try {
+        debugger
+        const token_request = prepareTokenRequest(phoneNumber, data, tokenRequestResponseConst.TYPE_NEW);
+        const token_response = await requestForToken(token_request, error, setErrorMod);
+        if (token_response) {
+            return await validateAndSaveToken(phoneNumber, token_response, error, setErrorMod, isValidateNewToken);
+        } else {
+            setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+        }
+    } catch (error) {
+        console.error(error);
+        setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+    }
+}
+
 export const prepareTokenRequest = (phoneNumber, data, type) => {
     try {
         let tokenRequest = {};
@@ -438,45 +454,52 @@ export const prepareTokenRequest = (phoneNumber, data, type) => {
         tokenRequest[tokenRequestResponseConst.CLIENT_SECRET] = tokenRequestResponseConst.CLIENT_SECRET_VALUE;
         return tokenRequest;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
     return false;
 }
 
-export const requestForToken = async (request_token) => {
+export const requestForToken = async (request_token, error, setErrorMod) => {
     try {
         const response_token = await axios.post(urlConstants.AUTHORIZE_ACCESS_TOKEN, request_token);
-        if (response_token) {
-            if (numericConstants.TWO_HUNDRED == response_token.status) {
-                console.log(`Access Token retrieved successfully!`, response_token.status);
-                return response_token.data;
-            } else if (numericConstants.FOUR_HUNDRED_ONE == response_token.status) {
-                console.log(`Access Token could not be retrieved!`, response_token.status);
-                console.log(`Error : `, response_token.data.error_description);
-            }
+        if (response_token && numericConstants.TWO_HUNDRED == response_token.status) {
+            console.log(`Access Token retrieved successfully!`, response_token.status);
+            return response_token.data;
+        } else {
+            console.log(`Error fetching response token`);
+            setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
         }
     } catch (error) {
-        console.log(error);
+        if (numericConstants.FOUR_HUNDRED_ONE == response_token.status) {
+            console.log(`Access Token could not be retrieved!`, response_token.status);
+            console.error(`Error : `, response_token.data.error_description);
+        }
     }
     return false;
 }
 
-export const validateAndSaveToken = async (phoneNumber, response_token) => {
+export const validateAndSaveToken = async (phoneNumber, response_token, error, setErrorMod, isValidateNewToken) => {
     try {
         const request_token = response_token.access_token;
         console.log(`Validating Access Token!`);
-        const token_validate_response = await validateToken(request_token);
+        const token_validate_response = await validateToken(request_token, error, setErrorMod);
+        debugger
         if (`TokenValid` == token_validate_response) {
-            await saveTokenData(phoneNumber, response_token);
+            console.log(`Token is valid!`);
+            return isValidateNewToken && saveTokenData(phoneNumber, response_token, error, setErrorMod) ||
+                `TokenValid`;
         } else if (`TokenExpired` == token_validate_response) {
+            console.log(`Token is Invalid!`);
             const token_request = prepareTokenRequest(phoneNumber, response_token,
                 tokenRequestResponseConst.TYPE_REFRESH);
-            const response_refresh_token = await requestForToken(token_request);
-            await validateAndSaveToken(phoneNumber, response_refresh_token);
+            const response_refresh_token = await requestForToken(token_request, error, setErrorMod);
+            await validateAndSaveToken(phoneNumber, response_refresh_token, error, setErrorMod, true);
         }
-    } catch (error) {
-        console.log(error);
+    } catch (error_response) {
+        console.error(`Could validate and save token`, error_response);
+        setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
     }
+    return false;
 }
 
 export const validateToken = async (token) => {
@@ -487,9 +510,12 @@ export const validateToken = async (token) => {
         if (token_validation && token_validation.status == numericConstants.TWO_HUNDRED) {
             tokenResponseData = token_validation.data;
             return tokenResponseData.success && `TokenValid` || `TokenInvalid`;
+        } else {
+            console.log(`Could not validate token with header :`, headerParam);
+            setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         if (error.response.status == numericConstants.FOUR_HUNDRED_ONE) {
             tokenResponseData = error.response.data;
             tokenResponseData.error_description && console.log(`Error : `, tokenResponseData.error_description);
@@ -500,19 +526,42 @@ export const validateToken = async (token) => {
     return `InvalidRequest`;
 }
 
-export const saveTokenData = async (phoneNumber, response_token) => {
+export const saveTokenData = async (phoneNumber, response_token, error, setError) => {
     try {
         const token_data = {
             [tokenRequestResponseConst.ACCESS_TOKEN]: response_token.access_token,
             [tokenRequestResponseConst.REFRESH_TOKEN]: response_token.refresh_token,
-            [tokenRequestResponseConst.EXPIRES_IN]: response_token.expires_in
+            [tokenRequestResponseConst.EXPIRES_IN]: response_token.expires_in,
+            [tokenRequestResponseConst.SAVED_DATE]: Date.now()
         }
         const token_JSONString = JSON.stringify(token_data);
 
         const savedResult = await Keychain.setGenericPassword(`${tokenRequestResponseConst.CLIENT_ID_VALUE}${phoneNumber}`,
-            token_JSONString, { service: phoneNumber });
-        savedResult && savedResult.service && console.log(`Successfully saved token`);
-    } catch (error) {
-        console.log(error);
+            token_JSONString, { service: `user` });
+        debugger
+        if (savedResult && savedResult.service) {
+            console.log(`Successfully saved token`);
+            return `TokenValid`;
+        }
+    } catch (error_response) {
+        console.error(`Could not save the request_token for number : `, phoneNumber, error_response);
+        setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
     }
+    return `TokenInvalid`;
+}
+
+export const getSavedToken = async (error, setErrorModal) => {
+    try {
+        const tokenSaved = await Keychain.getGenericPassword({ service: `user` });
+        debugger
+        if (tokenSaved) {
+            console.log(`Fetched the token successfully!`);
+            return JSON.parse(tokenSaved.password);
+        }
+        console.warn(`Could not fetch the token!`);
+    } catch (error_response) {
+        console.error(`Could not fetch the request token saved! : `, error_response);
+        setErrorModal(error, setErrorModal, `Unexpected Error`, `Oops.. something went wrong`, true);
+    }
+    return false;
 }
