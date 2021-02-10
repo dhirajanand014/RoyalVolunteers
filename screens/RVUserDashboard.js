@@ -4,7 +4,7 @@ import { View, Animated } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
 import { fetchUserDashboardDetails } from '../helper/Helper';
-import { fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
+import { availablilityStatusOptions, fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
 import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';

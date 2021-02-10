@@ -23,7 +23,7 @@ export const RVUserDashBoardPincodeText = props => {
                 userDashboard.isPincodeEdit &&
                 <RVUserDashboardTextInput inputName={fieldControllerName.PINCODE} control={props.control} rules={formRequiredRules.pinCodeRule}
                     defaultValue={props.value} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} formState={props.formState}
-                    isFromBloodRequestForm={true} keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} userDashboard={userDashboard}
+                    isFromBloodRequestForm={false} keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} userDashboard={userDashboard}
                     setUserDashboard={setUserDashboard} value={userDashboard.pincode} extraStyles={RVStyles.dashBoardEdit} autofocus={true} isFromDashBoard={true} />
                 ||
                 <View style={[RVGenericStyles.ml_24, RVStyles.dashBoardUserValueStyle]}>

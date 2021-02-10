@@ -17,9 +17,9 @@ import * as Animatable from 'react-native-animatable';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import { SignUpContext } from '../App';
 import {
-    access_token_request_response, validateAndSaveToken,
-    focusOnSecretIfFormInvalid, getSavedToken, handleUserLogin,
-    setErrorModal, showSnackBar,
+    focusOnSecretIfFormInvalid, getRegistrationStatus, getSavedToken, handleUserLogin,
+    saveRegistrationStatus,
+    setErrorModal, showSnackBar, validateSavedToken,
 } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 import { ErrorModal } from '../components/modals/ErrorModal';
@@ -35,8 +35,13 @@ export const SignIn = props => {
     };
     const { error, setError } = useContext(SignUpContext);
 
-
-    const navigateUser = (responseNavigation, data) => {
+    const navigateUser = async (responseNavigation, data) => {
+        const status = await getRegistrationStatus();
+        if (!status) {
+            const status = responseNavigation === routeConsts.USER_REGISTRATION && miscMessage.VERIFIED ||
+                responseNavigation === routeConsts.USER_DASHBOARD && miscMessage.REGISTERED;
+            saveRegistrationStatus(data.phoneNumber, status);
+        }
         navigation.reset({
             index: numericConstants.ZERO, routes: [{
                 name: responseNavigation, params: {
@@ -49,11 +54,13 @@ export const SignIn = props => {
     const submitDetails = async data => {
         const responseNavigation = await handleUserLogin(data);
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
-            const savedToken = await getSavedToken(data.phoneNumber, error, setErrorModal);
-            const isValidRequest = savedToken && await validateAndSaveToken(data.phoneNumber, savedToken, error, setError, false) ||
-                await access_token_request_response(data.phoneNumber, data, error, setError, true);
-            isValidRequest && isValidRequest == `TokenValid` && navigateUser(responseNavigation, data) ||
+            const savedToken = await getSavedToken(error, setError);
+            const isValidRequest = await validateSavedToken(savedToken, data, error, setError, false);
+            if (isValidRequest && isValidRequest == `TokenValid`) {
+                navigateUser(responseNavigation, data);
+            } else {
                 setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
+            }
         } else if (responseNavigation === miscMessage.INVALID_USER) {
             setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
             showSnackBar(errorModalTitleConstants.LOGIN_FAILED, false);

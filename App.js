@@ -40,7 +40,8 @@ export default function App() {
 
   return (
     <SignUpContext.Provider value={{
-      signUpDetails, setSignUpDetails, requestForm, setRequestForm, error, setError
+      signUpDetails, setSignUpDetails, requestForm,
+      setRequestForm, error, setError
     }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={`SplashScreen`} screenOptions={screenOptions}

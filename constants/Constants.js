@@ -242,6 +242,7 @@ export const numericConstants = {
     SIX: 6,
     TEN: 10,
     TWELVE: 12,
+    THIRTY: 30,
     TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
     FOUR_HUNDRED_ONE: 401,
@@ -320,6 +321,7 @@ export const miscMessage = {
     SET: `set`,
     NO: `N`,
     YES: `Y`,
+    PH_QUERY_PARAM: `?ph=`,
     ON_CHANGE: `onChange`,
     SUCCESSFUL: `Successful`,
     UNSUCCESSFUL: `Unsuccessful`,
@@ -364,5 +366,6 @@ export const tokenRequestResponseConst = {
     REFRESH_TOKEN_GRANT_TYPE_VALUE: `refresh_token`,
     TYPE_NEW: `NEW`,
     TYPE_REFRESH: `REFRESH`,
-    SAVED_DATE: `saved_date`
+    SAVED_DATE: `saved_date`,
+    ACCOUNT_STATUS: `account_status`
 }

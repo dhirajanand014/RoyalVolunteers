@@ -3,6 +3,7 @@ import { Controller } from 'react-hook-form';
 import { RVStyles } from '../../styles/Styles';
 import SwitchSelector from 'react-native-switch-selector';
 import { onChangeByValueType } from '../../helper/Helper';
+import { numericConstants } from '../../constants/Constants';
 
 export const InputSelector = props => {
     return (
@@ -11,7 +12,7 @@ export const InputSelector = props => {
                 return (
                     <SwitchSelector initial={props.initial} onPress={value => onChangeByValueType(selectorProps, value, props)} value={props.value}
                         hasPadding={props.hasPadding} options={props.options} fontSize={props.fontSize} style={RVStyles.availabilityStatusStyle}
-                        height={30} bold={props.isFromDashBoard && true || false} />
+                        height={numericConstants.THIRTY} bold={props.isFromDashBoard && true || false} />
                 )
             }} />
     )

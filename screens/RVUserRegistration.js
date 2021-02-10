@@ -13,7 +13,7 @@ import {
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
-import { handleUserSignUpRegistration } from '../helper/Helper';
+import { getRegistrationStatus, handleUserSignUpRegistration, saveRegistrationStatus } from '../helper/Helper';
 import { AuthenticatedInputText } from '../components/input/AuthenticatedInputText';
 import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInputPicker';
 import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';
@@ -27,8 +27,10 @@ export const RVUserRegistration = () => {
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     const onSubmit = async (data) => {
-        const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, true);
-        if (isUserRegistered) {
+        const isUserRegistrationComplete = await handleUserSignUpRegistration(phoneNumber, data, true);
+        if (isUserRegistrationComplete) {
+            const status = await getRegistrationStatus();
+            status && saveRegistrationStatus(phoneNumber, miscMessage.REGISTERED);
             navigation.navigate(routeConsts.USER_DASHBOARD, {
                 phoneNumber: phoneNumber
             });
@@ -57,8 +59,8 @@ export const RVUserRegistration = () => {
                         defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList} />
 
                     <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
-                        defaultValue={miscMessage.YES} formState={formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
-                        initial={numericConstants.ZERO} isFromDashBoard={false} />
+                        defaultValue={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}
+                        fontSize={numericConstants.TWELVE} initial={numericConstants.ZERO} isFromDashBoard={false} />
 
                 </Animated.ScrollView>
                 <View style={RVStyles.userRegistrationSubmitButton}>

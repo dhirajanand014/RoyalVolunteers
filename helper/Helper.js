@@ -70,7 +70,7 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
 
 export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber) => {
     try {
-        const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}?ph=${phoneNumber}`;
+        const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}${miscMessage.PH_QUERY_PARAM}${phoneNumber}`;
         let userDashboardDetails = await axios.get(url);
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
@@ -246,8 +246,8 @@ export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, p
             blood_group.label == userDashboard.blood_group).value
     }
     await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
-    showSnackBar(`Updated your availability successfully!`, true);
     setUserDashboard({ ...userDashboard });
+    showSnackBar(`Updated your availability successfully!`, true);
 }
 
 export const setErrorModal = (error, setError, title, message, showModal) => {
@@ -418,12 +418,12 @@ const datePickerConvert = (event, date) => {
 
 export const access_token_request_response = async (phoneNumber, data, error, setErrorMod, isValidateNewToken) => {
     try {
-        debugger
         const token_request = prepareTokenRequest(phoneNumber, data, tokenRequestResponseConst.TYPE_NEW);
         const token_response = await requestForToken(token_request, error, setErrorMod);
         if (token_response) {
             return await validateAndSaveToken(phoneNumber, token_response, error, setErrorMod, isValidateNewToken);
         } else {
+            console.error(`Error fetching token response!`);
             setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
         }
     } catch (error) {
@@ -469,10 +469,10 @@ export const requestForToken = async (request_token, error, setErrorMod) => {
             console.log(`Error fetching response token`);
             setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
         }
-    } catch (error) {
-        if (numericConstants.FOUR_HUNDRED_ONE == response_token.status) {
-            console.log(`Access Token could not be retrieved!`, response_token.status);
-            console.error(`Error : `, response_token.data.error_description);
+    } catch (error_response) {
+        if (numericConstants.FOUR_HUNDRED_ONE == error_response.status) {
+            console.log(`Access Token could not be retrieved!`, error_response.status);
+            console.error(`Error : `, error_response.data.error_description);
         }
     }
     return false;
@@ -483,20 +483,21 @@ export const validateAndSaveToken = async (phoneNumber, response_token, error, s
         const request_token = response_token.access_token;
         console.log(`Validating Access Token!`);
         const token_validate_response = await validateToken(request_token, error, setErrorMod);
-        debugger
         if (`TokenValid` == token_validate_response) {
             console.log(`Token is valid!`);
-            return isValidateNewToken && saveTokenData(phoneNumber, response_token, error, setErrorMod) ||
-                `TokenValid`;
+            if (isValidateNewToken) {
+                return await saveTokenData(phoneNumber, response_token, error, setErrorMod);
+            }
+            return `TokenValid`;
         } else if (`TokenExpired` == token_validate_response) {
-            console.log(`Token is Invalid!`);
+            console.log(`Token is Expired!`);
             const token_request = prepareTokenRequest(phoneNumber, response_token,
                 tokenRequestResponseConst.TYPE_REFRESH);
             const response_refresh_token = await requestForToken(token_request, error, setErrorMod);
             await validateAndSaveToken(phoneNumber, response_refresh_token, error, setErrorMod, true);
         }
     } catch (error_response) {
-        console.error(`Could validate and save token`, error_response);
+        console.error(`Could not validate and save token`, error_response);
         setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
     }
     return false;
@@ -518,7 +519,7 @@ export const validateToken = async (token) => {
         console.error(error);
         if (error.response.status == numericConstants.FOUR_HUNDRED_ONE) {
             tokenResponseData = error.response.data;
-            tokenResponseData.error_description && console.log(`Error : `, tokenResponseData.error_description);
+            tokenResponseData.error_description && console.warn(`Error : `, tokenResponseData.error_description);
             return tokenResponseData.error == `invalid_token` && tokenResponseData.error_description.includes(`expired`) &&
                 `TokenExpired`;
         }
@@ -538,7 +539,6 @@ export const saveTokenData = async (phoneNumber, response_token, error, setError
 
         const savedResult = await Keychain.setGenericPassword(`${tokenRequestResponseConst.CLIENT_ID_VALUE}${phoneNumber}`,
             token_JSONString, { service: `user` });
-        debugger
         if (savedResult && savedResult.service) {
             console.log(`Successfully saved token`);
             return `TokenValid`;
@@ -550,18 +550,87 @@ export const saveTokenData = async (phoneNumber, response_token, error, setError
     return `TokenInvalid`;
 }
 
-export const getSavedToken = async (error, setErrorModal) => {
+export const getSavedToken = async (error, setError) => {
     try {
         const tokenSaved = await Keychain.getGenericPassword({ service: `user` });
-        debugger
         if (tokenSaved) {
             console.log(`Fetched the token successfully!`);
-            return JSON.parse(tokenSaved.password);
+            return response = {
+                [tokenRequestResponseConst.USERNAME]: tokenSaved.username,
+                ...JSON.parse(tokenSaved.password)
+            }
         }
         console.warn(`Could not fetch the token!`);
     } catch (error_response) {
         console.error(`Could not fetch the request token saved! : `, error_response);
-        setErrorModal(error, setErrorModal, `Unexpected Error`, `Oops.. something went wrong`, true);
+        setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
     }
     return false;
+}
+
+export const validateSavedToken = async (savedToken, data, error, setError, isFromSplashScreen) => {
+    try {
+        if (savedToken) {
+            const phoneNumber = !isFromSplashScreen && data.phoneNumber || savedToken.username.
+                split(tokenRequestResponseConst.CLIENT_ID_VALUE)[numericConstants.ONE];
+            return await validateAndSaveToken(phoneNumber, savedToken, error, setError, false);
+        } else {
+            return !isFromSplashScreen && await access_token_request_response(data.phoneNumber, data, error, setError, true) ||
+                false;
+        }
+    } catch (error_response) {
+        console.error(error_response)
+    }
+    return false;
+}
+
+export const fetchUserRegistrationStatus = async (phoneNumber) => {
+    try {
+        const url = `${urlConstants.FETCH_REGISTRATION_STATUS}${miscMessage.PH_QUERY_PARAM}${phoneNumber}`;
+        const registrationStatus = await axios.get(url);
+        return registrationStatus && registrationStatus.data.status || false;
+    } catch (error) {
+        console.error(`Could not fetch user resgistration status for phone number: `, phoneNumber, error);
+    }
+    return false;
+}
+
+export const saveRegistrationStatus = async (phoneNumber, status) => {
+    try {
+        const status_value = {
+            [tokenRequestResponseConst.ACCOUNT_STATUS]: status
+        }
+        await Keychain.setGenericPassword(`${phoneNumber}_${status}`, JSON.stringify(status_value),
+            { service: tokenRequestResponseConst.ACCOUNT_STATUS });
+    } catch (error) {
+        console.error(`Cannot save user registration status`, error);
+    }
+}
+
+export const getRegistrationStatus = async () => {
+    try {
+        const account_status = await Keychain.getGenericPassword({ service: tokenRequestResponseConst.ACCOUNT_STATUS });
+        return account_status && JSON.parse(account_status.password) || false;
+    } catch (error) {
+        console.error(`Cannot fetch user registration status`, error);
+    }
+    return false;
+}
+
+export const fetchSplashScreenRoute = async (savedToken, isValidRequest) => {
+    if (isValidRequest && isValidRequest == `TokenValid`) {
+        const account_status = await getRegistrationStatus();
+        const navigationRoute = account_status.account_status == miscMessage.VERIFIED && routeConsts.USER_REGISTRATION ||
+            account_status.account_status == miscMessage.REGISTERED && routeConsts.USER_DASHBOARD || false;
+        const phone = savedToken.username.split(tokenRequestResponseConst.CLIENT_ID_VALUE)[numericConstants.ONE];
+        return route = {
+            name: navigationRoute && navigationRoute || routeConsts.HOME, params: {
+                phoneNumber: phone
+            }
+        }
+    } else {
+        return route = {
+            name: routeConsts.HOME
+        }
+    }
 }

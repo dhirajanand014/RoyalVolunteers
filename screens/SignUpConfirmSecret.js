@@ -16,7 +16,8 @@ import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import {
     access_token_request_response, focusOnSecretIfFormInvalid,
-    handleUserSignUpRegistration, setErrorModal, showSnackBar
+    handleUserSignUpRegistration, saveRegistrationStatus, setErrorModal,
+    showSnackBar
 } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 export const SignUpConfirmSecret = () => {
@@ -50,9 +51,10 @@ export const SignUpConfirmSecret = () => {
         return true;
     }
 
-    const navigateUser = (data) => {
+    const navigateUser = async (data) => {
         setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
         showSnackBar(miscMessage.SUCCESSFULLY_REGISTERED, true);
+        await saveRegistrationStatus(signUpDetails.phoneNumber, miscMessage.VERIFIED);
         console.log(`Navigating user to registration!`);
         navigation.reset({
             index: numericConstants.ZERO, routes: [{
@@ -71,7 +73,7 @@ export const SignUpConfirmSecret = () => {
             const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, false);
             if (isUserRegistered) {
                 const isValidRequest = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
-                isValidRequest && navigateUser(data) || setErrorModal(error, setErrorMod, `Unexpected Error`,
+                isValidRequest && await navigateUser(data) || setErrorModal(error, setErrorMod, `Unexpected Error`,
                     `Oops.. something went wrong`, true);
             }
         }

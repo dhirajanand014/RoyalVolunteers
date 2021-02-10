@@ -20,9 +20,10 @@ export const RVUserDashboardDetailsText = props => {
                 {
                     props.text == fieldTextName.AVAILABILITY_STATUS && props.value &&
                     <AuthenticatedSelectorInput inputName={fieldControllerName.AVAILABILITY_STATUS} control={props.control}
-                        defaultValue={props.value || null} formState={props.formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
-                        initial={availablilityStatusOptions.findIndex(option => option.value == props.value)} value={props.value} isFromDashBoard={true}
-                        userDashboard={props.userDashboard} setUserDashboard={props.setUserDashboard} /> ||
+                        defaultValue={props.value} userDashboard={props.userDashboard} setUserDashboard={props.setUserDashboard}
+                        formState={props.formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
+                        initial={availablilityStatusOptions.findIndex(option => option.value == props.value)} isFromDashBoard={true}
+                        value={numericConstants.ZERO} /> ||
                     <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold]}>{props.value}</Text>
                 }
             </View>
