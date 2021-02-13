@@ -4,7 +4,7 @@ import { View, Animated } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
 import { fetchUserDashboardDetails } from '../helper/Helper';
-import { availablilityStatusOptions, fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
+import { fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
 import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';
@@ -41,7 +41,7 @@ export const RVUserDashboard = () => {
 
     return (
         <View style={RVStyles.headerContainer}>
-            <RVUserDashBoardHeaderView {...userDashboard} />
+            <RVUserDashBoardHeaderView {...userDashboard} navigation={navigation} />
 
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
 

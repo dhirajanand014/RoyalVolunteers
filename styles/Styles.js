@@ -84,6 +84,9 @@ export const RVGenericStyles = StyleSheet.create({
     centerAlignedText: {
         textAlign: 'center',
     },
+    alignSelfEnd: {
+        alignSelf: 'flex-end'
+    },
     textBlackColor: {
         color: '#0b0b0b'
     },
@@ -95,6 +98,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     paddingHorizontal10: {
         paddingHorizontal: 10
+    },
+    paddingHorizontal15: {
+        paddingHorizontal: 15
     },
     textLeftAlign: {
         textAlign: 'left'

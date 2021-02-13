@@ -63,8 +63,6 @@ export const SignUpOTPVerification = props => {
     const fifthTextInputRef = useRef(null);
     const sixththTextInputRef = useRef(null);
 
-    const textInputs = { firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef }
-
     useEffect(() => {
         startResendOtpTimer()
         return () => {

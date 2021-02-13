@@ -278,14 +278,14 @@ PODS:
     - React-jsi (= 0.63.4)
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.9.10):
+  - RNCPicker (1.9.11):
     - React-Core
   - RNDateTimePicker (3.0.9):
     - React-Core
   - RNFBApp (10.7.0):
     - Firebase/CoreOnly (~> 7.6.0)
     - React-Core
-  - RNGestureHandler (1.10.0):
+  - RNGestureHandler (1.9.0):
     - React-Core
   - RNKeychain (6.2.0):
     - React
@@ -468,10 +468,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
-  RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
+  RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNDateTimePicker: 986d4794006e5caaebd089a724f54d35631a8dd4
   RNFBApp: d75aa9756bca20df2c902a3f7e11bc276f03c65b
-  RNGestureHandler: 03f587ba19a7e2d9fe48fb9aa6e33ace5fd07dd5
+  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSnackbar: 2c5f131fe85b333ff497a34c3ba94a0c1e9ee1f0
