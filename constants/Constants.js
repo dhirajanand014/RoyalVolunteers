@@ -325,6 +325,7 @@ export const miscMessage = {
     NO: `N`,
     YES: `Y`,
     LOADING: `Loading`,
+    LOGOUT: `Logout`,
     PH_QUERY_PARAM: `?ph=`,
     ON_CHANGE: `onChange`,
     RESET: `Reset`,
@@ -354,7 +355,8 @@ export const successFulMessages = {
     VALIDATING_ACCESS_TOKEN: `Validating Access Token!`,
     TOKEN_IS_VALID: `Token is valid!`,
     SUCCESSFULLY_SAVED_TOKEN: `Successfully saved token`,
-    TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`
+    TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`,
+    SUCCESSFUL_LOG_OUT: `SuccessFully logged out`
 }
 
 export const errorModalTitleConstants = {
