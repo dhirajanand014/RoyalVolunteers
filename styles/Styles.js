@@ -27,6 +27,9 @@ export const RVGenericStyles = StyleSheet.create({
     mt12: {
         marginTop: 12,
     },
+    mt20: {
+        marginTop: 20,
+    },
     mt24: {
         marginTop: 24,
     },
@@ -692,6 +695,16 @@ export const RVStyles = StyleSheet.create({
         width: 120,
         elevation: 3,
         backgroundColor: '#fec72e'
+    },
+    splashScreenAnimatedImage: {
+        width: 100,
+        height: 100
+    },
+    splashScreenLoadingText: {
+        color: `#fe7d32`,
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginTop: 30
     }
 });
 

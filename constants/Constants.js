@@ -52,6 +52,8 @@ export const actionButtonTextConstants = {
     CANCEL: `Cancel`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
+    FORGOT_PASSWORD: `Forgot Password`,
+    RESET_PASSWORD: `Reset Password`,
     OK: `OK`,
     DATE: `Date`,
     SEND_FEEDBACK: `Send Feedback`,
@@ -173,6 +175,7 @@ export const urlConstants = {
     TRIGGER_SMS_OTP: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_rv_otp_generator.php`,
     AUTHORIZE_ACCESS_TOKEN: `https://royalvolunteers.in/token.php`,
     VALIDATE_TOKEN: `https://royalvolunteers.in/resource_validate.php`,
+    FORGOT_PASSWORD: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_pass_update.php`
 }
 
 export const countryCodesConstants = {
@@ -321,32 +324,66 @@ export const miscMessage = {
     SET: `set`,
     NO: `N`,
     YES: `Y`,
+    LOADING: `Loading`,
     PH_QUERY_PARAM: `?ph=`,
     ON_CHANGE: `onChange`,
+    RESET: `Reset`,
+    BLOOD_REQUEST: `bloodRequest`,
+    FORGOT_PASSWORD: `forgotSecret`,
     SUCCESSFUL: `Successful`,
     UNSUCCESSFUL: `Unsuccessful`,
     INVALID_USER: `invalidUser`,
     TRANSPARENT: `transparent`,
     DATE_PICKER_FORMAT: `DD/MM/YYYY`,
     HARDWARE_BACK_PRESS: `hardwareBackPress`,
+    SELECT_DATE: `Select a Date`,
+    TOKEN_VALID: `TokenValid`,
+    TOKEN_INVALID: `TokenInvalid`,
+    TOKEN_EXPIRED: `TokenExpired`,
+    INVALID_REQUEST: `InvalidRequest`,
+    USER_SERVICE_TOKEN_KEY: `user`
+}
+
+export const successFulMessages = {
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
     SENT_SMS_SUCCESSFULLY: `Successfully sent message!`,
-    REGISTRATION_SUCCESSFUL: `Registration successful`,
     NOTIFICATION_SENT_DONERS: `Notification sent to doners`,
-    SELECT_DATE: `Select a Date`,
-    INCORRECT_OTP_ENTERED: `Incorrect OTP entered`,
-    SUCCESSFULLY_REGISTERED: `Successfully registered your details`
+    SUCCESSFULLY_REGISTERED: `Successfully registered your details`,
+    SUCCESSFULLY_RESET_PASSWORD: `Password reset sucessful. Please sign in`,
+    ACCESS_TOKEN_RETRIEVED_SUCCESSFULLY: `Access Token retrieved successfully!`,
+    VALIDATING_ACCESS_TOKEN: `Validating Access Token!`,
+    TOKEN_IS_VALID: `Token is valid!`,
+    SUCCESSFULLY_SAVED_TOKEN: `Successfully saved token`,
+    TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`
 }
 
 export const errorModalTitleConstants = {
     LOGIN_FAILED: `Login Failed`,
+    ERROR: `Error : `,
+    INVALID_TOKEN: `invalid_token`,
+    EXPIRED: `expired`
 }
 
 export const errorModalMessageConstants = {
     USER_LOGIN_FAILED: `Username and Password does not match`,
     NOTIFICATION_FAIL_DONERS: `Could not notify doners`,
     FEEDBACK_SUBMITTED_UNSUCCESSFULLY: `Could not submit feedback`,
+    USER_NOT_REGISTERED: `Could not register user.`,
     USER_ALREADY_REGISTERED: `User already registerd. Please sign in`,
+    INCORRECT_OTP_ENTERED: `Incorrect OTP entered`,
+    ERROR_FETCHING_TOKEN: `Error fetching token response!`,
+    UNEXPECTED_ERROR: `Unexpected Error`,
+    SOMETHING_WENT_WRONG: `Oops.. something went wrong`,
+    ACCESS_TOKEN_COULD_NOT_BE_RETRIEVED: `Access Token could not be retrieved!`,
+    TOKEN_EXPIRED: `Token is Expired!`,
+    TOKEN_VALIDATION_FAILED: `Could not validate and save token`,
+    TOKEN_HEADER_VALIDATION_FAILED: `Could not validate token with header :`,
+    TOKEN_REQUEST_SAVE_FAILED: `Could not save the request_token for number : `,
+    TOKEN_FETCH_FAILED: `Could not fetch the token!`,
+    SAVED_TOKEN_FETCH_FAILED: `Could not fetch the request token saved! : `,
+    FETCH_ACCOUNT_STATUS_FAILED: `Could not fetch user resgistration status for phone number: `,
+    CANNOT_SAVE_ACCOUNT_STATUS: `Cannot not save user registration status`,
+    CANNOT_FETCH_SAVED_ACCOUNT_STATUS: `Cannot not fetch user registration status`
 }
 
 export const tokenRequestResponseConst = {

@@ -28,9 +28,7 @@ export const RVBloodRequest = () => {
 
     const onSubmit = async (data) => {
         if (formState.isValid) {
-            navigation.navigate(routeConsts.SIGN_UP, {
-                isFromRequestForm: true
-            })
+            navigation.navigate(routeConsts.SIGN_UP, { isFrom: miscMessage.BLOOD_REQUEST });
         }
     };
 

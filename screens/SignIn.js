@@ -17,8 +17,8 @@ import * as Animatable from 'react-native-animatable';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import { SignUpContext } from '../App';
 import {
-    focusOnSecretIfFormInvalid, getRegistrationStatus, getSavedToken, handleUserLogin,
-    saveRegistrationStatus,
+    focusOnSecretIfFormInvalid, getRegistrationStatus, getSavedToken,
+    saveRegistrationStatus, handleUserLogin, handleForgotPassword,
     setErrorModal, showSnackBar, validateSavedToken,
 } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
@@ -26,7 +26,9 @@ import { ErrorModal } from '../components/modals/ErrorModal';
 
 export const SignIn = props => {
     const navigation = useNavigation();
-    const { handleSubmit, control, formState } = useForm();
+    const { handleSubmit, control, formState, watch, trigger, clearErrors } = useForm();
+
+    const watchMobileNumber = watch(fieldControllerName.PHONE_NUMBER);
 
     let secretRef = useRef(null);
 
@@ -56,13 +58,15 @@ export const SignIn = props => {
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
             const savedToken = await getSavedToken(error, setError);
             const isValidRequest = await validateSavedToken(savedToken, data, error, setError, false);
-            if (isValidRequest && isValidRequest == `TokenValid`) {
+            if (isValidRequest && isValidRequest == miscMessage.TOKEN_VALID) {
                 navigateUser(responseNavigation, data);
             } else {
-                setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
+                setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
+                    errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
             }
         } else if (responseNavigation === miscMessage.INVALID_USER) {
-            setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED, errorModalMessageConstants.USER_LOGIN_FAILED, true);
+            setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED,
+                errorModalMessageConstants.USER_LOGIN_FAILED, true);
             showSnackBar(errorModalTitleConstants.LOGIN_FAILED, false);
         }
     }
@@ -83,8 +87,9 @@ export const SignIn = props => {
                         keyboardType={keyBoardTypeConst.DEFAULT} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
                     <View style={RVStyles.signInLinks}>
                         <View style={RVStyles.signInForgotPassword}>
-                            <TouchableOpacity style={RVStyles.signInForgotPasswordLink}>
-                                <Text style={RVStyles.signInForgotPasswordText}>Forgot Password</Text>
+                            <TouchableOpacity style={RVStyles.signInForgotPasswordLink}
+                                onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors)}>
+                                <Text style={RVStyles.signInForgotPasswordText}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

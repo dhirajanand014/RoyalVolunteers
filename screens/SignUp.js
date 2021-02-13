@@ -11,7 +11,7 @@ import { RVStyles, colors } from '../styles/Styles';
 import {
     actionButtonTextConstants, fieldControllerName, fieldTextName,
     formRequiredRules, keyBoardTypeConst, numericConstants,
-    placeHolderText, stringConstants, screenTitle, isAndroid
+    placeHolderText, stringConstants, screenTitle, isAndroid, miscMessage
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { handleUserSignUpOtp } from '../helper/Helper';
@@ -24,7 +24,7 @@ export const SignUp = () => {
 
     const { handleSubmit, control, formState } = useForm();
 
-    const isFromBloodRequestForm = route?.params?.isFromRequestForm;
+    const isFrom = route?.params?.isFrom;
 
     const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
     return (
@@ -32,7 +32,7 @@ export const SignUp = () => {
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>   {
-                    isFromBloodRequestForm && screenTitle.ENTER_MOBILE_NUMBER || screenTitle.SIGN_UP}
+                    isFrom == miscMessage.BLOOD_REQUEST && screenTitle.ENTER_MOBILE_NUMBER || screenTitle.SIGN_UP}
                 </Text>
                 <Animated.ScrollView>
                     <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
@@ -42,15 +42,15 @@ export const SignUp = () => {
                 </Animated.ScrollView>
                 <View style={RVStyles.signUpPrimaryButtonView}>
                     <Text style={RVStyles.signUpDescription}>{placeHolderText.SIGN_UP_DESCRIPTION}</Text>
-                    <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpActionButton} onPress={handleSubmit(data => {
-                        handleUserSignUpOtp(signUpDetails, isFromBloodRequestForm, navigation, false);
-                    })} >
+                    <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpActionButton} onPress={handleSubmit(data =>
+                        handleUserSignUpOtp(signUpDetails, isFrom, navigation, false)
+                    )} >
                         <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
                             <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.PROCEED}</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
             </Animatable.View>
-        </Animated.View>
+        </Animated.View >
     )
 }

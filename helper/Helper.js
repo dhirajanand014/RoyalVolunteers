@@ -5,7 +5,8 @@ import {
     fieldControllerName, height, miscMessage, OTP_INPUTS,
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
     errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList,
-    tokenRequestResponseConst, numericConstants
+    tokenRequestResponseConst, numericConstants, successFulMessages,
+    errorModalTitleConstants
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
@@ -114,13 +115,12 @@ export const handleUserLogin = async (data) => {
     return false;
 };
 
-export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm, navigation, isResendOtp) => {
+export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isResendOtp) => {
     try {
         const { phoneNumber } = signUpDetails;
 
         // Math.random() returns float between 0 and 1, 
         // so minimum number will be 100000, max - 999999. 
-        // Exactly 6 digits, as you wanted:)
         const random6Digit = Math.floor(Math.random() * 899999 + 100000);
 
         const otpRequestData = {
@@ -133,18 +133,18 @@ export const handleUserSignUpOtp = async (signUpDetails, isFromBloodRequestForm,
         const response = await axios.post(urlConstants.TRIGGER_SMS_OTP, otpRequestDataJSON);
 
         if (response && response.data && !isResendOtp) {
-            const params = getSignUpParams(signUpDetails, random6Digit, isFromBloodRequestForm);
+            const params = getSignUpParams(signUpDetails, random6Digit, isFrom);
             navigation.navigate(routeConsts.OTP_VERIFICATION, params)
             return true;
         }
-        showSnackBar(miscMessage.SENT_SMS_SUCCESSFULLY, true);
+        showSnackBar(successFulMessages.SENT_SMS_SUCCESSFULLY, true);
     } catch (error) {
         console.log(error);
     }
     return false;
 }
 
-export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration) => {
+export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloodRegistration, isFrom) => {
     try {
         let userRegistrationPayload;
         let signUpPayloadString;
@@ -163,22 +163,28 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
             }
             signUpPayloadString = JSON.stringify(userRegistrationPayload);
         }
-        return signUpPayloadString && await saveUserDetails(signUpPayloadString) || false;
+        return signUpPayloadString && await saveUserDetails(signUpPayloadString, isFrom) || false;
     } catch (error) {
         console.log(error);
     }
     return false;
 }
 
-export const saveUserDetails = async (signUpPayloadString) => {
+export const saveUserDetails = async (signUpPayloadString, isFrom) => {
     try {
-        const saveResponse = await axios.post(urlConstants.SAVE_SIGNUP_DETAILS, signUpPayloadString);
+        const url = isFrom == miscMessage.FORGOT_PASSWORD && urlConstants.FORGOT_PASSWORD || urlConstants.SAVE_SIGNUP_DETAILS;
+        const saveResponse = await axios.post(url, signUpPayloadString);
         const saveResponseData = saveResponse.data;
-        if (saveResponseData && saveResponseData.message && saveResponseData.message == miscMessage.SUCCESS) {
+        if (isFrom == miscMessage.FORGOT_PASSWORD && saveResponseData.message == miscMessage.SUCCESS) {
+            return `${miscMessage.RESET}_${miscMessage.SUCCESSFUL}`;
+        } else if (saveResponseData && saveResponseData.message && saveResponseData.message == miscMessage.SUCCESS) {
             return (saveResponseData.account_status == miscMessage.VERIFIED || saveResponseData.account_status == miscMessage.REGISTERED);
         } else if (saveResponseData && typeof (saveResponseData) === stringConstants.STRING && saveResponseData.includes(miscMessage.ERROR) &&
             saveResponseData.includes(miscMessage.DUPLICATE)) {
             showSnackBar(errorModalMessageConstants.USER_ALREADY_REGISTERED, false);
+            console.log(saveResponseData);
+        } else {
+            showSnackBar(errorModalMessageConstants.USER_NOT_REGISTERED, false);
             console.log(saveResponseData);
         }
     } catch (error) {
@@ -187,16 +193,14 @@ export const saveUserDetails = async (signUpPayloadString) => {
     return false;
 }
 
-export const getSignUpParams = (signUpDetails, random6Digit, isFromBloodRequestForm) => {
-    if (isFromBloodRequestForm)
-        return {
-            isFromBloodRequestForm: isFromBloodRequestForm
-        }
-    else
-        return {
-            phoneNumber: signUpDetails.phoneNumber,
-            rand_number: random6Digit
-        }
+export const getSignUpParams = (signUpDetails, random6Digit, isFrom) => {
+    let returnValue = {};
+    if (isFrom) {
+        returnValue.isFrom = isFrom
+    }
+    returnValue.phoneNumber = signUpDetails.phoneNumber;
+    returnValue.rand_number = random6Digit;
+    return returnValue;
 }
 
 export const onChangeByValueType = async (inputProps, value, props) => {
@@ -255,7 +259,7 @@ export const setErrorModal = (error, setError, title, message, showModal) => {
 }
 
 export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-    attemptsRemaining, startResendOtpTimer, signUpDetails, isFromBloodRequestForm, navigation, clearErrors) => {
+    attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, navigation, clearErrors) => {
     // clear last OTP
     if (firstTextInputRef) {
         setOtpArray(Array(OTP_INPUTS).fill(stringConstants.EMPTY));
@@ -264,7 +268,7 @@ export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, set
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     setAttemptsRemaining(--attemptsRemaining);
     startResendOtpTimer();
-    await handleUserSignUpOtp(signUpDetails, isFromBloodRequestForm, navigation, true);
+    await handleUserSignUpOtp(signUpDetails, isFrom, navigation, true);
     clearErrors(fieldControllerName.OTP_INPUT);
 };
 
@@ -277,19 +281,19 @@ export const onOtpKeyPress = (index, otpArray, firstTextInputRef, secondTextInpu
         // auto focus to previous InputText if value is blank and existing value is also blank
         if (value === 'Backspace' && otpArray[index] === stringConstants.EMPTY) {
             switch (index) {
-                case 1:
+                case numericConstants.ONE:
                     firstTextInputRef.current.focus();
                     break;
-                case 2:
+                case numericConstants.TWO:
                     secondTextInputRef.current.focus();
                     break;
-                case 3:
+                case numericConstants.THREE:
                     thirdTextInputRef.current.focus();
                     break;
-                case 4:
+                case numericConstants.FOUR:
                     fourthTextInputRef.current.focus();
                     break;
-                case 5:
+                case numericConstants.FIVE:
                     fifthTextInputRef.current.focus();
                     break;
                 default:
@@ -300,9 +304,9 @@ export const onOtpKeyPress = (index, otpArray, firstTextInputRef, secondTextInpu
              * doing this thing for us
              * todo check this behaviour on ios
              */
-            if (index > 0) {
+            if (index > numericConstants.ZERO) {
                 const otpArrayCopy = otpArray.concat();
-                otpArrayCopy[index - 1] = ''; // clear the previous box which will be in focus
+                otpArrayCopy[index - numericConstants.ONE] = stringConstants.EMPTY; // clear the previous box which will be in focus
                 setOtpArray(otpArrayCopy);
             }
         }
@@ -327,19 +331,19 @@ export const onOtpChange = (index, otpArray, setOtpArray, secondTextInputRef, th
         // auto focus to next InputText if value is not blank
         if (value !== stringConstants.EMPTY) {
             switch (index) {
-                case 0:
+                case numericConstants.ZERO:
                     secondTextInputRef.current.focus();
                     break;
-                case 1:
+                case numericConstants.ONE:
                     thirdTextInputRef.current.focus();
                     break;
-                case 2:
+                case numericConstants.TWO:
                     fourthTextInputRef.current.focus();
                     break;
-                case 3:
+                case numericConstants.THREE:
                     fifthTextInputRef.current.focus();
                     break;
-                case 4:
+                case numericConstants.FOUR:
                     sixththTextInputRef.current.focus();
                     break;
                 default:
@@ -350,7 +354,7 @@ export const onOtpChange = (index, otpArray, setOtpArray, secondTextInputRef, th
 };
 
 export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => {
-    if (otpString === `` || otpString.length < OTP_INPUTS) {
+    if (otpString === stringConstants.EMPTY || otpString.length < OTP_INPUTS) {
         setError(fieldControllerName.OTP_INPUT, {
             type: `length`,
             message: `Please enter 6 digit OTP`
@@ -364,12 +368,12 @@ export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => 
     return false;
 }
 
-export const verifyOtpRequest = async (otpString, isFromBloodRequestForm, signUpDetails, requestForm, randomNumber) => {
-    if (isFromBloodRequestForm) {
+export const verifyOtpRequest = async (otpString, isFrom, signUpDetails, requestForm, randomNumber) => {
+    if (isFrom === miscMessage.BLOOD_REQUEST) {
         const isNotified = await notifyBloodDoners(signUpDetails, requestForm);
         if (isNotified) {
             await saveBloodRequest(signUpDetails, requestForm);
-            showSnackBar(miscMessage.NOTIFICATION_SENT_DONERS, true);
+            showSnackBar(successFulMessages.NOTIFICATION_SENT_DONERS, true);
         } else {
             showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false);
         }
@@ -378,7 +382,7 @@ export const verifyOtpRequest = async (otpString, isFromBloodRequestForm, signUp
         if (parseInt(otpString) === randomNumber) {
             return miscMessage.CONFIRM_SECRET;
         }
-        showSnackBar(miscMessage.INCORRECT_OTP_ENTERED, false);
+        showSnackBar(errorModalMessageConstants.INCORRECT_OTP_ENTERED, false);
         return miscMessage.INCORRECT_OTP;
     }
 }
@@ -423,12 +427,14 @@ export const access_token_request_response = async (phoneNumber, data, error, se
         if (token_response) {
             return await validateAndSaveToken(phoneNumber, token_response, error, setErrorMod, isValidateNewToken);
         } else {
-            console.error(`Error fetching token response!`);
-            setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+            console.error(errorModalMessageConstants.ERROR_FETCHING_TOKEN);
+            setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
+                errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
         }
     } catch (error) {
         console.error(error);
-        setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+        setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
+            errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
     }
 }
 
@@ -463,16 +469,17 @@ export const requestForToken = async (request_token, error, setErrorMod) => {
     try {
         const response_token = await axios.post(urlConstants.AUTHORIZE_ACCESS_TOKEN, request_token);
         if (response_token && numericConstants.TWO_HUNDRED == response_token.status) {
-            console.log(`Access Token retrieved successfully!`, response_token.status);
+            console.log(successFulMessages.ACCESS_TOKEN_RETRIEVED_SUCCESSFULLY, response_token.status);
             return response_token.data;
         } else {
             console.log(`Error fetching response token`);
-            setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+            setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
+                errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
         }
     } catch (error_response) {
         if (numericConstants.FOUR_HUNDRED_ONE == error_response.status) {
-            console.log(`Access Token could not be retrieved!`, error_response.status);
-            console.error(`Error : `, error_response.data.error_description);
+            console.error(errorModalMessageConstants.ACCESS_TOKEN_COULD_NOT_BE_RETRIEVED, error_response.status);
+            console.error(errorModalTitleConstants.ERROR, error_response.data.error_description);
         }
     }
     return false;
@@ -481,24 +488,25 @@ export const requestForToken = async (request_token, error, setErrorMod) => {
 export const validateAndSaveToken = async (phoneNumber, response_token, error, setErrorMod, isValidateNewToken) => {
     try {
         const request_token = response_token.access_token;
-        console.log(`Validating Access Token!`);
+        console.log(successFulMessages.VALIDATING_ACCESS_TOKEN);
         const token_validate_response = await validateToken(request_token, error, setErrorMod);
-        if (`TokenValid` == token_validate_response) {
-            console.log(`Token is valid!`);
+        if (miscMessage.TOKEN_VALID == token_validate_response) {
+            console.log(successFulMessages.TOKEN_IS_VALID);
             if (isValidateNewToken) {
                 return await saveTokenData(phoneNumber, response_token, error, setErrorMod);
             }
-            return `TokenValid`;
-        } else if (`TokenExpired` == token_validate_response) {
-            console.log(`Token is Expired!`);
+            return miscMessage.TOKEN_VALID;
+        } else if (miscMessage.TOKEN_EXPIRED == token_validate_response) {
+            console.log(errorModalMessageConstants.TOKEN_EXPIRED);
             const token_request = prepareTokenRequest(phoneNumber, response_token,
                 tokenRequestResponseConst.TYPE_REFRESH);
             const response_refresh_token = await requestForToken(token_request, error, setErrorMod);
             await validateAndSaveToken(phoneNumber, response_refresh_token, error, setErrorMod, true);
         }
     } catch (error_response) {
-        console.error(`Could not validate and save token`, error_response);
-        setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+        console.error(errorModalMessageConstants.TOKEN_VALIDATION_FAILED, error_response);
+        setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
+            errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
     }
     return false;
 }
@@ -510,21 +518,22 @@ export const validateToken = async (token) => {
         const token_validation = await axios.options(urlConstants.VALIDATE_TOKEN, headerParam);
         if (token_validation && token_validation.status == numericConstants.TWO_HUNDRED) {
             tokenResponseData = token_validation.data;
-            return tokenResponseData.success && `TokenValid` || `TokenInvalid`;
+            return tokenResponseData.success && miscMessage.TOKEN_VALID || miscMessage.TOKEN_INVALID;
         } else {
-            console.log(`Could not validate token with header :`, headerParam);
-            setErrorModal(error, setErrorMod, `Unexpected Error`, `Oops.. something went wrong`, true);
+            console.log(errorModalMessageConstants.TOKEN_HEADER_VALIDATION_FAILED, headerParam);
+            setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
+                errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
         }
     } catch (error) {
         console.error(error);
         if (error.response.status == numericConstants.FOUR_HUNDRED_ONE) {
             tokenResponseData = error.response.data;
-            tokenResponseData.error_description && console.warn(`Error : `, tokenResponseData.error_description);
-            return tokenResponseData.error == `invalid_token` && tokenResponseData.error_description.includes(`expired`) &&
-                `TokenExpired`;
+            tokenResponseData.error_description && console.warn(errorModalTitleConstants.ERROR, tokenResponseData.error_description);
+            return tokenResponseData.error == errorModalTitleConstants.INVALID_TOKEN &&
+                tokenResponseData.error_description.includes(errorModalTitleConstants.EXPIRED) && miscMessage.TOKEN_EXPIRED;
         }
     }
-    return `InvalidRequest`;
+    return miscMessage.INVALID_REQUEST;
 }
 
 export const saveTokenData = async (phoneNumber, response_token, error, setError) => {
@@ -538,32 +547,34 @@ export const saveTokenData = async (phoneNumber, response_token, error, setError
         const token_JSONString = JSON.stringify(token_data);
 
         const savedResult = await Keychain.setGenericPassword(`${tokenRequestResponseConst.CLIENT_ID_VALUE}${phoneNumber}`,
-            token_JSONString, { service: `user` });
+            token_JSONString, { service: miscMessage.USER_SERVICE_TOKEN_KEY });
         if (savedResult && savedResult.service) {
-            console.log(`Successfully saved token`);
-            return `TokenValid`;
+            console.log(successFulMessages.SUCCESSFULLY_SAVED_TOKEN);
+            return miscMessage.TOKEN_VALID;
         }
     } catch (error_response) {
-        console.error(`Could not save the request_token for number : `, phoneNumber, error_response);
-        setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
+        console.error(errorModalMessageConstants.TOKEN_REQUEST_SAVE_FAILED, phoneNumber, error_response);
+        setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
+            errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
     }
-    return `TokenInvalid`;
+    return miscMessage.TOKEN_INVALID;
 }
 
 export const getSavedToken = async (error, setError) => {
     try {
-        const tokenSaved = await Keychain.getGenericPassword({ service: `user` });
+        const tokenSaved = await Keychain.getGenericPassword({ service: miscMessage.USER_SERVICE_TOKEN_KEY });
         if (tokenSaved) {
-            console.log(`Fetched the token successfully!`);
+            console.log(successFulMessages.TOKEN_FETCHED_SUCESSFULLY);
             return response = {
                 [tokenRequestResponseConst.USERNAME]: tokenSaved.username,
                 ...JSON.parse(tokenSaved.password)
             }
         }
-        console.warn(`Could not fetch the token!`);
+        console.warn(errorModalMessageConstants.TOKEN_FETCH_FAILED);
     } catch (error_response) {
-        console.error(`Could not fetch the request token saved! : `, error_response);
-        setErrorModal(error, setError, `Unexpected Error`, `Oops.. something went wrong`, true);
+        console.error(errorModalMessageConstants.SAVED_TOKEN_FETCH_FAILED, error_response);
+        setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
+            errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
     }
     return false;
 }
@@ -590,7 +601,7 @@ export const fetchUserRegistrationStatus = async (phoneNumber) => {
         const registrationStatus = await axios.get(url);
         return registrationStatus && registrationStatus.data.status || false;
     } catch (error) {
-        console.error(`Could not fetch user resgistration status for phone number: `, phoneNumber, error);
+        console.error(errorModalMessageConstants.FETCH_ACCOUNT_STATUS_FAILED, phoneNumber, error);
     }
     return false;
 }
@@ -603,7 +614,7 @@ export const saveRegistrationStatus = async (phoneNumber, status) => {
         await Keychain.setGenericPassword(`${phoneNumber}_${status}`, JSON.stringify(status_value),
             { service: tokenRequestResponseConst.ACCOUNT_STATUS });
     } catch (error) {
-        console.error(`Cannot save user registration status`, error);
+        console.error(errorModalMessageConstants.CANNOT_SAVE_ACCOUNT_STATUS, error);
     }
 }
 
@@ -612,13 +623,13 @@ export const getRegistrationStatus = async () => {
         const account_status = await Keychain.getGenericPassword({ service: tokenRequestResponseConst.ACCOUNT_STATUS });
         return account_status && JSON.parse(account_status.password) || false;
     } catch (error) {
-        console.error(`Cannot fetch user registration status`, error);
+        console.error(errorModalMessageConstants.CANNOT_FETCH_SAVED_ACCOUNT_STATUS, error);
     }
     return false;
 }
 
 export const fetchSplashScreenRoute = async (savedToken, isValidRequest) => {
-    if (isValidRequest && isValidRequest == `TokenValid`) {
+    if (isValidRequest && isValidRequest == miscMessage.TOKEN_VALID) {
         const account_status = await getRegistrationStatus();
         const navigationRoute = account_status.account_status == miscMessage.VERIFIED && routeConsts.USER_REGISTRATION ||
             account_status.account_status == miscMessage.REGISTERED && routeConsts.USER_DASHBOARD || false;
@@ -633,4 +644,33 @@ export const fetchSplashScreenRoute = async (savedToken, isValidRequest) => {
             name: routeConsts.HOME
         }
     }
+}
+
+export const handleForgotPassword = async (watchMobileNumber, navigation, trigger, error, setError, clearErrors) => {
+    try {
+        if (watchMobileNumber && watchMobileNumber.length >= numericConstants.TEN) {
+            clearErrors(fieldControllerName.PHONE_NUMBER);
+            const phone = { phoneNumber: watchMobileNumber };
+            await handleUserSignUpOtp(phone, miscMessage.FORGOT_PASSWORD, navigation, false);
+        } else {
+            trigger(fieldControllerName.PHONE_NUMBER);
+        }
+    } catch (error_response) {
+        console.error(error_response);
+        setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
+            errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
+    }
+}
+
+export const resetTokens = async (error, setError) => {
+    try {
+        await Keychain.resetGenericPassword({ service: miscMessage.USER_SERVICE_TOKEN_KEY });
+        await Keychain.resetGenericPassword({ service: tokenRequestResponseConst.ACCOUNT_STATUS });
+        return true;
+    } catch (error_response) {
+        console.error(error_response);
+        setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
+            errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
+    }
+    return false;
 }

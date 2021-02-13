@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Text, View, BackHandler, Animated } from 'react-native';
@@ -7,22 +7,26 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SignUpContext } from '../App';
 import { RVStyles, colors } from '../styles/Styles';
 import {
-    actionButtonTextConstants,
     fieldControllerName, fieldTextName, formRequiredRules,
     keyBoardTypeConst, miscMessage, numericConstants, placeHolderText,
-    routeConsts, screenTitle, stringConstants
+    routeConsts, screenTitle, stringConstants, successFulMessages,
+    actionButtonTextConstants, errorModalMessageConstants
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import {
     access_token_request_response, focusOnSecretIfFormInvalid,
-    handleUserSignUpRegistration, saveRegistrationStatus, setErrorModal,
+    handleUserSignUpRegistration, resetTokens, saveRegistrationStatus, setErrorModal,
     showSnackBar
 } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 export const SignUpConfirmSecret = () => {
 
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const isFrom = route?.params?.isFrom;
+
     const { handleSubmit, control, setError, formState } = useForm();
 
     const { signUpDetails, setSignUpDetails, error, setError: setErrorMod } = useContext(SignUpContext);
@@ -51,30 +55,44 @@ export const SignUpConfirmSecret = () => {
         return true;
     }
 
-    const navigateUser = async (data) => {
-        setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
-        showSnackBar(miscMessage.SUCCESSFULLY_REGISTERED, true);
-        await saveRegistrationStatus(signUpDetails.phoneNumber, miscMessage.VERIFIED);
-        console.log(`Navigating user to registration!`);
-        navigation.reset({
-            index: numericConstants.ZERO, routes: [{
-                name: routeConsts.USER_REGISTRATION, params: {
-                    phoneNumber: signUpDetails.phoneNumber
-                }
-            }]
-        });
+    const navigateUser = async (data, isFromForgotPassword) => {
+        if (!isFromForgotPassword) {
+            setSignUpDetails({ ...signUpDetails, secret: data.password, registrationSuccessful: true });
+            showSnackBar(successFulMessages.SUCCESSFULLY_REGISTERED, true);
+            await saveRegistrationStatus(signUpDetails.phoneNumber, miscMessage.VERIFIED);
+            navigation.reset({
+                index: numericConstants.ZERO, routes: [{
+                    name: routeConsts.USER_REGISTRATION, params: {
+                        phoneNumber: signUpDetails.phoneNumber
+                    }
+                }]
+            });
+        } else {
+            showSnackBar(successFulMessages.SUCCESSFULLY_RESET_PASSWORD, true);
+            navigation.reset({
+                index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }]
+            });
+        }
     }
 
     const onSubmit = async (data) => {
         if (data.confirmSecret !== data.secret) {
             setError(fieldControllerName.CONFIRM_SECRET, formRequiredRules.confirmPasswordRule)
         } else if (data.confirmSecret === data.secret) {
-            const phoneNumber = signUpDetails.phoneNumber;
-            const isUserRegistered = await handleUserSignUpRegistration(phoneNumber, data, false);
-            if (isUserRegistered) {
-                const isValidRequest = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
-                isValidRequest && await navigateUser(data) || setErrorModal(error, setErrorMod, `Unexpected Error`,
-                    `Oops.. something went wrong`, true);
+            const phoneNumber = isFrom == miscMessage.FORGOT_PASSWORD && route?.params?.phoneNumber || signUpDetails.phoneNumber;
+            const registrationResponse = await handleUserSignUpRegistration(phoneNumber, data, false, isFrom);
+            if (registrationResponse) {
+                let isSuccess;
+                let isFromForgotPassword = false;
+                if (registrationResponse == `${miscMessage.RESET}_${miscMessage.SUCCESSFUL}`) {
+                    isSuccess = await resetTokens(error, setErrorModal);
+                    isFromForgotPassword = true;
+                } else {
+                    isSuccess = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
+                    isFromForgotPassword = false;
+                }
+                isSuccess && await navigateUser(data, isFromForgotPassword) || setErrorModal(error, setErrorModal, errorModalMessageConstants.UNEXPECTED_ERROR,
+                    errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
             }
         }
     };
@@ -96,7 +114,8 @@ export const SignUpConfirmSecret = () => {
                 </Animated.ScrollView>
                 <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpConfirmSecretGradient} onPress={handleSubmit(onSubmit)} >
                     <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
-                        <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.PROCEED}</Text>
+                        <Text style={RVStyles.primaryActionButtonButtonText}>{isFrom == miscMessage.FORGOT_PASSWORD &&
+                            actionButtonTextConstants.RESET_PASSWORD || actionButtonTextConstants.PROCEED}</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </View>

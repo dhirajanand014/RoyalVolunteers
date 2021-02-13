@@ -36,7 +36,9 @@ export const SignUpOTPVerification = props => {
 
     const route = useRoute();
 
-    const isFromBloodRequestForm = route.params?.isFromBloodRequestForm;
+    const phoneNumber = route?.params?.phoneNumber;
+
+    const isFrom = route?.params?.isFrom;
 
     const { requestForm, signUpDetails } = useContext(SignUpContext);
 
@@ -129,13 +131,13 @@ export const SignUpOTPVerification = props => {
         const isValid = identifyOtpError(otpString, otpArray, setError, clearErrors);
         if (isValid) {
             const randomNumber = route.params?.rand_number || false;
-            const navigationResponse = await verifyOtpRequest(otpString, isFromBloodRequestForm, signUpDetails, requestForm, randomNumber);
+            const navigationResponse = await verifyOtpRequest(otpString, isFrom, signUpDetails, requestForm, randomNumber);
             if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.CONFIRM_SECRET == navigationResponse) {
                 clearInterval(resendOtpTimerInterval);
                 if (miscMessage.RESET_NAVIGATION == navigationResponse)
                     navigation.reset({ index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }], });
                 else if (miscMessage.CONFIRM_SECRET == navigationResponse)
-                    navigation.navigate(routeConsts.SIGN_UP_SECRET);
+                    navigation.navigate(routeConsts.SIGN_UP_SECRET, { isFrom: isFrom, phoneNumber: phoneNumber });
             }
         }
     };
@@ -163,7 +165,7 @@ export const SignUpOTPVerification = props => {
                     resendButtonDisabledTime > numericConstants.ZERO && <OTPTimeText text={miscMessage.RESEND_OTP_IN} time={resendButtonDisabledTime} />
                     || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}
                         onPress={async () => await onResendOtpButtonPress(firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-                            attemptsRemaining, startResendOtpTimer, signUpDetails, isFromBloodRequestForm, navigation, clearErrors)} />
+                            attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, navigation, clearErrors)} />
                 }
                 <View style={RVGenericStyles.fill} />
                 {
