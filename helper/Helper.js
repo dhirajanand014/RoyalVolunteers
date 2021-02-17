@@ -375,7 +375,6 @@ export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => 
 }
 
 export const verifyOtpRequest = async (otpString, isFrom, signUpDetails, requestForm, randomNumber) => {
-    debugger
     if (isFrom === miscMessage.BLOOD_REQUEST) {
         const isNotified = await notifyBloodDoners(signUpDetails, requestForm);
         if (isNotified) {
