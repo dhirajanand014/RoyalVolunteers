@@ -674,3 +674,17 @@ export const resetTokens = async (error, setError) => {
     }
     return false;
 }
+
+export const setupCloudMessaging = async (messaging) => {
+    try {
+        const authStatus = await messaging().requestPermission();
+        const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        if (enabled) {
+            console.log('Authorization status:', authStatus);
+            console.log(await messaging().getToken());
+        }
+    } catch (error) {
+        console.error(`Cloud messaging setup failed`, error);
+    }
+}
