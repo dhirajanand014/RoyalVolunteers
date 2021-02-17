@@ -42,7 +42,8 @@ export const screenTitle = {
     ENTER_OTP: `ENTER OTP`,
     USER_REGISTRATION: `USER REGISTRATION`,
     REQUEST_FOR_BLOOD: `REQUEST FOR BLOOD`,
-    WELCOME: `Welcome`
+    WELCOME: `Welcome`,
+    BLOOD_REQUESTS: `BLOOD REQUESTS`
 }
 
 export const actionButtonTextConstants = {
@@ -175,7 +176,8 @@ export const urlConstants = {
     TRIGGER_SMS_OTP: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_rv_otp_generator.php`,
     AUTHORIZE_ACCESS_TOKEN: `https://royalvolunteers.in/token.php`,
     VALIDATE_TOKEN: `https://royalvolunteers.in/resource_validate.php`,
-    FORGOT_PASSWORD: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_pass_update.php`
+    FORGOT_PASSWORD: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_pass_update.php`,
+    NOTIFY_BLOOD_REQUEST: ``
 }
 
 export const countryCodesConstants = {
@@ -324,6 +326,7 @@ export const miscMessage = {
     SET: `set`,
     NO: `N`,
     YES: `Y`,
+    CALL: `Call`,
     LOADING: `Loading`,
     LOGOUT: `Logout`,
     PH_QUERY_PARAM: `?ph=`,

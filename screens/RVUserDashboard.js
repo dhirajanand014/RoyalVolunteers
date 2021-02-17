@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Animated } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
-import { fetchUserDashboardDetails } from '../helper/Helper';
+import { fetchUserDashboardDetails, grantPersmissionAndGetDeviceToken, grantPersmissionAndSaveDeviceToken } from '../helper/Helper';
 import { fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
@@ -13,6 +13,7 @@ import { RVUserDashBoardPincodeText } from '../components/texts/RVUserDashBoardP
 import { FeedbackModal } from '../components/modals/FeedbackModal';
 import { RVUserDashBoardFooterTopView } from '../components/view/RVUserDashBoardFooterTopView';
 import { RVUserDashBoardFooterButtons } from '../components/view/RVUserDashBoardFooterButtons';
+import messaging from '@react-native-firebase/messaging';
 export const RVUserDashboard = () => {
 
     const navigation = useNavigation();
@@ -37,6 +38,7 @@ export const RVUserDashboard = () => {
 
     useEffect(() => {
         fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
+        const deviceToken = grantPersmissionAndSaveDeviceToken(messaging);
     }, []);
 
     return (

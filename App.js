@@ -6,11 +6,15 @@ import { Home } from './screens/Home';
 import { SignIn } from './screens/SignIn';
 import { SignUp } from './screens/SignUp';
 import { SignUpOTPVerification } from './screens/SignUpOTPVerification';
-import { screenOptions, stackOptions } from './constants/Constants';
+import {
+  neededOptions, numericConstants, screenOptions,
+  stackOptions, stringConstants
+} from './constants/Constants';
 import { SignUpConfirmSecret } from './screens/SignUpConfirmSecret';
 import { RVUserRegistration } from './screens/RVUserRegistration';
 import { RVBloodRequest } from './screens/RVBloodRequest';
 import { RVUserDashboard } from './screens/RVUserDashboard';
+import { RVBloodRequestsNotifications } from './screens/RVBloodRequestsNotifications';
 import { SplashScreen } from './screens/SplashScreen';
 
 export const SignUpContext = createContext();
@@ -19,24 +23,24 @@ const Stack = createStackNavigator();
 export default function App() {
 
   const [signUpDetails, setSignUpDetails] = useState({
-    phoneNumber: ``,
-    secret: ``,
+    phoneNumber: stringConstants.EMPTY,
+    secret: stringConstants.EMPTY,
     registrationSuccessful: false
   });
 
   const [requestForm, setRequestForm] = useState({
-    blood_group: 0,
-    needed_request: `Immediate`,
-    needed_request_date: new Date(),
-    pincode: ``,
-    hospital: ``
+    blood_group: numericConstants.ZERO,
+    needed_request: neededOptions[numericConstants.ZERO].value,
+    needed_request_date: Date.now(),
+    pincode: stringConstants.EMPTY,
+    hospital: stringConstants.EMPTY
   });
 
   const [error, setError] = useState({
-    title: ``,
-    message: ``,
+    title: stringConstants.EMPTY,
+    message: stringConstants.EMPTY,
     showModal: false
-  })
+  });
 
   return (
     <SignUpContext.Provider value={{
@@ -49,6 +53,7 @@ export default function App() {
           <Stack.Screen name="SplashScreen" component={SplashScreen} options={stackOptions} />
           <Stack.Screen name="Home" component={Home} options={stackOptions} />
           <Stack.Screen name="SignIn" component={SignIn} options={stackOptions} />
+          <Stack.Screen name="RVBloodRequestNotification" component={RVBloodRequestsNotifications} options={stackOptions} />
           <Stack.Screen name="SignUp" component={SignUp} options={stackOptions} />
           <Stack.Screen name="SignUpOTPVerification" component={SignUpOTPVerification} options={stackOptions} />
           <Stack.Screen name="SignUpSecret" component={SignUpConfirmSecret} options={stackOptions} />

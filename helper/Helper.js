@@ -46,11 +46,17 @@ export const saveBloodRequest = async (signUpDetails, requestForm) => {
 
 export const notifyBloodDoners = async (signUpDetails, requestForm) => {
     try {
-        return true;
+        const payLoad = {
+            [fieldControllerName.PHONE_NUMBER]: signUpDetails.phoneNumber,
+            [fieldControllerName.PINCODE]: requestForm.pincode,
+            [fieldControllerName.BLOOD_GROUP]: requestForm.blood_group
+        }
+        const response = await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSON.stringify(payLoad))
+        return response && response.data == miscMessage.SUCCESS;
     } catch (error) {
-
+        console.error(`Could not send request to notify blood requests`, error);
     }
-    return false
+    return false;
 }
 
 export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
@@ -369,6 +375,7 @@ export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => 
 }
 
 export const verifyOtpRequest = async (otpString, isFrom, signUpDetails, requestForm, randomNumber) => {
+    debugger
     if (isFrom === miscMessage.BLOOD_REQUEST) {
         const isNotified = await notifyBloodDoners(signUpDetails, requestForm);
         if (isNotified) {
@@ -675,16 +682,29 @@ export const resetTokens = async (error, setError) => {
     return false;
 }
 
-export const setupCloudMessaging = async (messaging) => {
+export const grantPersmissionAndSaveDeviceToken = async (messaging) => {
     try {
-        const authStatus = await messaging().requestPermission();
-        const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-        if (enabled) {
-            console.log('Authorization status:', authStatus);
-            console.log(await messaging().getToken());
+        const authStatusEnabled = await requestNotificationPermission(messaging);
+        if (authStatusEnabled) {
+            console.log('Authorization status:', authStatusEnabled);
+            const token = await messaging().getToken();
+            console.log(token, 'dghgn')
+            return token;
         }
     } catch (error) {
         console.error(`Cloud messaging setup failed`, error);
     }
+    return false;
+}
+
+const requestNotificationPermission = async (messaging) => {
+    try {
+        const authStatus = await messaging().requestPermission();
+        return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    } catch (error) {
+        console.error(`Could not request permission to the user`, error);
+    }
+    console.warn("User denied the notification!");
+    return false;
 }

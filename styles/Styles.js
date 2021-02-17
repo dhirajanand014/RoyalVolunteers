@@ -54,11 +54,23 @@ export const RVGenericStyles = StyleSheet.create({
     ft20: {
         fontSize: 20
     },
+    ft24: {
+        fontSize: 24
+    },
     ft25: {
         fontSize: 25
     },
     ft30: {
         fontSize: 30
+    },
+    ftWeight700: {
+        fontWeight: '700'
+    },
+    marginBottom4: {
+        marginBottom: 4
+    },
+    marginBottom10: {
+        marginBottom: 10
     },
     marginVertical2: {
         marginVertical: 2
@@ -66,8 +78,8 @@ export const RVGenericStyles = StyleSheet.create({
     marginVertical5: {
         marginVertical: 5
     },
-    marginVertical5: {
-        marginVertical: 6
+    marginVertical10: {
+        marginVertical: 10
     },
     borderBottomWidth1: {
         borderBottomWidth: 1
@@ -84,6 +96,9 @@ export const RVGenericStyles = StyleSheet.create({
     centerAlignedText: {
         textAlign: 'center',
     },
+    alignItemsEnd: {
+        alignItems: 'flex-end'
+    },
     alignSelfEnd: {
         alignSelf: 'flex-end'
     },
@@ -95,6 +110,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     justifyContentCenter: {
         justifyContent: 'center'
+    },
+    padding5: {
+        padding: 5
     },
     paddingHorizontal10: {
         paddingHorizontal: 10
@@ -114,17 +132,26 @@ export const RVGenericStyles = StyleSheet.create({
     colorBlack: {
         color: `black`
     },
-    colorGreen: {
-        color: `green`
+    backGroundColorGreen: {
+        backgroundColor: `green`
     },
     colorWhite: {
         color: `white`
+    },
+    colorGreen: {
+        color: 'green'
+    },
+    ml_8: {
+        marginLeft: 8
     },
     ml_24: {
         marginLeft: 24
     },
     marginHorizontal4: {
         marginHorizontal: 4
+    },
+    opacitypt7: {
+        opacity: .7
     }
 });
 
@@ -623,6 +650,12 @@ export const RVStyles = StyleSheet.create({
         width: width / 1.03,
         elevation: 8
     },
+    bloodNotificationsFlatListRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 16,
+        width: width / 1.03
+    },
     dasBoardFooterViewBloodTypeView: {
         flex: 0.25,
         borderWidth: 1,
@@ -711,6 +744,33 @@ export const RVStyles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         marginTop: 30
+    },
+    notificationsFlatListRow: {
+        marginVertical: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.3,
+        shadowRadius: 12,
+        borderRadius: 12,
+        backgroundColor: '#fff',
+        elevation: 8
+    },
+    notificationsFlatListRowView: {
+        borderWidth: 1,
+        borderRadius: 12,
+        overflow: 'hidden',
+        height: 80,
+        alignSelf: 'center'
+    },
+    notificationBloodTypeText: {
+        fontWeight: 'bold',
+        color: 'white',
+        backgroundColor: 'red',
+        padding: 4
+    },
+    notificationsCallStyle: {
+        paddingVertical: 8,
+        borderRadius: 12
     }
 });
 
