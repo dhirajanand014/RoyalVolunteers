@@ -27,7 +27,7 @@ export const RVUserDashBoardPincodeText = props => {
                     setUserDashboard={setUserDashboard} value={userDashboard.pincode} extraStyles={RVStyles.dashBoardEdit} autofocus={true} isFromDashBoard={true} />
                 ||
                 <View style={[RVGenericStyles.ml_24, RVStyles.dashBoardUserValueStyle]}>
-                    <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold]}>{props.value}</Text>
+                    <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{props.value}</Text>
                 </View>
             }
             {

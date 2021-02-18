@@ -24,7 +24,7 @@ export const RVUserDashboardDetailsText = props => {
                         formState={props.formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
                         initial={availablilityStatusOptions.findIndex(option => option.value == props.value)} isFromDashBoard={true}
                         value={numericConstants.ZERO} /> ||
-                    <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold]}>{props.value}</Text>
+                    <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{props.value}</Text>
                 }
             </View>
         </View>

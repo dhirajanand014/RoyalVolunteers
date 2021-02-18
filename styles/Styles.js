@@ -21,6 +21,9 @@ export const RVGenericStyles = StyleSheet.create({
     bold: {
         fontWeight: 'bold',
     },
+    fontFamilyNormal: {
+        fontFamily: isAndroid && `normal` || `San Francisco`,
+    },
     mr12: {
         marginRight: 12,
     },
@@ -180,6 +183,7 @@ export const RVStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         fontSize: 20,
         marginVertical: 10,
+        fontFamily: isAndroid && `normal` || `San Francisco`,
         paddingVertical: 10,
     },
     signUpFooter: {
@@ -404,7 +408,8 @@ export const RVStyles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: isAndroid && `normal` || `San Francisco`
     },
     secondaryActionButtonText: {
         fontSize: 18,
@@ -551,7 +556,8 @@ export const RVStyles = StyleSheet.create({
     },
     availabilityStatusStyle: {
         width: 100,
-        marginHorizontal: 3
+        marginHorizontal: 3,
+        fontFamily: isAndroid && `normal` || `San Francisco`,
     },
     userRegistrationSubmitButton: {
         marginBottom: isIOS && 90 || 20,
@@ -743,6 +749,7 @@ export const RVStyles = StyleSheet.create({
         color: `#fe7d32`,
         fontSize: 14,
         fontWeight: 'bold',
+        fontFamily: isAndroid && `normal` || `San Francisco`,
         marginTop: 30
     },
     notificationsFlatListRow: {
