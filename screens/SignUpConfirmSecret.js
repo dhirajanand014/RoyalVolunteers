@@ -85,13 +85,13 @@ export const SignUpConfirmSecret = () => {
                 let isSuccess;
                 let isFromForgotPassword = false;
                 if (registrationResponse == `${miscMessage.RESET}_${miscMessage.SUCCESSFUL}`) {
-                    isSuccess = await resetTokens(error, setErrorModal);
+                    isSuccess = await resetTokens(error, setErrorMod);
                     isFromForgotPassword = true;
                 } else {
                     isSuccess = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
                     isFromForgotPassword = false;
                 }
-                isSuccess && await navigateUser(data, isFromForgotPassword) || setErrorModal(error, setErrorModal, errorModalMessageConstants.UNEXPECTED_ERROR,
+                isSuccess && await navigateUser(data, isFromForgotPassword) || setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
                     errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
             }
         }

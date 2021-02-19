@@ -5,6 +5,7 @@ import { Text, View, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
+import messaging from '@react-native-firebase/messaging';
 import { colors, RVStyles } from '../styles/Styles';
 import {
     actionButtonTextConstants, errorModalMessageConstants, errorModalTitleConstants,
@@ -50,11 +51,11 @@ export const SignIn = props => {
                     phoneNumber: data.phoneNumber
                 }
             }]
-        })
+        });
     }
 
     const submitDetails = async data => {
-        const responseNavigation = await handleUserLogin(data);
+        const responseNavigation = await handleUserLogin(data, messaging);
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
             const savedToken = await getSavedToken(error, setError);
             const isValidRequest = await validateSavedToken(savedToken, data, error, setError, false);

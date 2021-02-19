@@ -20,12 +20,17 @@ export const stringConstants = {
 
 export const routeConsts = {
     HOME: `Home`,
+    SIGN_IN: `SignIn`,
     SIGN_UP: `SignUp`,
+    SIGN_UP_OTP_VERIFICATION: `SignUpOTPVerification`,
     SIGN_UP_SECRET: `SignUpSecret`,
     USER_REGISTRATION: `RVUserRegistration`,
     OTP_VERIFICATION: `SignUpOTPVerification`,
     USER_DASHBOARD: `RVUserDashboard`,
-    BLOOD_REQUEST: `RVBloodRequest`
+    USER_REGISTRATION: `RVUserRegistration`,
+    BLOOD_REQUEST: `RVBloodRequest`,
+    SPLASH_SCREEN: `SplashScreen`,
+    BLOOD_REQUEST_NOTIFICATION: `RVBloodRequestNotification`
 }
 
 export const screenOptions = {
@@ -177,7 +182,8 @@ export const urlConstants = {
     AUTHORIZE_ACCESS_TOKEN: `https://royalvolunteers.in/token.php`,
     VALIDATE_TOKEN: `https://royalvolunteers.in/resource_validate.php`,
     FORGOT_PASSWORD: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_pass_update.php`,
-    NOTIFY_BLOOD_REQUEST: ``
+    NOTIFY_BLOOD_REQUEST: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_notify_blood_request.php`,
+    UPDATE_DEVICE_TOKEN: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_up_device_token.php`
 }
 
 export const countryCodesConstants = {
@@ -345,7 +351,9 @@ export const miscMessage = {
     TOKEN_INVALID: `TokenInvalid`,
     TOKEN_EXPIRED: `TokenExpired`,
     INVALID_REQUEST: `InvalidRequest`,
-    USER_SERVICE_TOKEN_KEY: `user`
+    USER_SERVICE_TOKEN_KEY: `user`,
+    DEVICE_TOKEN: `device_token`,
+    CANCEL_TYPE: `cancel`
 }
 
 export const successFulMessages = {
@@ -359,14 +367,16 @@ export const successFulMessages = {
     TOKEN_IS_VALID: `Token is valid!`,
     SUCCESSFULLY_SAVED_TOKEN: `Successfully saved token`,
     TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`,
-    SUCCESSFUL_LOG_OUT: `SuccessFully logged out`
+    SUCCESSFUL_LOG_OUT: `SuccessFully logged out`,
 }
 
 export const errorModalTitleConstants = {
     LOGIN_FAILED: `Login Failed`,
     ERROR: `Error : `,
     INVALID_TOKEN: `invalid_token`,
-    EXPIRED: `expired`
+    EXPIRED: `expired`,
+    ENABLE_NOTIFICATIONS: `Enable Notifications`,
+    NOT_AVAILABLE: `Not Available`
 }
 
 export const errorModalMessageConstants = {
@@ -388,7 +398,9 @@ export const errorModalMessageConstants = {
     SAVED_TOKEN_FETCH_FAILED: `Could not fetch the request token saved! : `,
     FETCH_ACCOUNT_STATUS_FAILED: `Could not fetch user resgistration status for phone number: `,
     CANNOT_SAVE_ACCOUNT_STATUS: `Cannot not save user registration status`,
-    CANNOT_FETCH_SAVED_ACCOUNT_STATUS: `Cannot not fetch user registration status`
+    CANNOT_FETCH_SAVED_ACCOUNT_STATUS: `Cannot not fetch user registration status`,
+    ENABLE_NOTIFICATIONS_SETTINGS: `To receive notifications about blood requests, you need to enable receiving notifications.\n
+        Clicking on OK will navigate you to settings dialog to allow notifications.Click Cancel to close.`
 }
 
 export const tokenRequestResponseConst = {

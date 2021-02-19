@@ -13,10 +13,12 @@ import {
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
-import { getRegistrationStatus, handleUserSignUpRegistration, saveRegistrationStatus } from '../helper/Helper';
+import { displayNotificationPermissionWarning, getRegistrationStatus, handleUserSignUpRegistration, requestNotificationPermission, saveRegistrationStatus, showSnackBar } from '../helper/Helper';
 import { AuthenticatedInputText } from '../components/input/AuthenticatedInputText';
 import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInputPicker';
 import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';
+import messaging from '@react-native-firebase/messaging';
+
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
@@ -27,7 +29,18 @@ export const RVUserRegistration = () => {
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     const onSubmit = async (data) => {
-        const isUserRegistrationComplete = await handleUserSignUpRegistration(phoneNumber, data, true);
+        const isEnabled = await requestNotificationPermission(messaging);
+        if (!isEnabled) {
+            displayNotificationPermissionWarning();
+        }
+
+        const device_token = await messaging().getToken();
+        const requestData = {
+            ...data,
+            [miscMessage.DEVICE_TOKEN]: device_token
+        }
+
+        const isUserRegistrationComplete = await handleUserSignUpRegistration(phoneNumber, requestData, true);
         if (isUserRegistrationComplete) {
             const status = await getRegistrationStatus();
             status && saveRegistrationStatus(phoneNumber, miscMessage.REGISTERED);
@@ -59,8 +72,8 @@ export const RVUserRegistration = () => {
                         defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList} />
 
                     <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
-                        defaultValue={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}
-                        fontSize={numericConstants.TWELVE} initial={numericConstants.ZERO} isFromDashBoard={false} />
+                        initial={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}
+                        fontSize={numericConstants.TWELVE} initial={numericConstants.ZERO} isFromDashBoard={false} defaultValue={miscMessage.YES} />
 
                 </Animated.ScrollView>
                 <View style={RVStyles.userRegistrationSubmitButton}>

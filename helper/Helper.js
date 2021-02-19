@@ -6,10 +6,13 @@ import {
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
     errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList,
     tokenRequestResponseConst, numericConstants, successFulMessages,
-    errorModalTitleConstants
+    errorModalTitleConstants,
+    fieldTextName,
+    actionButtonTextConstants
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
+import { Alert, Linking } from "react-native";
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -49,10 +52,12 @@ export const notifyBloodDoners = async (signUpDetails, requestForm) => {
         const payLoad = {
             [fieldControllerName.PHONE_NUMBER]: signUpDetails.phoneNumber,
             [fieldControllerName.PINCODE]: requestForm.pincode,
-            [fieldControllerName.BLOOD_GROUP]: requestForm.blood_group
+            [fieldControllerName.BLOOD_GROUP]: bloodGroupsList.find(bloodGroup =>
+                bloodGroup.value == requestForm.blood_group).label
         }
-        const response = await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSON.stringify(payLoad))
-        return response && response.data == miscMessage.SUCCESS;
+        const JSONPayload = JSON.stringify(payLoad);
+        await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
+        return true;
     } catch (error) {
         console.error(`Could not send request to notify blood requests`, error);
     }
@@ -96,7 +101,7 @@ const loginUser = async (phoneNumber, secret) => {
             const response = loginResponse.data;
             if (response.message == miscMessage.SUCCESSFUL || response.message == miscMessage.UNSUCCESSFUL &&
                 response.account_status == miscMessage.INVALID_USER)
-                return response.account_status;
+                return response;
         }
     } catch (error) {
         console.log(error);
@@ -104,15 +109,19 @@ const loginUser = async (phoneNumber, secret) => {
     return false;
 }
 
-export const handleUserLogin = async (data) => {
+export const handleUserLogin = async (data, messaging) => {
     try {
         const { phoneNumber, secret } = data;
         const isSuccessLogin = await loginUser(phoneNumber, secret);
         if (isSuccessLogin) {
-            if (isSuccessLogin == miscMessage.VERIFIED || isSuccessLogin == miscMessage.REGISTERED) {
-                return isSuccessLogin == miscMessage.VERIFIED && routeConsts.USER_REGISTRATION || routeConsts.USER_DASHBOARD;
-            } else if (isSuccessLogin == miscMessage.INVALID_USER) {
-                return isSuccessLogin;
+            const successLoginAccountStatus = isSuccessLogin.account_status;
+            if (successLoginAccountStatus == miscMessage.VERIFIED || successLoginAccountStatus == miscMessage.REGISTERED) {
+                const currentToken = isSuccessLogin.device_token;
+                await updateDeviceToken(messaging, currentToken, phoneNumber);
+                return successLoginAccountStatus == miscMessage.VERIFIED && routeConsts.USER_REGISTRATION ||
+                    routeConsts.USER_DASHBOARD;
+            } else if (successLoginAccountStatus == miscMessage.INVALID_USER) {
+                return successLoginAccountStatus;
             }
         }
     } catch (error) {
@@ -145,7 +154,7 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isR
         }
         showSnackBar(successFulMessages.SENT_SMS_SUCCESSFULLY, true);
     } catch (error) {
-        console.log(error);
+        console.error(`Cannot request OTP for number :${signUpDetails.phoneNumber}`, error);
     }
     return false;
 }
@@ -681,22 +690,23 @@ export const resetTokens = async (error, setError) => {
     return false;
 }
 
-export const grantPersmissionAndSaveDeviceToken = async (messaging) => {
+export const updateDeviceToken = async (messaging, currentDeviceToken, phoneNumber) => {
     try {
-        const authStatusEnabled = await requestNotificationPermission(messaging);
-        if (authStatusEnabled) {
-            console.log('Authorization status:', authStatusEnabled);
-            const token = await messaging().getToken();
-            console.log(token, 'dghgn')
-            return token;
+        const deviceToken = await messaging().getToken();
+        if (null != currentDeviceToken && deviceToken !== currentDeviceToken) {
+            const payLoadRequest = {
+                [fieldControllerName.PHONE_NUMBER]: phoneNumber,
+                [miscMessage.DEVICE_TOKEN]: deviceToken
+            }
+            const response = await axios.post(urlConstants.UPDATE_DEVICE_TOKEN, JSON.stringify(payLoadRequest));
+            return response && response.data;
         }
     } catch (error) {
-        console.error(`Cloud messaging setup failed`, error);
+        console.error(`Could not update the device token for the phone number: ${phoneNumber}`, error);
     }
-    return false;
 }
 
-const requestNotificationPermission = async (messaging) => {
+export const requestNotificationPermission = async (messaging) => {
     try {
         const authStatus = await messaging().requestPermission();
         return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -706,4 +716,23 @@ const requestNotificationPermission = async (messaging) => {
     }
     console.warn("User denied the notification!");
     return false;
+}
+
+export const displayNotificationPermissionWarning = props => {
+    Alert.alert(errorModalTitleConstants.ENABLE_NOTIFICATIONS, errorModalMessageConstants.ENABLE_NOTIFICATIONS_SETTINGS,
+        [{ text: actionButtonTextConstants.CANCEL, style: miscMessage.CANCEL_TYPE },
+        {
+            text: actionButtonTextConstants.OK, onPress: () => {
+                if (isIOS) {
+                    try {
+                        const canOpen = Linking.canOpenURL('app-settings:');
+                        canOpen && Linking.openURL('app-settings:');
+                    } catch (error) {
+                        console.error(`Cannot open settings screen`, error)
+                    }
+                }
+            }
+        }],
+        { cancelable: false }
+    );
 }

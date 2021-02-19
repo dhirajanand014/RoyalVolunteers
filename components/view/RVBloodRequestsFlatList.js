@@ -12,6 +12,7 @@ export const RVBloodRequestsFlatList = props => {
         <View style={[RVGenericStyles.colorWhite]}>
             <FlatList data={data} contentContainerStyle={RVGenericStyles.padding5}
                 keyExtractor={item => item.phone_number} renderItem={({ item, index }) => {
+                    item = JSON.parse(item);
                     return (<View key={`${item.phone_number}_${index}`} style={[RVGenericStyles.marginVertical10, RVStyles.notificationsFlatListRow]}>
                         <View style={[RVStyles.bloodNotificationsFlatListRow, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View style={RVStyles.notificationsFlatListRowView}>

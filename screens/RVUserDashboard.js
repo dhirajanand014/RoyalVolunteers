@@ -1,9 +1,9 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { View, Animated } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Animated, Alert } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
-import { fetchUserDashboardDetails, grantPersmissionAndGetDeviceToken, grantPersmissionAndSaveDeviceToken } from '../helper/Helper';
+import { fetchUserDashboardDetails } from '../helper/Helper';
 import { fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
@@ -14,11 +14,16 @@ import { FeedbackModal } from '../components/modals/FeedbackModal';
 import { RVUserDashBoardFooterTopView } from '../components/view/RVUserDashBoardFooterTopView';
 import { RVUserDashBoardFooterButtons } from '../components/view/RVUserDashBoardFooterButtons';
 import messaging from '@react-native-firebase/messaging';
+import { SignUpContext } from '../App';
+import { NotificationReceivedModal } from '../components/modals/NotificationReceivedModal';
+
 export const RVUserDashboard = () => {
 
     const navigation = useNavigation();
     const route = useRoute();
     const { control, formState, handleSubmit } = useForm({ mode: miscMessage.ON_CHANGE });
+
+    const { notificationDetails, setNotificationDetails } = useContext(SignUpContext);
 
     const [userDashboard, setUserDashboard] = useState({
         name: stringConstants.EMPTY,
@@ -38,7 +43,12 @@ export const RVUserDashboard = () => {
 
     useEffect(() => {
         fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
-        const deviceToken = grantPersmissionAndSaveDeviceToken(messaging);
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage =>
+            setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage })
+        );
     }, []);
 
     return (
@@ -63,7 +73,7 @@ export const RVUserDashboard = () => {
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
                 <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
             </Animatable.View>
+            <NotificationReceivedModal />
         </View>
-
     )
 }
