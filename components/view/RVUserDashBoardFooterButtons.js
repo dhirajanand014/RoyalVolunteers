@@ -15,7 +15,7 @@ export const RVUserDashBoardFooterButtons = props => {
                 </TouchableOpacity>
             </View>
             <View style={[RVGenericStyles.alignItemsCenter]}>
-                <TouchableOpacity activeOpacity={.7} style={RVStyles.dashBoardRequestBlood} onPress={() => props.navigation.navigate(routeConsts.BLOOD_REQUEST)}>
+                <TouchableOpacity activeOpacity={.7} style={RVStyles.dashBoardRequestBlood} onPress={() => props.navigation.navigate(routeConsts.BLOOD_REQUEST, { fromScreen: routeConsts.USER_DASHBOARD })}>
                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.REQUEST_FOR_BLOOD}</Text>
                 </TouchableOpacity>
             </View>

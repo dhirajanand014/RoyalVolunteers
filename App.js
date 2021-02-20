@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import React, { createContext, useEffect, useState } from 'react';
-import { AppRegistry } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from './screens/Home';
@@ -20,23 +19,10 @@ import { SplashScreen } from './screens/SplashScreen';
 import NetInfo from "@react-native-community/netinfo";
 import { showSnackBar } from './helper/Helper';
 import messaging from '@react-native-firebase/messaging';
+import { RVLoaderView } from './components/view/RVLoaderView';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
-
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
-  //setNotificationDetails({ ...notificationDetails, isFromBackGroundNotification: true });
-});
-
-
-const NotificationHandler = async (messages) => {
-  console.log("BgMessaging", messages);
-  return Promise.resolve();
-};
-
-//Android
-AppRegistry.registerHeadlessTask('ReactNativeFirebaseMessagingHeadlessTask', () => NotificationHandler);
 
 function HeadlessCheck({ isHeadless }) {
   if (isHeadless) {
@@ -62,6 +48,8 @@ export default function App() {
     hospital: stringConstants.EMPTY
   });
 
+  const [loader, setLoader] = useState(false);
+
   const [error, setError] = useState({
     title: stringConstants.EMPTY,
     message: stringConstants.EMPTY,
@@ -69,8 +57,14 @@ export default function App() {
   });
 
   const [notificationDetails, setNotificationDetails] = useState({
+    isFromBackGroundNotification: false,
     showNotificationModal: false,
     message: stringConstants.EMPTY
+  });
+
+  messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+    setNotificationDetails({ ...notificationDetails, isFromBackGroundNotification: true, message: remoteMessage });
   });
 
   useEffect(() => {
@@ -86,7 +80,7 @@ export default function App() {
     <SignUpContext.Provider value={{
       signUpDetails, setSignUpDetails, requestForm,
       setRequestForm, error, setError, notificationDetails,
-      setNotificationDetails
+      setNotificationDetails, loader, setLoader
     }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={routeConsts.SPLASH_SCREEN} screenOptions={screenOptions}
@@ -103,6 +97,9 @@ export default function App() {
           <Stack.Screen name={routeConsts.BLOOD_REQUEST} component={RVBloodRequest} options={stackOptions} />
         </Stack.Navigator>
       </NavigationContainer>
+      {
+        loader && <RVLoaderView />
+      }
     </SignUpContext.Provider>
   );
 }

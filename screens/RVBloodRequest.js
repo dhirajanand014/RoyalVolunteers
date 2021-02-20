@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Text, View, Animated } from 'react-native';
@@ -22,14 +22,23 @@ import { RVDatePickerView } from '../components/view/RVDatePickerView';
 export const RVBloodRequest = () => {
 
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const fromScreen = route?.params?.fromScreen;
+
     const { handleSubmit, control, formState } = useForm({ mode: miscMessage.ON_CHANGE });
 
-    const { requestForm, setRequestForm } = useContext(SignUpContext);
+    const { requestForm, setRequestForm, setLoader } = useContext(SignUpContext);
 
     const onSubmit = async (data) => {
+        setLoader(true);
         if (formState.isValid) {
-            navigation.navigate(routeConsts.SIGN_UP, { isFrom: miscMessage.BLOOD_REQUEST });
+            navigation.navigate(routeConsts.SIGN_UP, {
+                isFrom: miscMessage.BLOOD_REQUEST,
+                fromScreen: fromScreen
+            });
         }
+        setLoader(false);
     };
 
     return (

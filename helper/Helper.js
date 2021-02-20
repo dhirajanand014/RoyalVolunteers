@@ -80,8 +80,9 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
     return miscMessage.ERROR;
 }
 
-export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber) => {
+export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, setLoader) => {
     try {
+        setLoader(true);
         const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}${miscMessage.PH_QUERY_PARAM}${phoneNumber}`;
         let userDashboardDetails = await axios.get(url);
         if (userDashboardDetails.data) {
@@ -89,8 +90,9 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
+    setLoader(false);
 }
 const loginUser = async (phoneNumber, secret) => {
     try {
@@ -130,8 +132,9 @@ export const handleUserLogin = async (data, messaging) => {
     return false;
 };
 
-export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isResendOtp) => {
+export const handleUserSignUpOtp = async (signUpDetails, isFrom, fromScreen, navigation, isResendOtp, setLoader) => {
     try {
+        setLoader(true);
         const { phoneNumber } = signUpDetails;
 
         // Math.random() returns float between 0 and 1, 
@@ -148,14 +151,16 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isR
         const response = await axios.post(urlConstants.TRIGGER_SMS_OTP, otpRequestDataJSON);
 
         if (response && response.data && !isResendOtp) {
-            const params = getSignUpParams(signUpDetails, random6Digit, isFrom);
-            navigation.navigate(routeConsts.OTP_VERIFICATION, params)
+            const params = getSignUpParams(signUpDetails, random6Digit, isFrom, fromScreen);
+            navigation.navigate(routeConsts.OTP_VERIFICATION, params);
+            setLoader(false);
             return true;
         }
         showSnackBar(successFulMessages.SENT_SMS_SUCCESSFULLY, true);
     } catch (error) {
         console.error(`Cannot request OTP for number :${signUpDetails.phoneNumber}`, error);
     }
+    setLoader(false);
     return false;
 }
 
@@ -208,10 +213,11 @@ export const saveUserDetails = async (signUpPayloadString, isFrom) => {
     return false;
 }
 
-export const getSignUpParams = (signUpDetails, random6Digit, isFrom) => {
+export const getSignUpParams = (signUpDetails, random6Digit, isFrom, fromScreen) => {
     let returnValue = {};
     if (isFrom) {
-        returnValue.isFrom = isFrom
+        returnValue.isFrom = isFrom;
+        returnValue.fromScreen = fromScreen
     }
     returnValue.phoneNumber = signUpDetails.phoneNumber;
     returnValue.rand_number = random6Digit;
@@ -250,14 +256,15 @@ export const onChangeByValueType = async (inputProps, value, props) => {
         case fieldControllerName.AVAILABILITY_STATUS:
             inputProps.onChange(value);
             props.isFromDashBoard && await updateDataFromDashBoard(props.userDashboard, props.setUserDashboard,
-                fieldControllerName.AVAILABILITY_STATUS, value);
+                fieldControllerName.AVAILABILITY_STATUS, value, props.setLoader);
         default:
             inputProps.onChange(value);
             break;
     }
 }
 
-export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, property, value) => {
+export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, property, value, setLoader) => {
+    setLoader(true);
     userDashboard[property] = value;
     const dashboardData = {
         ...userDashboard,
@@ -267,6 +274,7 @@ export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, p
     await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
     setUserDashboard({ ...userDashboard });
     showSnackBar(`Updated your availability successfully!`, true);
+    property == fieldControllerName.AVAILABILITY_STATUS ** setLoader(false);
 }
 
 export const setErrorModal = (error, setError, title, message, showModal) => {
@@ -274,8 +282,9 @@ export const setErrorModal = (error, setError, title, message, showModal) => {
 }
 
 export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-    attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, navigation, clearErrors) => {
+    attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, fromScreen, navigation, clearErrors, setLoader) => {
     // clear last OTP
+    setLoader(true);
     if (firstTextInputRef) {
         setOtpArray(Array(OTP_INPUTS).fill(stringConstants.EMPTY));
         firstTextInputRef.current.focus();
@@ -283,8 +292,9 @@ export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, set
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     setAttemptsRemaining(--attemptsRemaining);
     startResendOtpTimer();
-    await handleUserSignUpOtp(signUpDetails, isFrom, navigation, true);
+    await handleUserSignUpOtp(signUpDetails, isFrom, fromScreen, navigation, true);
     clearErrors(fieldControllerName.OTP_INPUT);
+    setLoader(false);
 };
 
 // only backspace key press event is fired on Android
@@ -383,7 +393,7 @@ export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => 
     return false;
 }
 
-export const verifyOtpRequest = async (otpString, isFrom, signUpDetails, requestForm, randomNumber) => {
+export const verifyOtpRequest = async (otpString, isFrom, fromScreen, signUpDetails, requestForm, randomNumber) => {
     if (isFrom === miscMessage.BLOOD_REQUEST) {
         const isNotified = await notifyBloodDoners(signUpDetails, requestForm);
         if (isNotified) {
@@ -392,7 +402,7 @@ export const verifyOtpRequest = async (otpString, isFrom, signUpDetails, request
         } else {
             showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false);
         }
-        return miscMessage.RESET_NAVIGATION;
+        return fromScreen == routeConsts.USER_DASHBOARD && miscMessage.DASHBOARD || miscMessage.RESET_NAVIGATION;
     } else if (randomNumber) {
         if (parseInt(otpString) === randomNumber) {
             return miscMessage.CONFIRM_SECRET;
@@ -661,12 +671,14 @@ export const fetchSplashScreenRoute = async (savedToken, isValidRequest) => {
     }
 }
 
-export const handleForgotPassword = async (watchMobileNumber, navigation, trigger, error, setError, clearErrors) => {
+export const handleForgotPassword = async (watchMobileNumber, navigation, trigger, error, setError, clearErrors,
+    setLoader) => {
     try {
         if (watchMobileNumber && watchMobileNumber.length >= numericConstants.TEN) {
             clearErrors(fieldControllerName.PHONE_NUMBER);
             const phone = { phoneNumber: watchMobileNumber };
-            await handleUserSignUpOtp(phone, miscMessage.FORGOT_PASSWORD, navigation, false);
+            await handleUserSignUpOtp(phone, miscMessage.FORGOT_PASSWORD, routeConsts.SIGN_IN, navigation,
+                false, setLoader);
         } else {
             trigger(fieldControllerName.PHONE_NUMBER);
         }
@@ -693,7 +705,7 @@ export const resetTokens = async (error, setError) => {
 export const updateDeviceToken = async (messaging, currentDeviceToken, phoneNumber) => {
     try {
         const deviceToken = await messaging().getToken();
-        if (null != currentDeviceToken && deviceToken !== currentDeviceToken) {
+        if (!currentDeviceToken || (null != currentDeviceToken && deviceToken !== currentDeviceToken)) {
             const payLoadRequest = {
                 [fieldControllerName.PHONE_NUMBER]: phoneNumber,
                 [miscMessage.DEVICE_TOKEN]: deviceToken

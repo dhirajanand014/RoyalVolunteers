@@ -4,7 +4,7 @@ import { View, Animated, Alert } from 'react-native';
 import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import * as Animatable from 'react-native-animatable';
 import { fetchUserDashboardDetails } from '../helper/Helper';
-import { fieldTextName, miscMessage, numericConstants, stringConstants } from '../constants/Constants';
+import { fieldTextName, miscMessage, numericConstants, routeConsts, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
 import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';
@@ -23,7 +23,7 @@ export const RVUserDashboard = () => {
     const route = useRoute();
     const { control, formState, handleSubmit } = useForm({ mode: miscMessage.ON_CHANGE });
 
-    const { notificationDetails, setNotificationDetails } = useContext(SignUpContext);
+    const { notificationDetails, setNotificationDetails, setLoader } = useContext(SignUpContext);
 
     const [userDashboard, setUserDashboard] = useState({
         name: stringConstants.EMPTY,
@@ -42,7 +42,7 @@ export const RVUserDashboard = () => {
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     useEffect(() => {
-        fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber);
+        fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber, setLoader);
     }, []);
 
     useEffect(() => {
@@ -50,6 +50,21 @@ export const RVUserDashboard = () => {
             setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage })
         );
     }, []);
+
+    setTimeout(() => {
+        if (notificationDetails && notificationDetails.isFromBackGroundNotification) {
+            setLoader(true);
+            navigation.reset({
+                index: numericConstants.ZERO, routes: [{
+                    name: routeConsts.BLOOD_REQUEST_NOTIFICATION, params: {
+                        requests: notificationDetails.message.data.requests
+                    }
+                }]
+            });
+            setNotificationDetails({ ...notificationDetails, isFromBackGroundNotification: false, message: stringConstants.EMPTY });
+            setLoader(false);
+        }
+    }, numericConstants.THREE_HUNDRED);
 
     return (
         <View style={RVStyles.headerContainer}>
@@ -62,12 +77,12 @@ export const RVUserDashboard = () => {
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phone} />
 
                     <RVUserDashBoardAgeText text={fieldTextName.AGE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
-                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.age} />
+                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.age} setLoader={setLoader} />
 
                     <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
-                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} />
+                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} setLoader={setLoader} />
 
-                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status}
+                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status} setLoader={setLoader}
                         formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
                 </Animated.ScrollView>
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />

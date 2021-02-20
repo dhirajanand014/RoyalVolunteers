@@ -39,8 +39,9 @@ export const SignUpOTPVerification = props => {
     const phoneNumber = route?.params?.phoneNumber;
 
     const isFrom = route?.params?.isFrom;
+    const fromScreen = route?.params?.fromScreen;
 
-    const { requestForm, signUpDetails } = useContext(SignUpContext);
+    const { requestForm, signUpDetails, setLoader } = useContext(SignUpContext);
 
     const navigation = useNavigation();
     const { handleSubmit, control, setError, formState, clearErrors } = useForm();
@@ -127,17 +128,27 @@ export const SignUpOTPVerification = props => {
     const onSubmit = async () => {
         const otpString = otpArray.reduce((result, item) => { return `${result}${item}` }, stringConstants.EMPTY);
         const isValid = identifyOtpError(otpString, otpArray, setError, clearErrors);
+        setLoader(true);
         if (isValid) {
             const randomNumber = route.params?.rand_number || false;
-            const navigationResponse = await verifyOtpRequest(otpString, isFrom, signUpDetails, requestForm, randomNumber);
-            if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.CONFIRM_SECRET == navigationResponse) {
+            const navigationResponse = await verifyOtpRequest(otpString, isFrom, fromScreen, signUpDetails, requestForm, randomNumber);
+            if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.DASHBOARD == navigationResponse ||
+                miscMessage.CONFIRM_SECRET == navigationResponse) {
                 clearInterval(resendOtpTimerInterval);
                 if (miscMessage.RESET_NAVIGATION == navigationResponse)
-                    navigation.reset({ index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }], });
+                    navigation.reset({ index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }] });
+                else if (miscMessage.DASHBOARD == navigationResponse)
+                    navigation.reset({
+                        index: numericConstants.ZERO, routes: [{
+                            name: routeConsts.USER_DASHBOARD,
+                            params: { phoneNumber: phoneNumber }
+                        }]
+                    });
                 else if (miscMessage.CONFIRM_SECRET == navigationResponse)
                     navigation.navigate(routeConsts.SIGN_UP_SECRET, { isFrom: isFrom, phoneNumber: phoneNumber });
             }
         }
+        setLoader(false);
     };
 
     return (
@@ -163,7 +174,7 @@ export const SignUpOTPVerification = props => {
                     resendButtonDisabledTime > numericConstants.ZERO && <OTPTimeText text={miscMessage.RESEND_OTP_IN} time={resendButtonDisabledTime} />
                     || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}
                         onPress={async () => await onResendOtpButtonPress(firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-                            attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, navigation, clearErrors)} />
+                            attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, fromScreen, navigation, clearErrors, setLoader)} />
                 }
                 <View style={RVGenericStyles.fill} />
                 {

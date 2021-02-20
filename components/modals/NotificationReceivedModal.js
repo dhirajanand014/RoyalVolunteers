@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import {
     actionButtonTextConstants, errorModalTitleConstants,
-    numericConstants, routeConsts
+    numericConstants, routeConsts, stringConstants
 } from "../../constants/Constants";
 import { RVGenericStyles, RVStyles } from "../../styles/Styles";
 import LinearGradient from "react-native-linear-gradient";
@@ -48,9 +48,9 @@ export const NotificationReceivedModal = props => {
                                             }
                                         }]
                                     });
-                                    setNotificationDetails({ ...notificationDetails, showNotificationModal: false });
+                                    setNotificationDetails({ ...notificationDetails, showNotificationModal: false, message: stringConstants.EMPTY });
                                 }}>
-                                <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.SUBMIT}</Text>
+                                <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.VIEW_DONERS}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

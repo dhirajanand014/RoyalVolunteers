@@ -36,7 +36,7 @@ export const SignIn = props => {
     const refCallback = node => {
         secretRef.current = node;
     };
-    const { error, setError } = useContext(SignUpContext);
+    const { error, setError, loader, setLoader } = useContext(SignUpContext);
 
     const navigateUser = async (responseNavigation, data) => {
         const status = await getRegistrationStatus();
@@ -55,20 +55,24 @@ export const SignIn = props => {
     }
 
     const submitDetails = async data => {
+        setLoader(true);
         const responseNavigation = await handleUserLogin(data, messaging);
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
             const savedToken = await getSavedToken(error, setError);
             const isValidRequest = await validateSavedToken(savedToken, data, error, setError, false);
             if (isValidRequest && isValidRequest == miscMessage.TOKEN_VALID) {
                 navigateUser(responseNavigation, data);
+                setLoader(false);
             } else {
                 setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
                     errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
+                setLoader(false);
             }
         } else if (responseNavigation === miscMessage.INVALID_USER) {
             setErrorModal(error, setError, errorModalTitleConstants.LOGIN_FAILED,
                 errorModalMessageConstants.USER_LOGIN_FAILED, true);
             showSnackBar(errorModalTitleConstants.LOGIN_FAILED, false);
+            setLoader(false);
         }
     }
 
@@ -89,7 +93,7 @@ export const SignIn = props => {
                     <View style={RVStyles.signInLinks}>
                         <View style={RVStyles.signInForgotPassword}>
                             <TouchableOpacity style={RVStyles.signInForgotPasswordLink}
-                                onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors)}>
+                                onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>
                                 <Text style={RVStyles.signInForgotPasswordText}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
                             </TouchableOpacity>
                         </View>

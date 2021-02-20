@@ -155,6 +155,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     opacitypt7: {
         opacity: .7
+    },
+    opacitypt2: {
+        opacity: .2
     }
 });
 
@@ -778,6 +781,50 @@ export const RVStyles = StyleSheet.create({
     notificationsCallStyle: {
         paddingVertical: 8,
         borderRadius: 12
+    },
+    homeViewContainer: {
+        alignItems: 'center',
+        marginTop: 67,
+        flexDirection: 'column',
+        marginHorizontal: 10,
+        paddingVertical: 15
+    },
+    homeSignInButton: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        marginVertical: 15,
+        width: 300,
+        elevation: 3,
+        backgroundColor: "#DE1F25"
+    },
+    homeSignUpButton: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        width: 300,
+        marginVertical: 15,
+        elevation: 3,
+        backgroundColor: "#DE1F25"
+    },
+    homeRequestBloodBlood: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        marginVertical: 15,
+        width: 300,
+        elevation: 3,
+        backgroundColor: "#DE1F25"
+    },
+    loader: {
+        position: 'absolute',
+        elevation: 5,
+        backgroundColor: '#fff',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10
     }
 });
 

@@ -29,7 +29,7 @@ export const SignUpConfirmSecret = () => {
 
     const { handleSubmit, control, setError, formState } = useForm();
 
-    const { signUpDetails, setSignUpDetails, error, setError: setErrorMod } = useContext(SignUpContext);
+    const { signUpDetails, setSignUpDetails, error, setLoader, setError: setErrorMod } = useContext(SignUpContext);
 
     useEffect(() => {
         BackHandler.addEventListener(miscMessage.HARDWARE_BACK_PRESS, signUpSecretBackAction);
@@ -76,6 +76,7 @@ export const SignUpConfirmSecret = () => {
     }
 
     const onSubmit = async (data) => {
+        setLoader(true);
         if (data.confirmSecret !== data.secret) {
             setError(fieldControllerName.CONFIRM_SECRET, formRequiredRules.confirmPasswordRule)
         } else if (data.confirmSecret === data.secret) {
@@ -95,6 +96,7 @@ export const SignUpConfirmSecret = () => {
                     errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
             }
         }
+        setLoader(false);
     };
 
     return (

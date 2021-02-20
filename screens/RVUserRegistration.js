@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Text, View, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -18,17 +18,20 @@ import { AuthenticatedInputText } from '../components/input/AuthenticatedInputTe
 import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInputPicker';
 import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';
 import messaging from '@react-native-firebase/messaging';
+import { SignUpContext } from '../App';
 
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
     const { handleSubmit, control, formState } = useForm();
+    const { setLoader } = useContext(SignUpContext);
 
     const route = useRoute();
 
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     const onSubmit = async (data) => {
+        setLoader(true);
         const isEnabled = await requestNotificationPermission(messaging);
         if (!isEnabled) {
             displayNotificationPermissionWarning();
@@ -48,6 +51,7 @@ export const RVUserRegistration = () => {
                 phoneNumber: phoneNumber
             });
         }
+        setLoader(false);
     }
 
     return (

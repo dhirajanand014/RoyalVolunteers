@@ -25,8 +25,9 @@ export const SignUp = () => {
     const { handleSubmit, control, formState } = useForm();
 
     const isFrom = route?.params?.isFrom;
+    const fromScreen = route?.params?.fromScreen;
 
-    const { signUpDetails, setSignUpDetails } = useContext(SignUpContext);
+    const { signUpDetails, setSignUpDetails, setLoader } = useContext(SignUpContext);
     return (
         <Animated.View style={RVStyles.headerContainer}>
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
@@ -43,8 +44,7 @@ export const SignUp = () => {
                 <View style={RVStyles.signUpPrimaryButtonView}>
                     <Text style={RVStyles.signUpDescription}>{placeHolderText.SIGN_UP_DESCRIPTION}</Text>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpActionButton} onPress={handleSubmit(data =>
-                        handleUserSignUpOtp(signUpDetails, isFrom, navigation, false)
-                    )} >
+                        handleUserSignUpOtp(signUpDetails, isFrom, fromScreen, navigation, false, setLoader))}>
                         <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
                             <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.PROCEED}</Text>
                         </LinearGradient>

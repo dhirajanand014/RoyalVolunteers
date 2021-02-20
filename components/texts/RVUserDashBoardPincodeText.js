@@ -13,7 +13,7 @@ import { RVSaveIcon } from '../icons/RVSaveIcon';
 import { RVUserDashboardTextInput } from '../input/RVUserDashboardTextInput';
 
 export const RVUserDashBoardPincodeText = props => {
-    const { userDashboard, setUserDashboard } = props;
+    const { userDashboard, setUserDashboard, setLoader } = props;
     return (
         <View style={[RVStyles.dashBoardUserDetailsTextView, RVGenericStyles.borderBottomWidthpt5]}>
             <View style={RVStyles.dashBoardUserTextStyle}>
@@ -36,8 +36,9 @@ export const RVUserDashBoardPincodeText = props => {
                         <RVEditIcon />
                     </TouchableOpacity> || userDashboard.isPincodeEdit &&
                     <TouchableOpacity onPress={props.handleSubmit(async data => {
-                        await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.PINCODE, userDashboard.pincode);
-                        setUserDashboard({ ...userDashboard, isPincodeEdit: false, editText: stringConstants.EMPTY })
+                        await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.PINCODE, userDashboard.pincode, setLoader);
+                        setUserDashboard({ ...userDashboard, isPincodeEdit: false, editText: stringConstants.EMPTY });
+                        setLoader(false);
                     })}>
                         <RVSaveIcon />
                     </TouchableOpacity>

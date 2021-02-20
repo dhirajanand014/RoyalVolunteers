@@ -23,7 +23,7 @@ export const RVUserDashboardDetailsText = props => {
                         defaultValue={props.value} userDashboard={props.userDashboard} setUserDashboard={props.setUserDashboard}
                         formState={props.formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
                         initial={availablilityStatusOptions.findIndex(option => option.value == props.value)} isFromDashBoard={true}
-                        value={numericConstants.ZERO} /> ||
+                        value={numericConstants.ZERO} setLoader={props.setLoader} /> ||
                     <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{props.value}</Text>
                 }
             </View>

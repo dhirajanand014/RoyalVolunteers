@@ -13,7 +13,7 @@ import { RVSaveIcon } from '../icons/RVSaveIcon';
 import { RVUserDashboardTextInput } from '../input/RVUserDashboardTextInput';
 
 export const RVUserDashBoardAgeText = props => {
-    const { userDashboard, setUserDashboard } = props;
+    const { userDashboard, setUserDashboard, setLoader } = props;
 
     return (
         <View style={[RVStyles.dashBoardUserDetailsTextView, RVGenericStyles.borderBottomWidthpt5]}>
@@ -37,8 +37,9 @@ export const RVUserDashBoardAgeText = props => {
                         <RVEditIcon />
                     </TouchableOpacity> || userDashboard.isAgeEdit &&
                     <TouchableOpacity onPress={props.handleSubmit(async data => {
-                        await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.AGE, userDashboard.age);
+                        await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.AGE, userDashboard.age, setLoader);
                         setUserDashboard({ ...userDashboard, isAgeEdit: false, editText: stringConstants.EMPTY });
+                        setLoader(false);
                     })}>
                         <RVSaveIcon />
                     </TouchableOpacity>

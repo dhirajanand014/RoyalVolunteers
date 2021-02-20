@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import {
@@ -9,10 +9,12 @@ import {
 import { saveFeedbackText, showSnackBar } from "../../helper/Helper";
 import { RVGenericStyles, RVStyles } from "../../styles/Styles";
 import { RegistrationInput } from "../input/RegistrationInput";
+import { RVLoaderView } from "../view/RVLoaderView";
 
 export const FeedbackModal = props => {
 
     const { handleSubmit, control, formState } = useForm();
+    const [loader, setLoader] = useState(false);
     const { userDashboard, setUserDashboard, phoneNumber } = props;
 
     return (
@@ -36,18 +38,23 @@ export const FeedbackModal = props => {
                             <View>
                                 <TouchableOpacity activeOpacity={.7} style={RVStyles.feedBackSubmitButton}
                                     onPress={handleSubmit(async data => {
+                                        setLoader(true);
                                         const feedbackResponse = await saveFeedbackText(data.feedback, phoneNumber);
                                         feedbackResponse == miscMessage.SUCCESS &&
                                             setTimeout(() => showSnackBar(successFulMessages.FEEDBACK_SUBMITTED_SUCCESSFULLY, true), numericConstants.THREE_HUNDRED);
                                         feedbackResponse == miscMessage.ERROR &&
                                             setTimeout(() => showSnackBar(errorModalMessageConstants.FEEDBACK_SUBMITTED_UNSUCCESSFULLY, false), numericConstants.THREE_HUNDRED);
-                                        setUserDashboard({ ...userDashboard, showFeedbackModal: false })
+                                        setUserDashboard({ ...userDashboard, showFeedbackModal: false });
+                                        setLoader(false);
                                     })}>
                                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.SUBMIT}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
+                    {
+                        loader && <RVLoaderView />
+                    }
                 </View>
             </Modal>
         </View >

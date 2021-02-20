@@ -55,6 +55,7 @@ export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
     SUBMIT: `Submit`,
+    VIEW_DONERS: `View doners`,
     CANCEL: `Cancel`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
@@ -353,7 +354,8 @@ export const miscMessage = {
     INVALID_REQUEST: `InvalidRequest`,
     USER_SERVICE_TOKEN_KEY: `user`,
     DEVICE_TOKEN: `device_token`,
-    CANCEL_TYPE: `cancel`
+    CANCEL_TYPE: `cancel`,
+    DASHBOARD: `Dashboard`
 }
 
 export const successFulMessages = {

@@ -45,7 +45,7 @@ export const SplashScreen = props => {
             <LottieView source={require('../assets/rv_splash_screen_image.json')} autoPlay loop
                 hardwareAccelerationAndroid style={RVStyles.splashScreenAnimatedImage} />
             <Text style={RVStyles.splashScreenLoadingText}>{miscMessage.LOADING}</Text>
-            <ActivityIndicator color={colors.RED} shouldRasterizeIOS hidesWhenStopped animating style={RVGenericStyles.mt20} />
+            <ActivityIndicator color={colors.RED} shouldRasterizeIOS hidesWhenStopped style={RVGenericStyles.mt20} />
             <NotificationReceivedModal />
         </SafeAreaView>
     )

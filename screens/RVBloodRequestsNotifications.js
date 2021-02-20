@@ -16,7 +16,6 @@ export const RVBloodRequestsNotifications = props => {
 
     useEffect(() => {
         const jsonRequests = data?.params?.requests;
-        debugger
         setRequests({ ...requests, notifications: JSON.parse(jsonRequests) });
     }, []);
 
