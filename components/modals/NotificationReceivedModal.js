@@ -4,24 +4,24 @@ import {
     actionButtonTextConstants, errorModalTitleConstants,
     numericConstants, routeConsts, stringConstants
 } from "../../constants/Constants";
-import { RVGenericStyles, RVStyles } from "../../styles/Styles";
+import { colors, RVGenericStyles, RVStyles } from "../../styles/Styles";
 import LinearGradient from "react-native-linear-gradient";
 import { SignUpContext } from "../../App";
 import { useNavigation } from "@react-navigation/native";
+import { getSavedNotificationRequests } from "../../helper/Helper";
 
 export const NotificationReceivedModal = props => {
 
     const { notificationDetails, setNotificationDetails } = useContext(SignUpContext);
     const { message } = notificationDetails;
     const { notification } = message;
-
     const navigation = useNavigation();
 
     return (
         <Modal animationType="slide" transparent visible={notificationDetails.showNotificationModal}
             onRequestClose={() => setNotificationDetails({ ...notificationDetails, showNotificationModal: false })} >
             <View style={RVStyles.modalContainer}>
-                <LinearGradient style={RVStyles.modalViewStyle} colors={['white', 'white']}>
+                <LinearGradient style={RVStyles.modalViewStyle} colors={[colors.WHITE, colors.WHITE]}>
                     <View style={RVStyles.modalTitleTextView}>
                         <Text style={RVStyles.modalTitleTextStyle}>{notification && notification.title ||
                             errorModalTitleConstants.NOT_AVAILABLE}</Text>
@@ -39,18 +39,19 @@ export const NotificationReceivedModal = props => {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity activeOpacity={.7} style={RVStyles.feedBackSubmitButton}
-                                onPress={() => {
+                            <TouchableOpacity activeOpacity={.7} style={RVStyles.viewRequestButton}
+                                onPress={async () => {
+                                    const notificationValues = await getSavedNotificationRequests();
                                     navigation.reset({
                                         index: numericConstants.ZERO, routes: [{
                                             name: routeConsts.BLOOD_REQUEST_NOTIFICATION, params: {
-                                                requests: message.data.requests
+                                                requests: JSON.stringify(notificationValues)
                                             }
                                         }]
                                     });
                                     setNotificationDetails({ ...notificationDetails, showNotificationModal: false, message: stringConstants.EMPTY });
                                 }}>
-                                <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.VIEW_DONERS}</Text>
+                                <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.VIEW_REQUESTS}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

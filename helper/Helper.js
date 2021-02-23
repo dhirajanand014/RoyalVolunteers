@@ -87,6 +87,14 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
         let userDashboardDetails = await axios.get(url);
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
+            const notificationValues = await getSavedNotificationRequests();
+            if (notificationValues) {
+                const hasNewNotification = notificationValues.some(request => request.new == true)
+                if (hasNewNotification) {
+                    userDashboard.isNewNotification = true;
+                    userDashboard.notificationRequests = JSON.stringify(notificationValues);
+                }
+            }
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
         }
     } catch (error) {
@@ -284,7 +292,6 @@ export const setErrorModal = (error, setError, title, message, showModal) => {
 export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
     attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, fromScreen, navigation, clearErrors, setLoader) => {
     // clear last OTP
-    setLoader(true);
     if (firstTextInputRef) {
         setOtpArray(Array(OTP_INPUTS).fill(stringConstants.EMPTY));
         firstTextInputRef.current.focus();
@@ -292,9 +299,8 @@ export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, set
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     setAttemptsRemaining(--attemptsRemaining);
     startResendOtpTimer();
-    await handleUserSignUpOtp(signUpDetails, isFrom, fromScreen, navigation, true);
+    await handleUserSignUpOtp(signUpDetails, isFrom, fromScreen, navigation, true, setLoader);
     clearErrors(fieldControllerName.OTP_INPUT);
-    setLoader(false);
 };
 
 // only backspace key press event is fired on Android
@@ -747,4 +753,114 @@ export const displayNotificationPermissionWarning = props => {
         }],
         { cancelable: false }
     );
+}
+
+export const updateSetNotifications = async (notificationMessage) => {
+    try {
+        let notificationValues = [];
+        const { data } = notificationMessage;
+        const notifications = await Keychain.getGenericPassword({ service: miscMessage.NOTIFICATION_REQUESTS });
+        if (notifications) {
+            notificationValues = JSON.parse(notifications.password) || [];
+            if (notificationValues) {
+                let existingValueIndex = notificationValues.findIndex(value => value.phone_number == data.phone_number);
+                if (existingValueIndex >= numericConstants.ZERO) {
+                    data.ttl = Date.now();
+                    data.new = true;
+                    notificationValues.splice(existingValueIndex, numericConstants.ONE, data);
+                } else {
+                    data.ttl = Date.now();
+                    data.new = true;
+                    notificationValues.push(data);
+                }
+            }
+        } else {
+            data.ttl = Date.now();
+            data.new = true;
+            notificationValues.push(data);
+        }
+
+        if (notificationValues)
+            await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues),
+                { service: miscMessage.NOTIFICATION_REQUESTS });
+    } catch (error) {
+        console.error(errorModalMessageConstants.CANNOT_PROCESS_TO_SAVE_UPDATE_NOTIFICATIONS, error);
+    }
+}
+
+export const getAllSavedNotificationRequests = async () => {
+    try {
+        const notificationRequests = await Keychain.getGenericPassword({ service: miscMessage.NOTIFICATION_REQUESTS });
+        return notificationRequests && JSON.parse(notificationRequests.password) || false;
+    } catch (error) {
+        console.error(errorModalMessageConstants.CANNOT_FETCH_SAVED_ACCOUNT_STATUS, error);
+    }
+    return false;
+}
+
+export const getSavedNotificationRequests = async () => {
+    try {
+        const notificationRequests = await Keychain.getGenericPassword({ service: miscMessage.NOTIFICATION_REQUESTS });
+        if (notificationRequests) {
+            const requests = JSON.parse(notificationRequests.password);
+            const notificationValues = requests.filter(request => {
+                const duration = moment.duration(moment(Date.now()).diff(moment(request.ttl)));
+                if (duration.asHours() >= numericConstants.ONE) {
+                    const deleteIndex = requests.findIndex(value => value.phone_number == request.phone_number);
+                    requests.splice(deleteIndex, numericConstants.ONE);
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+            return notificationValues;
+        }
+    } catch (error) {
+        console.error(errorModalMessageConstants.CANNOT_FETCH_SAVED_NOTIFICATIONS, error);
+    }
+    return false;
+}
+
+export const updateNotificationsStatus = async () => {
+    try {
+        const notificationValues = await getAllSavedNotificationRequests();
+        if (notificationValues) {
+            notificationValues.filter(request => request.new == true).map(value => value.new = false);
+            await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues),
+                { service: miscMessage.NOTIFICATION_REQUESTS });
+        }
+    } catch (error) {
+        console.error(errorModalMessageConstants.CANNOT_UPDATE_NOTIFICATION_STATUS, error);
+    }
+}
+
+export const logoutUser = async (error, setError, setLoader, menuRef, navigation) => {
+    try {
+        setLoader(true);
+        const response = await resetTokens(error, setError);
+        menuRef.current?.hide();
+        response && navigation.reset({
+            index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }]
+        });
+        setTimeout(() => showSnackBar(successFulMessages.SUCCESSFUL_LOG_OUT, true),
+            numericConstants.THREE_HUNDRED);
+        setLoader(false)
+    } catch (error) {
+        console.error(`Cannot logout user`, error);
+    }
+}
+
+export const navigateToNotificationRequests = async (notificationDetails, setNotificationDetails,
+    navigation, setLoader) => {
+    try {
+        setLoader(true);
+        const notificationValues = await getSavedNotificationRequests();
+        navigation.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION, {
+            requests: JSON.stringify(notificationValues)
+        });
+        setNotificationDetails({ ...notificationDetails, isNewNotification: false });
+        setLoader(false);
+    } catch (error) {
+        console.error(`Cannot navigate to notification requests`, error);
+    }
 }

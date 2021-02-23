@@ -7,7 +7,6 @@ import { validateSavedToken, getSavedToken, fetchSplashScreenRoute } from '../he
 import { miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useNavigation } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import { NotificationReceivedModal } from '../components/modals/NotificationReceivedModal';
 
 export const SplashScreen = props => {
 
@@ -45,8 +44,8 @@ export const SplashScreen = props => {
             <LottieView source={require('../assets/rv_splash_screen_image.json')} autoPlay loop
                 hardwareAccelerationAndroid style={RVStyles.splashScreenAnimatedImage} />
             <Text style={RVStyles.splashScreenLoadingText}>{miscMessage.LOADING}</Text>
-            <ActivityIndicator color={colors.RED} shouldRasterizeIOS hidesWhenStopped style={RVGenericStyles.mt20} />
-            <NotificationReceivedModal />
+            <LottieView source={require('../assets/rv_action_loader.json')} autoPlay loop
+                hardwareAccelerationAndroid style={RVStyles.loaderImageStyle} />
         </SafeAreaView>
     )
 }

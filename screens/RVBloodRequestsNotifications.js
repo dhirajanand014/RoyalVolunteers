@@ -5,18 +5,22 @@ import { RVBloodRequestsFlatList } from '../components/view/RVBloodRequestsFlatL
 import { HeaderForm } from '../layouts/HeaderForm';
 import { screenTitle, stringConstants } from '../constants/Constants';
 import { useRoute } from '@react-navigation/native';
+import { updateNotificationsStatus } from '../helper/Helper';
 
 export const RVBloodRequestsNotifications = props => {
 
     const [requests, setRequests] = useState({
-        notifications: stringConstants.EMPTY
-    })
+        notifications: stringConstants.ARRAY
+    });
+
+    const { userDashboard } = props;
 
     const data = useRoute();
 
     useEffect(() => {
-        const jsonRequests = data?.params?.requests;
-        setRequests({ ...requests, notifications: JSON.parse(jsonRequests) });
+        const jsonRequests = userDashboard && userDashboard.notificationRequests || data?.params?.requests;
+        !requests.notifications.length && setRequests({ ...requests, notifications: JSON.parse(jsonRequests) });
+        updateNotificationsStatus();
     }, []);
 
     return (

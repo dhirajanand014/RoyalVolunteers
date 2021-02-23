@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from './screens/Home';
@@ -18,21 +18,14 @@ import { RVBloodRequestsNotifications } from './screens/RVBloodRequestsNotificat
 import { SplashScreen } from './screens/SplashScreen';
 import NetInfo from "@react-native-community/netinfo";
 import { showSnackBar } from './helper/Helper';
-import messaging from '@react-native-firebase/messaging';
 import { RVLoaderView } from './components/view/RVLoaderView';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
 
-function HeadlessCheck({ isHeadless }) {
-  if (isHeadless) {
-    // App has been launched in the background by iOS, ignore
-    return null;
-  }
-  return <App />;
-}
-
 export default function App() {
+
+  const navigationRef = useRef(null);
 
   const [signUpDetails, setSignUpDetails] = useState({
     phoneNumber: stringConstants.EMPTY,
@@ -57,14 +50,9 @@ export default function App() {
   });
 
   const [notificationDetails, setNotificationDetails] = useState({
-    isFromBackGroundNotification: false,
     showNotificationModal: false,
-    message: stringConstants.EMPTY
-  });
-
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message handled in the background!', remoteMessage);
-    setNotificationDetails({ ...notificationDetails, isFromBackGroundNotification: true, message: remoteMessage });
+    message: stringConstants.EMPTY,
+    isNewNotification: false
   });
 
   useEffect(() => {
@@ -82,7 +70,7 @@ export default function App() {
       setRequestForm, error, setError, notificationDetails,
       setNotificationDetails, loader, setLoader
     }}>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator initialRouteName={routeConsts.SPLASH_SCREEN} screenOptions={screenOptions}
           headerMode='float' animation="fade">
           <Stack.Screen name={routeConsts.SPLASH_SCREEN} component={SplashScreen} options={stackOptions} />

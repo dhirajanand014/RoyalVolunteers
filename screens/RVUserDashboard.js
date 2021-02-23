@@ -1,21 +1,15 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Animated, Alert } from 'react-native';
-import { RVGenericStyles, RVStyles } from '../styles/Styles';
-import * as Animatable from 'react-native-animatable';
-import { fetchUserDashboardDetails } from '../helper/Helper';
-import { fieldTextName, miscMessage, numericConstants, routeConsts, stringConstants } from '../constants/Constants';
+import { View } from 'react-native';
+import { RVStyles } from '../styles/Styles';
+import { fetchUserDashboardDetails, updateSetNotifications } from '../helper/Helper';
+import { miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
-import { RVUserDashBoardHeaderView } from '../components/view/RVUserDashBoardHeaderView';
-import { RVUserDashboardDetailsText } from '../components/texts/RVUserDashboardDetailsText';
-import { RVUserDashBoardAgeText } from '../components/texts/RVUserDashBoardAgeText';
-import { RVUserDashBoardPincodeText } from '../components/texts/RVUserDashBoardPincodeText';
-import { FeedbackModal } from '../components/modals/FeedbackModal';
-import { RVUserDashBoardFooterTopView } from '../components/view/RVUserDashBoardFooterTopView';
-import { RVUserDashBoardFooterButtons } from '../components/view/RVUserDashBoardFooterButtons';
 import messaging from '@react-native-firebase/messaging';
 import { SignUpContext } from '../App';
 import { NotificationReceivedModal } from '../components/modals/NotificationReceivedModal';
+import { RVDashBoardDetails } from '../components/view/RVDashBoardDetails';
+import { RVBloodRequestsNotifications } from './RVBloodRequestsNotifications';
 
 export const RVUserDashboard = () => {
 
@@ -23,7 +17,7 @@ export const RVUserDashboard = () => {
     const route = useRoute();
     const { control, formState, handleSubmit } = useForm({ mode: miscMessage.ON_CHANGE });
 
-    const { notificationDetails, setNotificationDetails, setLoader } = useContext(SignUpContext);
+    const { setLoader, notificationDetails, setNotificationDetails } = useContext(SignUpContext);
 
     const [userDashboard, setUserDashboard] = useState({
         name: stringConstants.EMPTY,
@@ -37,7 +31,9 @@ export const RVUserDashboard = () => {
         showFeedbackModal: false,
         editText: stringConstants.EMPTY,
         isAgeEdit: false,
-        isPincodeEdit: false
+        isPincodeEdit: false,
+        notificationRequests: false,
+        isNewNotification: false
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
@@ -46,48 +42,20 @@ export const RVUserDashboard = () => {
     }, []);
 
     useEffect(() => {
-        const unsubscribe = messaging().onMessage(async remoteMessage =>
-            setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage })
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            updateSetNotifications(remoteMessage);
+            setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage, isNewNotification: true })
+        }
         );
     }, []);
 
-    setTimeout(() => {
-        if (notificationDetails && notificationDetails.isFromBackGroundNotification) {
-            setLoader(true);
-            navigation.reset({
-                index: numericConstants.ZERO, routes: [{
-                    name: routeConsts.BLOOD_REQUEST_NOTIFICATION, params: {
-                        requests: notificationDetails.message.data.requests
-                    }
-                }]
-            });
-            setNotificationDetails({ ...notificationDetails, isFromBackGroundNotification: false, message: stringConstants.EMPTY });
-            setLoader(false);
-        }
-    }, numericConstants.THREE_HUNDRED);
-
     return (
         <View style={RVStyles.headerContainer}>
-            <RVUserDashBoardHeaderView {...userDashboard} navigation={navigation} />
-
-            <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
-
-                <RVUserDashBoardFooterTopView name={userDashboard.name} blood_group={userDashboard.blood_group} />
-                <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
-                    <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phone} />
-
-                    <RVUserDashBoardAgeText text={fieldTextName.AGE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
-                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.age} setLoader={setLoader} />
-
-                    <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
-                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} setLoader={setLoader} />
-
-                    <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status} setLoader={setLoader}
-                        formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
-                </Animated.ScrollView>
-                <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
-                <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
-            </Animatable.View>
+            {
+                userDashboard.notificationRequests && <RVBloodRequestsNotifications userDashboard={userDashboard} phoneNumber={phoneNumber} />
+                || <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
+                    control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
+            }
             <NotificationReceivedModal />
         </View>
     )

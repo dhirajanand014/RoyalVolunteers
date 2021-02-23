@@ -558,7 +558,7 @@ export const RVStyles = StyleSheet.create({
         height: 20
     },
     availabilityStatusStyle: {
-        width: 100,
+        width: 115,
         marginHorizontal: 3,
         fontFamily: isAndroid && `normal` || `System`
     },
@@ -744,6 +744,16 @@ export const RVStyles = StyleSheet.create({
         elevation: 3,
         backgroundColor: '#fec72e'
     },
+    viewRequestButton: {
+        borderRadius: 25,
+        paddingHorizontal: 18,
+        paddingVertical: 12,
+        alignItems: 'center',
+        marginVertical: 15,
+        width: 140,
+        elevation: 3,
+        backgroundColor: '#fec72e'
+    },
     splashScreenAnimatedImage: {
         width: 100,
         height: 100
@@ -825,6 +835,19 @@ export const RVStyles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 10
+    },
+    loaderImageStyle: {
+        width: 50,
+        height: 50
+    },
+    notificationBadge: {
+        height: 7,
+        width: 7,
+        backgroundColor: 'red',
+        position: 'absolute',
+        right: 18,
+        borderRadius: 50,
+
     }
 });
 

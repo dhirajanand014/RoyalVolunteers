@@ -13,6 +13,7 @@ export const OTP_INPUTS = 6;
 export const stringConstants = {
     EMPTY: ``,
     NODE: {},
+    ARRAY: [],
     REPLACE_REGEX: /[- #*;,.<>\{\}\[\]\\\/]/gi,
     STRING: `string`,
     OBJECT: `object`
@@ -55,7 +56,7 @@ export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
     SUBMIT: `Submit`,
-    VIEW_DONERS: `View doners`,
+    VIEW_REQUESTS: `View requests`,
     CANCEL: `Cancel`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
@@ -355,7 +356,9 @@ export const miscMessage = {
     USER_SERVICE_TOKEN_KEY: `user`,
     DEVICE_TOKEN: `device_token`,
     CANCEL_TYPE: `cancel`,
-    DASHBOARD: `Dashboard`
+    DASHBOARD: `Dashboard`,
+    NOTIFICATION_REQUESTS: `notificationRequests`,
+    REQUESTS: `requests`
 }
 
 export const successFulMessages = {
@@ -400,9 +403,12 @@ export const errorModalMessageConstants = {
     SAVED_TOKEN_FETCH_FAILED: `Could not fetch the request token saved! : `,
     FETCH_ACCOUNT_STATUS_FAILED: `Could not fetch user resgistration status for phone number: `,
     CANNOT_SAVE_ACCOUNT_STATUS: `Cannot not save user registration status`,
+    CANNOT_PROCESS_TO_SAVE_UPDATE_NOTIFICATIONS: `Cannot save or update notifications in device`,
+    CANNOT_FETCH_SAVED_NOTIFICATIONS: `Cannot fetch saved notifications`,
     CANNOT_FETCH_SAVED_ACCOUNT_STATUS: `Cannot not fetch user registration status`,
     ENABLE_NOTIFICATIONS_SETTINGS: `To receive notifications about blood requests, you need to enable receiving notifications.\n
-        Clicking on OK will navigate you to settings dialog to allow notifications.Click Cancel to close.`
+        Clicking on OK will navigate you to settings dialog to allow notifications.Click Cancel to close.`,
+    CANNOT_UPDATE_NOTIFICATION_STATUS: `Cannot update notification status`
 }
 
 export const tokenRequestResponseConst = {

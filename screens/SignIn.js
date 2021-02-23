@@ -36,7 +36,7 @@ export const SignIn = props => {
     const refCallback = node => {
         secretRef.current = node;
     };
-    const { error, setError, loader, setLoader } = useContext(SignUpContext);
+    const { error, setError, setLoader } = useContext(SignUpContext);
 
     const navigateUser = async (responseNavigation, data) => {
         const status = await getRegistrationStatus();

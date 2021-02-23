@@ -6,13 +6,11 @@ import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { RVPhoneIcon } from '../icons/RVPhoneIcon';
 
 export const RVBloodRequestsFlatList = props => {
-
     const { data } = props;
     return (
         <View style={[RVGenericStyles.colorWhite]}>
             <FlatList data={data} contentContainerStyle={RVGenericStyles.padding5}
                 keyExtractor={item => item.phone_number} renderItem={({ item, index }) => {
-                    item = JSON.parse(item);
                     return (<View key={`${item.phone_number}_${index}`} style={[RVGenericStyles.marginVertical10, RVStyles.notificationsFlatListRow]}>
                         <View style={[RVStyles.bloodNotificationsFlatListRow, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View style={RVStyles.notificationsFlatListRowView}>
@@ -26,7 +24,7 @@ export const RVBloodRequestsFlatList = props => {
                                 RVGenericStyles.alignItemsCenter, RVGenericStyles.paddingHorizontal15, RVStyles.notificationsCallStyle]}
                                     onPress={() => Linking.openURL(`tel:${countryCodesConstants.INDIA}${item.phone_number}`)}>
                                     <RVPhoneIcon />
-                                    <Text style={[RVGenericStyles.bold, RVGenericStyles.ml_8, RVGenericStyles.colorWhite, RVGenericStyles.ft18]}>
+                                    <Text style={[RVGenericStyles.bold, RVGenericStyles.ml_8, RVGenericStyles.colorWhite, RVGenericStyles.ft18, RVGenericStyles.fontFamilyNormal]}>
                                         {miscMessage.CALL}
                                     </Text>
                                 </TouchableOpacity>
