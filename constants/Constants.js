@@ -374,6 +374,7 @@ export const successFulMessages = {
     SUCCESSFULLY_SAVED_TOKEN: `Successfully saved token`,
     TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`,
     SUCCESSFUL_LOG_OUT: `SuccessFully logged out`,
+    DASHBOARD_DETAILS_UPDATE: `Updated your availability successfully!`,
 }
 
 export const errorModalTitleConstants = {

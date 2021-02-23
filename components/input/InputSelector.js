@@ -11,8 +11,9 @@ export const InputSelector = props => {
             render={(selectorProps) => {
                 return (
                     <SwitchSelector initial={props.initial} onPress={value => onChangeByValueType(selectorProps, value, props)} value={props.value}
-                        hasPadding={props.hasPadding} options={props.options} fontSize={props.fontSize} style={RVStyles.availabilityStatusStyle}
-                        height={numericConstants.THIRTY} textContainerStyle={RVGenericStyles.fontFamilyNormal} />
+                        options={props.options} fontSize={props.fontSize} style={RVStyles.availabilityStatusStyle} bold={props.isFromDashBoard && true || false}
+                        height={numericConstants.THIRTY} hasPadding={props.hasPadding} textStyle={RVGenericStyles.fontFamilyNormal} selectedTextStyle={RVGenericStyles.fontFamilyNormal}
+                    />
                 )
             }} />
     )

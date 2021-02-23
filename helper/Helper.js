@@ -281,8 +281,8 @@ export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, p
     }
     await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
     setUserDashboard({ ...userDashboard });
-    showSnackBar(`Updated your availability successfully!`, true);
-    property == fieldControllerName.AVAILABILITY_STATUS ** setLoader(false);
+    showSnackBar(successFulMessages.DASHBOARD_DETAILS_UPDATE, true);
+    property == fieldControllerName.AVAILABILITY_STATUS && setLoader(false);
 }
 
 export const setErrorModal = (error, setError, title, message, showModal) => {
