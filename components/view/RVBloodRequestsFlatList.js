@@ -15,10 +15,10 @@ export const RVBloodRequestsFlatList = props => {
                         <View style={[RVStyles.bloodNotificationsFlatListRow, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View style={RVStyles.notificationsFlatListRowView}>
                                 <Text style={[RVGenericStyles.centerAlignedText, RVStyles.notificationBloodTypeText]}>{fieldTextName.BLOOD_TYPE}</Text>
-                                <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue]}>{item.blood_group}</Text>
+                                <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue, RVGenericStyles.fontFamilyNormal]}>{item.blood_group}</Text>
                             </View>
                             <View style={[RVGenericStyles.fill_75, RVGenericStyles.alignItemsEnd]}>
-                                <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight700, RVGenericStyles.marginBottom4]}>{item.phone_number}</Text>
+                                <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight700, RVGenericStyles.marginBottom4, RVGenericStyles.fontFamilyNormal]}>{item.phone_number}</Text>
                                 <Text style={[RVGenericStyles.ft20, RVGenericStyles.opacitypt7, RVGenericStyles.marginBottom10]}>{item.pincode}</Text>
                                 <TouchableOpacity style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentCenter, RVGenericStyles.backGroundColorGreen,
                                 RVGenericStyles.alignItemsCenter, RVGenericStyles.paddingHorizontal15, RVStyles.notificationsCallStyle]}

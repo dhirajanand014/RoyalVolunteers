@@ -26,9 +26,13 @@ export const RVUserDashBoardHeaderView = props => {
                 <View style={RVGenericStyles.rowFlexDirection}>
                     <TouchableOpacity style={RVGenericStyles.paddingHorizontal15} onPress={async () =>
                         navigateToNotificationRequests(notificationDetails, setNotificationDetails, props.navigation, setLoader)}>
-                        <RVNotificationIcon />
-                        {(props.isNewNotification || notificationDetails.isNewNotification)
-                            && <View style={RVStyles.notificationBadge} />}
+                        {
+                            (props.isNewNotification || notificationDetails.isNewNotification)
+                            && <Animatable.View animation={`swing`} iterationCount={miscMessage.INFINITE}>
+                                <RVNotificationIcon />
+                                <View style={RVStyles.notificationBadge} />
+                            </Animatable.View> || <RVNotificationIcon />
+                        }
                     </TouchableOpacity>
                     <Menu ref={menuRef} button={
                         <TouchableOpacity onPress={() => menuRef.current?.show()}>

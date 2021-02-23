@@ -358,7 +358,8 @@ export const miscMessage = {
     CANCEL_TYPE: `cancel`,
     DASHBOARD: `Dashboard`,
     NOTIFICATION_REQUESTS: `notificationRequests`,
-    REQUESTS: `requests`
+    REQUESTS: `requests`,
+    INFINITE: `infinite`
 }
 
 export const successFulMessages = {

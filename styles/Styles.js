@@ -558,9 +558,8 @@ export const RVStyles = StyleSheet.create({
         height: 20
     },
     availabilityStatusStyle: {
-        width: 115,
-        marginHorizontal: 3,
-        fontFamily: isAndroid && `normal` || `System`
+        width: 100,
+        marginHorizontal: 3
     },
     userRegistrationSubmitButton: {
         marginBottom: isIOS && 90 || 20,
@@ -755,8 +754,8 @@ export const RVStyles = StyleSheet.create({
         backgroundColor: '#fec72e'
     },
     splashScreenAnimatedImage: {
-        width: 100,
-        height: 100
+        width: 200,
+        height: 200
     },
     splashScreenLoadingText: {
         color: `#fe7d32`,
@@ -838,16 +837,16 @@ export const RVStyles = StyleSheet.create({
     },
     loaderImageStyle: {
         width: 50,
-        height: 50
+        height: 50,
+        backgroundColor: 'transparent'
     },
     notificationBadge: {
         height: 7,
         width: 7,
         backgroundColor: 'red',
         position: 'absolute',
-        right: 18,
-        borderRadius: 50,
-
+        left: 18,
+        borderRadius: 50
     }
 });
 
