@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Text, View } from 'react-native';
-import { fieldTextName, screenTitle } from '../../constants/Constants';
-import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { Text, View, ActivityIndicator } from 'react-native';
+import { bloodGroupsList, fieldTextName, numericConstants, screenTitle } from '../../constants/Constants';
+import { RVGenericStyles, colors, RVStyles } from '../../styles/Styles';
 
 export const RVUserDashBoardFooterTopView = props => {
     return (
@@ -18,7 +18,9 @@ export const RVUserDashBoardFooterTopView = props => {
                 </View>
                 <View style={RVStyles.dasBoardFooterViewBloodTypeView}>
                     <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeText]}>{fieldTextName.BLOOD_TYPE}</Text>
-                    <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue]}>{props.blood_group}</Text>
+                    <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue]}>{bloodGroupsList.find(bloodGroup => bloodGroup.value == props.blood_group).label ||
+                        <ActivityIndicator color={colors.RED} shouldRasterizeIOS hidesWhenStopped style={RVGenericStyles.mt36} />}
+                    </Text>
                 </View>
             </View>
         </View>
