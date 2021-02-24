@@ -23,7 +23,7 @@ export const RVUserDashboard = () => {
         name: stringConstants.EMPTY,
         age: stringConstants.EMPTY,
         pincode: stringConstants.EMPTY,
-        blood_group: numericConstants.ZERO,
+        blood_group: numericConstants.MINUS_ONE,
         benefiters_count: numericConstants.ZERO,
         donor_count: numericConstants.ZERO,
         phone: stringConstants.EMPTY,
@@ -42,7 +42,7 @@ export const RVUserDashboard = () => {
     }, []);
 
     useEffect(() => {
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
+        messaging().onMessage(async remoteMessage => {
             updateSetNotifications(remoteMessage);
             setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage, isNewNotification: true })
         }

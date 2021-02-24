@@ -3,10 +3,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
-    fieldControllerName, formRequiredRules, stringConstants,
+    fieldControllerName, formRequiredRules, stringConstants, miscMessage,
     isAndroid, keyBoardTypeConst, numericConstants, placeHolderText
 } from '../../constants/Constants';
-import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { updateDataFromDashBoard } from '../../helper/Helper';
 import { RVEditIcon } from '../icons/RVEditIcon';
 import { RVSaveIcon } from '../icons/RVSaveIcon';
@@ -41,7 +41,7 @@ export const RVUserDashBoardAgeText = props => {
                         setUserDashboard({ ...userDashboard, isAgeEdit: false, editText: stringConstants.EMPTY });
                         setLoader(false);
                     })}>
-                        <RVSaveIcon />
+                        <RVSaveIcon width={numericConstants.TWENTY} height={numericConstants.TWENTY} fill={miscMessage.NONE} stroke={colors.GREEN} />
                     </TouchableOpacity>
                 )
             }

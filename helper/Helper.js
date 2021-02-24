@@ -144,7 +144,7 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, fromScreen, nav
         // so minimum number will be 100000, max - 999999. 
         const random6Digit = Math.floor(Math.random() * 899999 + 100000);
 
-        const hashValue = await RNOtpVerify.getHash();
+        const hashValue = isAndroid && await RNOtpVerify.getHash() || "RaZGrAI03n4";
 
         const otpRequestData = {
             phone: phoneNumber,
@@ -177,9 +177,7 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
         if (isFromBloodRegistration) {
             userRegistrationPayload = {
                 ...data,
-                phone: phoneNumber,
-                blood_group: bloodGroupsList.find(bloodGroup =>
-                    bloodGroup.value == data.blood_group).label
+                phone: phoneNumber
             }
             signUpPayloadString = JSON.stringify(userRegistrationPayload);
         } else {
@@ -272,11 +270,7 @@ export const onChangeByValueType = async (inputProps, value, props) => {
 export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, property, value, setLoader) => {
     setLoader(true);
     userDashboard[property] = value;
-    const dashboardData = {
-        ...userDashboard,
-        blood_group: bloodGroupsList.find(blood_group =>
-            blood_group.label === userDashboard.blood_group).value
-    }
+    const dashboardData = { ...userDashboard };
     await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
     setUserDashboard({ ...userDashboard });
     showSnackBar(successFulMessages.DASHBOARD_DETAILS_UPDATE, true);

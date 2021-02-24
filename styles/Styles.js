@@ -782,7 +782,7 @@ export const RVStyles = StyleSheet.create({
         borderRadius: 12,
         overflow: 'hidden',
         height: 80,
-        alignSelf: 'center'
+        alignSelf: 'flex-start'
     },
     notificationBloodTypeText: {
         fontWeight: 'bold',

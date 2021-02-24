@@ -1,9 +1,12 @@
 import React from 'react';
 import { Linking, Text, View } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { countryCodesConstants, fieldTextName, miscMessage } from '../../constants/Constants';
-import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { countryCodesConstants, fieldTextName, miscMessage, numericConstants } from '../../constants/Constants';
+import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { RVBloodNeededByDate } from '../icons/RVBloodNeededByDate';
 import { RVPhoneIcon } from '../icons/RVPhoneIcon';
+import * as Animatable from 'react-native-animatable';
+import { RVSaveIcon } from '../icons/RVSaveIcon';
 
 export const RVBloodRequestsFlatList = props => {
     const { data } = props;
@@ -13,12 +16,18 @@ export const RVBloodRequestsFlatList = props => {
                 keyExtractor={item => item.phone_number} renderItem={({ item, index }) => {
                     return (<View key={`${item.phone_number}_${index}`} style={[RVGenericStyles.marginVertical10, RVStyles.notificationsFlatListRow]}>
                         <View style={[RVStyles.bloodNotificationsFlatListRow, RVGenericStyles.justifyContentSpaceBetween]}>
-                            <View style={RVStyles.notificationsFlatListRowView}>
-                                <Text style={[RVGenericStyles.centerAlignedText, RVStyles.notificationBloodTypeText]}>{fieldTextName.BLOOD_TYPE}</Text>
-                                <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue, RVGenericStyles.fontFamilyNormal]}>{item.blood_group}</Text>
+                            <View>
+                                <View style={RVStyles.notificationsFlatListRowView}>
+                                    <Text style={[RVGenericStyles.centerAlignedText, RVStyles.notificationBloodTypeText]}>{fieldTextName.BLOOD_TYPE}</Text>
+                                    <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue, RVGenericStyles.fontFamilyNormal]}>{item.blood_group}</Text>
+                                </View>
+                                <Animatable.View animation={`shake`} iterationCount={item.needed_request == miscMessage.IMMEDIATE && miscMessage.INFINITE || numericConstants.ONE} style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.alignItemsCenter]}>
+                                    {item.needed_request == miscMessage.IMMEDIATE && <RVSaveIcon width={numericConstants.EIGHTEEN} height={numericConstants.EIGHTEEN} fill={colors.RED} stroke={colors.WHITE} /> ||
+                                        <RVBloodNeededByDate height={numericConstants.EIGHTEEN} width={numericConstants.EIGHTEEN} />}
+                                    <Text style={[RVGenericStyles.ft16, RVGenericStyles.ftWeight100, RVGenericStyles.marginVertical5, RVGenericStyles.fontFamilyNormal]}>{item.needed_request}</Text>
+                                </Animatable.View>
                             </View>
                             <View style={[RVGenericStyles.fill_75, RVGenericStyles.alignItemsEnd]}>
-                                <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight100, RVGenericStyles.marginBottom4, RVGenericStyles.fontFamilyNormal]}>{item.needed_request}</Text>
                                 <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight700, RVGenericStyles.marginBottom4, RVGenericStyles.fontFamilyNormal]}>{item.phone_number}</Text>
                                 <Text style={[RVGenericStyles.ft20, RVGenericStyles.opacitypt7, RVGenericStyles.marginBottom10]}>{item.pincode}</Text>
                                 <TouchableOpacity style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentCenter, RVGenericStyles.backGroundColorGreen,

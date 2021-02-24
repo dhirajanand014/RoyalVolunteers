@@ -73,7 +73,7 @@ export const RVUserRegistration = () => {
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
 
                     <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
-                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList} />
+                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} />
 
                     <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
                         initial={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}

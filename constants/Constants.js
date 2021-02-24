@@ -196,6 +196,9 @@ export const countryCodesConstants = {
 
 export const bloodGroupsList = [
     {
+        label: ``,
+        value: -1
+    }, {
         label: `Select a blood group`,
         value: 0
     }, {
@@ -248,6 +251,7 @@ export const neededOptions = [
 ];
 
 export const numericConstants = {
+    MINUS_ONE: -1,
     ZERO: 0,
     ONE: 1,
     TWO: 2,
@@ -257,7 +261,12 @@ export const numericConstants = {
     SIX: 6,
     EIGHT: 8,
     TEN: 10,
+    ELEVEN: 11,
     TWELVE: 12,
+    SIXTEEN: 16,
+    EIGHTEEN: 18,
+    TWENTY: 20,
+    TWENTY_FOUR: 24,
     THIRTY: 30,
     TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
@@ -363,7 +372,8 @@ export const miscMessage = {
     NOTIFICATION_REQUESTS: `notificationRequests`,
     REQUESTS: `requests`,
     INFINITE: `infinite`,
-    NEEDED_REQUEST: `needed_request`
+    NEEDED_REQUEST: `needed_request`,
+    IMMEDIATE: `Immediate`
 }
 
 export const successFulMessages = {

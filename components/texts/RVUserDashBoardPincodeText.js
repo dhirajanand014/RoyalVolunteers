@@ -40,7 +40,7 @@ export const RVUserDashBoardPincodeText = props => {
                         setUserDashboard({ ...userDashboard, isPincodeEdit: false, editText: stringConstants.EMPTY });
                         setLoader(false);
                     })}>
-                        <RVSaveIcon />
+                        <RVSaveIcon width={numericConstants.TWENTY} height={numericConstants.TWENTY} fill={miscMessage.NONE} stroke={colors.GREEN} />
                     </TouchableOpacity>
                 )
             }
