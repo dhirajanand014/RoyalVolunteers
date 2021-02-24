@@ -18,6 +18,7 @@ export const RVBloodRequestsFlatList = props => {
                                 <Text style={[RVGenericStyles.centerAlignedText, RVStyles.dashBoardFooterBloodTypeValue, RVGenericStyles.fontFamilyNormal]}>{item.blood_group}</Text>
                             </View>
                             <View style={[RVGenericStyles.fill_75, RVGenericStyles.alignItemsEnd]}>
+                                <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight100, RVGenericStyles.marginBottom4, RVGenericStyles.fontFamilyNormal]}>{item.needed_request}</Text>
                                 <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight700, RVGenericStyles.marginBottom4, RVGenericStyles.fontFamilyNormal]}>{item.phone_number}</Text>
                                 <Text style={[RVGenericStyles.ft20, RVGenericStyles.opacitypt7, RVGenericStyles.marginBottom10]}>{item.pincode}</Text>
                                 <TouchableOpacity style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentCenter, RVGenericStyles.backGroundColorGreen,

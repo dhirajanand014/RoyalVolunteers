@@ -8,8 +8,8 @@ import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
 import {
-    logErrorWithMessageonOtpChange, onOtpKeyPress, onResendOtpButtonPress,
-    identifyOtpError, verifyOtpRequest, onOtpChange
+    onOtpKeyPress, onResendOtpButtonPress,
+    identifyOtpError, verifyOtpRequest, onOtpChange, verifyOtpReceived
 } from '../helper/Helper';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -64,6 +64,17 @@ export const SignUpOTPVerification = props => {
     const fifthTextInputRef = useRef(null);
     const sixththTextInputRef = useRef(null);
 
+    const verifyButtonRef = useRef(null);
+
+    // a reference to autoSubmitOtpTimerIntervalCallback to always get updated value of autoSubmitOtpTime
+    const autoSubmitOtpTimerIntervalCallbackReference = useRef();
+
+    useEffect(() => {
+        // autoSubmitOtpTime value will be set after otp is detected,
+        // in that case we have to start auto submit timer
+        autoSubmitOtpTimerIntervalCallbackReference.current = autoSubmitOtpTimerIntervalCallback;
+    });
+
     useEffect(() => {
         startResendOtpTimer()
         return () => {
@@ -73,40 +84,7 @@ export const SignUpOTPVerification = props => {
         };
     }, [resendButtonDisabledTime]);
 
-    useEffect(() => {
-        // docs: https://github.com/faizalshap/react-native-otp-verify
-        isAndroid &&
-            RNOtpVerify.getOtp()
-                .then(() =>
-                    RNOtpVerify.addListener(() => {
-                        try {
-                            // if (message) {
-                            //     const messageArray = message.split('\n');
-                            //     if (messageArray[2]) {
-                            //         const otp = messageArray[2].split(' ')[0];
-                            //         if (otp.length === 6) {
-                            //             setOtpArray(otp.split(''));
-
-                            //             // to auto submit otp in 4 secs
-                            //             setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
-                            //             startAutoSubmitOtpTimer();
-                            //         }
-                            //     }
-                            // }
-                        } catch (error) {
-                            logErrorWithMessage(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
-                        }
-                    }),
-                )
-                .catch(error => {
-                    logErrorWithMessage(error.message, 'RNOtpVerify.getOtp, OtpVerification',);
-                });
-
-        // remove listener on unmount
-        return () => {
-            isAndroid && RNOtpVerify.removeListener();
-        };
-    }, []);
+    useEffect(() => { verifyOtpReceived(setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer) }, []);
 
     const startResendOtpTimer = () => {
         if (resendOtpTimerInterval) {
@@ -118,6 +96,26 @@ export const SignUpOTPVerification = props => {
             } else {
                 setResendButtonDisabledTime(resendButtonDisabledTime - numericConstants.ONE);
             }
+        }, numericConstants.THOUSAND);
+    };
+
+    // this callback is being invoked from startAutoSubmitOtpTimer which itself is being invoked from useEffect
+    // since useEffect use closure to cache variables data, we will not be able to get updated autoSubmitOtpTime value
+    // as a solution we are using useRef by keeping its value always updated inside useEffect(componentDidUpdate)
+    const autoSubmitOtpTimerIntervalCallback = async () => {
+        if (autoSubmitOtpTime <= numericConstants.ZERO) {
+            clearInterval(autoSubmitOtpTimerInterval);
+            await onSubmit();
+        }
+        setAutoSubmitOtpTime(autoSubmitOtpTime - numericConstants.ONE);
+    };
+
+    const startAutoSubmitOtpTimer = () => {
+        if (autoSubmitOtpTimerInterval) {
+            clearInterval(autoSubmitOtpTimerInterval);
+        }
+        autoSubmitOtpTimerInterval = setInterval(() => {
+            autoSubmitOtpTimerIntervalCallbackReference.current();
         }, numericConstants.THOUSAND);
     };
 
@@ -188,7 +186,7 @@ export const SignUpOTPVerification = props => {
                     <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt36]}>
                         {attemptsRemaining || numericConstants.ZERO} Attempts remaining
                     </OTPTextView>
-                    <TouchableOpacity activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
+                    <TouchableOpacity ref={verifyButtonRef} activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
                         <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
                             <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.VERIFY}</Text>
                         </LinearGradient>
@@ -204,6 +202,5 @@ SignUpOTPVerification.defaultProps = {
 };
 
 SignUpOTPVerification.propTypes = {
-    otpRequestData: isAndroid && PropTypes.object.isRequired || null,
     attempts: PropTypes.number.isRequired,
 };

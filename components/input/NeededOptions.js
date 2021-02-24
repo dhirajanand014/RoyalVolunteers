@@ -7,7 +7,7 @@ export const NeededOptions = props => {
     return (
         props.neededOptions.map((item, index) => {
             return (
-                <React.Fragment>
+                <React.Fragment key={index}>
                     <TouchableOpacity style={RVStyles.neededRadioCircle}
                         onPress={() => props.setRequestForm({ ...props.requestForm, needed_request: item.value })}>
                         {

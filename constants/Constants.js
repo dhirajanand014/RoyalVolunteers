@@ -16,7 +16,9 @@ export const stringConstants = {
     ARRAY: [],
     REPLACE_REGEX: /[- #*;,.<>\{\}\[\]\\\/]/gi,
     STRING: `string`,
-    OBJECT: `object`
+    OBJECT: `object`,
+    NEW_LINE: `\n`,
+    SPACE: ` `
 }
 
 export const routeConsts = {
@@ -209,7 +211,7 @@ export const bloodGroupsList = [
         label: `B+`,
         value: 4
     }, {
-        label: 'AB−',
+        label: `AB−`,
         value: 5
     }, {
         label: `AB+`,
@@ -253,6 +255,7 @@ export const numericConstants = {
     FOUR: 4,
     FIVE: 5,
     SIX: 6,
+    EIGHT: 8,
     TEN: 10,
     TWELVE: 12,
     THIRTY: 30,
@@ -359,7 +362,8 @@ export const miscMessage = {
     DASHBOARD: `Dashboard`,
     NOTIFICATION_REQUESTS: `notificationRequests`,
     REQUESTS: `requests`,
-    INFINITE: `infinite`
+    INFINITE: `infinite`,
+    NEEDED_REQUEST: `needed_request`
 }
 
 export const successFulMessages = {

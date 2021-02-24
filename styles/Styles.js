@@ -69,6 +69,9 @@ export const RVGenericStyles = StyleSheet.create({
     ftWeight700: {
         fontWeight: '700'
     },
+    ftWeight100: {
+        fontWeight: '100'
+    },
     marginBottom4: {
         marginBottom: 4
     },

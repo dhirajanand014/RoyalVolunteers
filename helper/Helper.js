@@ -6,13 +6,12 @@ import {
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
     errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList,
     tokenRequestResponseConst, numericConstants, successFulMessages,
-    errorModalTitleConstants,
-    fieldTextName,
-    actionButtonTextConstants
+    errorModalTitleConstants, neededOptions, actionButtonTextConstants, isAndroid, AUTO_SUBMIT_OTP_TIME_LIMIT
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
 import { Alert, Linking } from "react-native";
+import RNOtpVerify from 'react-native-otp-verify';
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -23,12 +22,6 @@ export const onChangeInput = (inKey, inValue, stateVariable, setState) => {
 export const onChangeInputDirect = (inValue, setState) => {
     setState(inValue);
 }
-
-export const logErrorWithMessage = (message, errorSource) => {
-    if (DEV__) {
-        console.log(message, errorSource);
-    }
-};
 
 export const saveBloodRequest = async (signUpDetails, requestForm) => {
     try {
@@ -53,7 +46,9 @@ export const notifyBloodDoners = async (signUpDetails, requestForm) => {
             [fieldControllerName.PHONE_NUMBER]: signUpDetails.phoneNumber,
             [fieldControllerName.PINCODE]: requestForm.pincode,
             [fieldControllerName.BLOOD_GROUP]: bloodGroupsList.find(bloodGroup =>
-                bloodGroup.value == requestForm.blood_group).label
+                bloodGroup.value == requestForm.blood_group).label,
+            [miscMessage.NEEDED_REQUEST]: requestForm.needed_request == neededOptions[numericConstants.ZERO].label &&
+                neededOptions[numericConstants.ZERO].label || moment(requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT)
         }
         const JSONPayload = JSON.stringify(payLoad);
         await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
@@ -75,7 +70,7 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
         return feedbackResponse && feedbackResponse.data == miscMessage.SUCCESS &&
             miscMessage.SUCCESS || miscMessage.ERROR;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
     return miscMessage.ERROR;
 }
@@ -149,9 +144,12 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, fromScreen, nav
         // so minimum number will be 100000, max - 999999. 
         const random6Digit = Math.floor(Math.random() * 899999 + 100000);
 
+        const hashValue = await RNOtpVerify.getHash();
+
         const otpRequestData = {
             phone: phoneNumber,
-            rand_number: random6Digit
+            rand_number: random6Digit,
+            hash_value: hashValue[numericConstants.ZERO]
         }
 
         const otpRequestDataJSON = JSON.stringify(otpRequestData);
@@ -216,7 +214,7 @@ export const saveUserDetails = async (signUpPayloadString, isFrom) => {
             console.log(saveResponseData);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
     return false;
 }
@@ -277,12 +275,13 @@ export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, p
     const dashboardData = {
         ...userDashboard,
         blood_group: bloodGroupsList.find(blood_group =>
-            blood_group.label == userDashboard.blood_group).value
+            blood_group.label === userDashboard.blood_group).value
     }
     await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
     setUserDashboard({ ...userDashboard });
     showSnackBar(successFulMessages.DASHBOARD_DETAILS_UPDATE, true);
-    property == fieldControllerName.AVAILABILITY_STATUS && setLoader(false);
+    if (property == fieldControllerName.AVAILABILITY_STATUS)
+        setLoader(false);
 }
 
 export const setErrorModal = (error, setError, title, message, showModal) => {
@@ -862,5 +861,38 @@ export const navigateToNotificationRequests = async (notificationDetails, setNot
         setLoader(false);
     } catch (error) {
         console.error(`Cannot navigate to notification requests`, error);
+    }
+}
+
+export const verifyOtpReceived = async (setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer) => {
+    try {
+        // docs: https://github.com/faizalshap/react-native-otp-verify
+        if (isAndroid) {
+            const otpMessage = await RNOtpVerify.getOtp();
+            otpMessage && RNOtpVerify.addListener((message) => listenOtp(message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer));
+        }
+        // remove listener on unmount
+        return () => isAndroid && RNOtpVerify.removeListener();
+    } catch (error) {
+        console.error(error.message, 'RNOtpVerify.getOtp, OtpVerification');
+    }
+}
+
+const listenOtp = (message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer) => {
+    try {
+        if (message) {
+            const messageArray = message.split(stringConstants.NEW_LINE);
+            if (messageArray[numericConstants.ZERO]) {
+                const otp = messageArray[numericConstants.ZERO].split(stringConstants.SPACE)[numericConstants.EIGHT];
+                if (otp.length === numericConstants.SIX) {
+                    setOtpArray(otp.split(stringConstants.EMPTY));
+                    // to auto submit otp in 4 secs
+                    setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
+                    startAutoSubmitOtpTimer();
+                }
+            }
+        }
+    } catch (error) {
+        console.error(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
     }
 }

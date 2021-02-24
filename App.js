@@ -36,7 +36,7 @@ export default function App() {
   const [requestForm, setRequestForm] = useState({
     blood_group: numericConstants.ZERO,
     needed_request: neededOptions[numericConstants.ZERO].value,
-    needed_request_date: Date.now(),
+    needed_request_date: new Date(),
     pincode: stringConstants.EMPTY,
     hospital: stringConstants.EMPTY
   });
