@@ -19,7 +19,7 @@ export const RVDashBoardDetails = (props) => {
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
                 <RVUserDashBoardFooterTopView name={userDashboard.name} blood_group={userDashboard.blood_group} />
                 <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
-                    <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phone} />
+                    <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phoneNumber} />
 
                     <RVUserDashBoardAgeText text={fieldTextName.AGE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
                         setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.age} setLoader={setLoader} />
@@ -30,7 +30,7 @@ export const RVDashBoardDetails = (props) => {
                     <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status} setLoader={setLoader}
                         formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
                 </Animated.ScrollView>
-                <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
+                <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
                 <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
             </Animatable.View>
         </React.Fragment>

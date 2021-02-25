@@ -9,7 +9,7 @@ export const OTPResendButton = props => {
     return (
         <TouchableOpacity {...props} style={[RVStyles.buttonStyle, style, props.buttonStyle, props.disabled &&
             RVStyles.otpResendDisabled || stringConstants.NODE]}>
-            <Text style={[RVStyles.otpResendTextStyle, props.textStyle]}>{props.text}</Text>
+            <Text style={props.textStyle}>{props.text}</Text>
         </TouchableOpacity>
     );
 };

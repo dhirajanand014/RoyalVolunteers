@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import {
     availablilityStatusOptions, fieldControllerName, fieldTextName,
-    numericConstants, stringConstants
+    numericConstants
 } from '../../constants/Constants';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { AuthenticatedSelectorInput } from '../picker/AuthenticatedSelectorInput';

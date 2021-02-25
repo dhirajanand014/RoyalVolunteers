@@ -5,7 +5,6 @@ import { fieldTextName, miscMessage } from '../../constants/Constants';
 import { HeaderForm } from '../../layouts/HeaderForm';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { RVLoginUserIcon } from '../icons/RVLoginUserIcon';
-import { RVMenuIcon } from '../icons/RVMenuIcon';
 import * as Animatable from 'react-native-animatable';
 import { RVNotificationIcon } from '../icons/RVNotificationIcon';
 import { TouchableOpacity } from 'react-native-gesture-handler';

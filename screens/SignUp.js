@@ -25,7 +25,6 @@ export const SignUp = () => {
     const { handleSubmit, control, formState } = useForm();
 
     const isFrom = route?.params?.isFrom;
-    const fromScreen = route?.params?.fromScreen;
 
     const { signUpDetails, setSignUpDetails, setLoader } = useContext(SignUpContext);
     return (
@@ -43,8 +42,8 @@ export const SignUp = () => {
                 </Animated.ScrollView>
                 <View style={RVStyles.signUpPrimaryButtonView}>
                     <Text style={RVStyles.signUpDescription}>{placeHolderText.SIGN_UP_DESCRIPTION}</Text>
-                    <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpActionButton} onPress={handleSubmit(data =>
-                        handleUserSignUpOtp(signUpDetails, isFrom, fromScreen, navigation, false, setLoader))}>
+                    <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpActionButton} onPress={handleSubmit(() =>
+                        handleUserSignUpOtp(signUpDetails, isFrom, navigation, false, setLoader))}>
                         <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
                             <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.PROCEED}</Text>
                         </LinearGradient>

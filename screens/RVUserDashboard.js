@@ -20,6 +20,7 @@ export const RVUserDashboard = () => {
     const { setLoader, notificationDetails, setNotificationDetails } = useContext(SignUpContext);
 
     const [userDashboard, setUserDashboard] = useState({
+        phoneNumber: stringConstants.EMPTY,
         name: stringConstants.EMPTY,
         age: stringConstants.EMPTY,
         pincode: stringConstants.EMPTY,
@@ -32,7 +33,6 @@ export const RVUserDashboard = () => {
         editText: stringConstants.EMPTY,
         isAgeEdit: false,
         isPincodeEdit: false,
-        notificationRequests: false,
         isNewNotification: false
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
@@ -43,8 +43,10 @@ export const RVUserDashboard = () => {
 
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
-            updateSetNotifications(remoteMessage);
-            setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage, isNewNotification: true })
+            if (phoneNumber && phoneNumber != remoteMessage.data.phone_number) {
+                await updateSetNotifications(remoteMessage);
+                setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage, isNewNotification: true })
+            }
         }
         );
     }, []);
@@ -52,7 +54,7 @@ export const RVUserDashboard = () => {
     return (
         <View style={RVStyles.headerContainer}>
             {
-                userDashboard.notificationRequests && <RVBloodRequestsNotifications userDashboard={userDashboard} phoneNumber={phoneNumber} />
+                userDashboard.isNewNotification && <RVBloodRequestsNotifications phoneNumber={phoneNumber} />
                 || <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
                     control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
             }

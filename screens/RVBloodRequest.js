@@ -19,26 +19,32 @@ import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInpu
 import { AuthenticatedInputText } from '../components/input/AuthenticatedInputText';
 import { NeededRadioOptions } from '../components/view/NeededRadioOptions';
 import { RVDatePickerView } from '../components/view/RVDatePickerView';
+import { sendNotification } from '../helper/Helper';
 export const RVBloodRequest = () => {
 
     const navigation = useNavigation();
     const route = useRoute();
 
-    const fromScreen = route?.params?.fromScreen;
-
     const { handleSubmit, control, formState } = useForm({ mode: miscMessage.ON_CHANGE });
 
     const { requestForm, setRequestForm, setLoader } = useContext(SignUpContext);
 
-    const onSubmit = async (data) => {
-        setLoader(true);
+    const onSubmit = async () => {
         if (formState.isValid) {
-            navigation.navigate(routeConsts.SIGN_UP, {
-                isFrom: miscMessage.BLOOD_REQUEST,
-                fromScreen: fromScreen
-            });
+            setLoader(true);
+            const isFrom = route?.params?.isFrom;
+            if (isFrom == routeConsts.USER_DASHBOARD) {
+                const phoneNumber = route?.params?.phoneNumber;
+                await sendNotification(phoneNumber, requestForm);
+                navigation.goBack();
+            } else {
+                navigation.navigate(routeConsts.SIGN_UP, {
+                    isFrom: miscMessage.BLOOD_REQUEST,
+                    isFrom: isFrom
+                });
+            }
+            setLoader(false);
         }
-        setLoader(false);
     };
 
     return (
@@ -48,7 +54,8 @@ export const RVBloodRequest = () => {
                 <Text style={RVStyles.signUpTextHeader}>{screenTitle.REQUEST_FOR_BLOOD}</Text>
                 <Animated.ScrollView>
                     <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
-                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} requestForm={requestForm} setRequestForm={setRequestForm} isFromBloodRequestForm={true} />
+                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} requestForm={requestForm}
+                        setRequestForm={setRequestForm} isFromBloodRequestForm={true} />
 
                     <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} requestForm={requestForm} setRequestForm={setRequestForm}

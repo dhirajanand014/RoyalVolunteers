@@ -25,7 +25,7 @@ import {
 import { FormInput } from '../components/input/FormInput';
 import { ErrorModal } from '../components/modals/ErrorModal';
 
-export const SignIn = props => {
+export const SignIn = () => {
     const navigation = useNavigation();
     const { handleSubmit, control, formState, watch, trigger, clearErrors } = useForm();
 
@@ -85,7 +85,7 @@ export const SignIn = props => {
                     <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
                         defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER}
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon />}
-                        textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState} autofocus={true} onSubmitEditing={(event) => focusOnSecretIfFormInvalid(formState, secretRef)} />
+                        textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState} autofocus={true} onSubmitEditing={() => focusOnSecretIfFormInvalid(formState, secretRef)} />
 
                     <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THOUSAND} placeHolderText={placeHolderText.SECRET} refCallback={refCallback}

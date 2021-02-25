@@ -4,10 +4,11 @@ import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
     fieldControllerName, formRequiredRules, stringConstants,
-    isAndroid, keyBoardTypeConst, numericConstants, placeHolderText
+    isAndroid, keyBoardTypeConst, numericConstants, placeHolderText,
+    miscMessage
 } from '../../constants/Constants';
 import { updateDataFromDashBoard } from '../../helper/Helper';
-import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { RVEditIcon } from '../icons/RVEditIcon';
 import { RVSaveIcon } from '../icons/RVSaveIcon';
 import { RVUserDashboardTextInput } from '../input/RVUserDashboardTextInput';

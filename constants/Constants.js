@@ -7,7 +7,7 @@ export const isAndroid = Platform.OS === `android`;
 export const { width, height } = Dimensions.get(`window`);
 
 export const RESEND_OTP_TIME_LIMIT = 20; // 30 secs
-export const AUTO_SUBMIT_OTP_TIME_LIMIT = 3; // 4 secs
+export const AUTO_SUBMIT_OTP_TIME_LIMIT = 1;
 export const OTP_INPUTS = 6;
 
 export const stringConstants = {
@@ -268,6 +268,7 @@ export const numericConstants = {
     TWENTY: 20,
     TWENTY_FOUR: 24,
     THIRTY: 30,
+    ONE_HUNDRED: 100,
     TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
     FOUR_HUNDRED_ONE: 401,
@@ -373,7 +374,8 @@ export const miscMessage = {
     REQUESTS: `requests`,
     INFINITE: `infinite`,
     NEEDED_REQUEST: `needed_request`,
-    IMMEDIATE: `Immediate`
+    IMMEDIATE: `Immediate`,
+    ATTEMPT_REMAINING: `Attempts remaining`
 }
 
 export const successFulMessages = {

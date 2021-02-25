@@ -10,7 +10,7 @@ import { SignUpContext } from "../../App";
 import { useNavigation } from "@react-navigation/native";
 import { getSavedNotificationRequests } from "../../helper/Helper";
 
-export const NotificationReceivedModal = props => {
+export const NotificationReceivedModal = () => {
 
     const { notificationDetails, setNotificationDetails } = useContext(SignUpContext);
     const { message } = notificationDetails;
@@ -18,7 +18,7 @@ export const NotificationReceivedModal = props => {
     const navigation = useNavigation();
 
     return (
-        <Modal animationType="slide" transparent visible={notificationDetails.showNotificationModal}
+        <Modal animationType={`slide`} transparent visible={notificationDetails.showNotificationModal}
             onRequestClose={() => setNotificationDetails({ ...notificationDetails, showNotificationModal: false })} >
             <View style={RVStyles.modalContainer}>
                 <LinearGradient style={RVStyles.modalViewStyle} colors={[colors.WHITE, colors.WHITE]}>
@@ -41,13 +41,8 @@ export const NotificationReceivedModal = props => {
                         <View>
                             <TouchableOpacity activeOpacity={.7} style={RVStyles.viewRequestButton}
                                 onPress={async () => {
-                                    const notificationValues = await getSavedNotificationRequests();
                                     navigation.reset({
-                                        index: numericConstants.ZERO, routes: [{
-                                            name: routeConsts.BLOOD_REQUEST_NOTIFICATION, params: {
-                                                requests: JSON.stringify(notificationValues)
-                                            }
-                                        }]
+                                        index: numericConstants.ZERO, routes: [{ name: routeConsts.BLOOD_REQUEST_NOTIFICATION }]
                                     });
                                     setNotificationDetails({ ...notificationDetails, showNotificationModal: false, message: stringConstants.EMPTY });
                                 }}>

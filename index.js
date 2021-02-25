@@ -7,9 +7,7 @@ import { updateSetNotifications } from './helper/Helper';
 
 LogBox.ignoreAllLogs(true);
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-    updateSetNotifications(remoteMessage);
-});
+messaging().setBackgroundMessageHandler(async remoteMessage => updateSetNotifications(remoteMessage));
 
 function HeadlessCheck({ isHeadless }) {
     if (isHeadless) {

@@ -135,6 +135,9 @@ export const RVGenericStyles = StyleSheet.create({
     alignItemsCenter: {
         alignItems: 'center'
     },
+    colorBlue: {
+        color: '#3543bf'
+    },
     colorBlack: {
         color: `black`
     },

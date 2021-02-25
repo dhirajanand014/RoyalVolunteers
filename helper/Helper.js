@@ -23,10 +23,10 @@ export const onChangeInputDirect = (inValue, setState) => {
     setState(inValue);
 }
 
-export const saveBloodRequest = async (signUpDetails, requestForm) => {
+export const saveBloodRequest = async (phoneNumber, requestForm) => {
     try {
         const bloodRequstData = {
-            phone: signUpDetails.phoneNumber,
+            phone: phoneNumber,
             ...requestForm
         };
 
@@ -40,18 +40,22 @@ export const saveBloodRequest = async (signUpDetails, requestForm) => {
     return false
 }
 
-export const notifyBloodDoners = async (signUpDetails, requestForm) => {
+export const notifyBloodDoners = async (phoneNumber, requestForm) => {
+    const bloodGroupLabel = bloodGroupsList.find(bloodGroup =>
+        bloodGroup.value == requestForm.blood_group).label;
     try {
         const payLoad = {
-            [fieldControllerName.PHONE_NUMBER]: signUpDetails.phoneNumber,
+            [fieldControllerName.PHONE_NUMBER]: phoneNumber,
             [fieldControllerName.PINCODE]: requestForm.pincode,
-            [fieldControllerName.BLOOD_GROUP]: bloodGroupsList.find(bloodGroup =>
-                bloodGroup.value == requestForm.blood_group).label,
+            [fieldControllerName.BLOOD_GROUP]: bloodGroupLabel,
             [miscMessage.NEEDED_REQUEST]: requestForm.needed_request == neededOptions[numericConstants.ZERO].label &&
                 neededOptions[numericConstants.ZERO].label || moment(requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT)
         }
         const JSONPayload = JSON.stringify(payLoad);
-        await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
+        const notifyResponse = await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
+        const responseData = notifyResponse.data;
+        console.log(responseData && responseData || `No response`);
+        !responseData && showSnackBar(`No user available with blood group ${bloodGroupLabel} in ${requestForm.pincode} area.`, false);
         return true;
     } catch (error) {
         console.error(`Could not send request to notify blood requests`, error);
@@ -84,11 +88,7 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
             userDashboardDetails = userDashboardDetails.data;
             const notificationValues = await getSavedNotificationRequests();
             if (notificationValues) {
-                const hasNewNotification = notificationValues.some(request => request.new == true)
-                if (hasNewNotification) {
-                    userDashboard.isNewNotification = true;
-                    userDashboard.notificationRequests = JSON.stringify(notificationValues);
-                }
+                userDashboard.isNewNotification = notificationValues.some(request => request.new == true);
             }
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
         }
@@ -135,7 +135,7 @@ export const handleUserLogin = async (data, messaging) => {
     return false;
 };
 
-export const handleUserSignUpOtp = async (signUpDetails, isFrom, fromScreen, navigation, isResendOtp, setLoader) => {
+export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isResendOtp, setLoader) => {
     try {
         setLoader(true);
         const { phoneNumber } = signUpDetails;
@@ -157,7 +157,7 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, fromScreen, nav
         const response = await axios.post(urlConstants.TRIGGER_SMS_OTP, otpRequestDataJSON);
 
         if (response && response.data && !isResendOtp) {
-            const params = getSignUpParams(signUpDetails, random6Digit, isFrom, fromScreen);
+            const params = getSignUpParams(signUpDetails, random6Digit, isFrom);
             navigation.navigate(routeConsts.OTP_VERIFICATION, params);
             setLoader(false);
             return true;
@@ -217,11 +217,10 @@ export const saveUserDetails = async (signUpPayloadString, isFrom) => {
     return false;
 }
 
-export const getSignUpParams = (signUpDetails, random6Digit, isFrom, fromScreen) => {
+export const getSignUpParams = (signUpDetails, random6Digit, isFrom) => {
     let returnValue = {};
     if (isFrom) {
         returnValue.isFrom = isFrom;
-        returnValue.fromScreen = fromScreen
     }
     returnValue.phoneNumber = signUpDetails.phoneNumber;
     returnValue.rand_number = random6Digit;
@@ -271,7 +270,7 @@ export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, p
     setLoader(true);
     userDashboard[property] = value;
     const dashboardData = { ...userDashboard };
-    await handleUserSignUpRegistration(userDashboard.phone, dashboardData, true);
+    await handleUserSignUpRegistration(userDashboard.phoneNumber, dashboardData, true);
     setUserDashboard({ ...userDashboard });
     showSnackBar(successFulMessages.DASHBOARD_DETAILS_UPDATE, true);
     if (property == fieldControllerName.AVAILABILITY_STATUS)
@@ -283,7 +282,7 @@ export const setErrorModal = (error, setError, title, message, showModal) => {
 }
 
 export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-    attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, fromScreen, navigation, clearErrors, setLoader) => {
+    attemptsRemaining, startResendOtpTimer, phoneNumber, isFrom, navigation, clearErrors, setLoader) => {
     // clear last OTP
     if (firstTextInputRef) {
         setOtpArray(Array(OTP_INPUTS).fill(stringConstants.EMPTY));
@@ -292,7 +291,10 @@ export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, set
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     setAttemptsRemaining(--attemptsRemaining);
     startResendOtpTimer();
-    await handleUserSignUpOtp(signUpDetails, isFrom, fromScreen, navigation, true, setLoader);
+    const signUpDetails = {
+        [fieldControllerName.PHONE_NUMBER]: phoneNumber
+    };
+    await handleUserSignUpOtp(signUpDetails, isFrom, navigation, true, setLoader);
     clearErrors(fieldControllerName.OTP_INPUT);
 };
 
@@ -392,16 +394,14 @@ export const identifyOtpError = (otpString, otpArray, setError, clearErrors) => 
     return false;
 }
 
-export const verifyOtpRequest = async (otpString, isFrom, fromScreen, signUpDetails, requestForm, randomNumber) => {
+export const verifyOtpRequest = async (otpString, isFrom, phoneNumber, requestForm, randomNumber) => {
     if (isFrom === miscMessage.BLOOD_REQUEST) {
-        const isNotified = await notifyBloodDoners(signUpDetails, requestForm);
-        if (isNotified) {
-            await saveBloodRequest(signUpDetails, requestForm);
-            showSnackBar(successFulMessages.NOTIFICATION_SENT_DONERS, true);
-        } else {
-            showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false);
+        if (parseInt(otpString) !== randomNumber) {
+            showSnackBar(errorModalMessageConstants.INCORRECT_OTP_ENTERED, false);
+            return miscMessage.INCORRECT_OTP;
         }
-        return fromScreen == routeConsts.USER_DASHBOARD && miscMessage.DASHBOARD || miscMessage.RESET_NAVIGATION;
+        await sendNotification(phoneNumber, requestForm);
+        return miscMessage.RESET_NAVIGATION;
     } else if (randomNumber) {
         if (parseInt(otpString) === randomNumber) {
             return miscMessage.CONFIRM_SECRET;
@@ -729,7 +729,7 @@ export const requestNotificationPermission = async (messaging) => {
     return false;
 }
 
-export const displayNotificationPermissionWarning = props => {
+export const displayNotificationPermissionWarning = () => {
     Alert.alert(errorModalTitleConstants.ENABLE_NOTIFICATIONS, errorModalMessageConstants.ENABLE_NOTIFICATIONS_SETTINGS,
         [{ text: actionButtonTextConstants.CANCEL, style: miscMessage.CANCEL_TYPE },
         {
@@ -796,17 +796,8 @@ export const getSavedNotificationRequests = async () => {
         const notificationRequests = await Keychain.getGenericPassword({ service: miscMessage.NOTIFICATION_REQUESTS });
         if (notificationRequests) {
             const requests = JSON.parse(notificationRequests.password);
-            const notificationValues = requests.filter(request => {
-                const duration = moment.duration(moment(Date.now()).diff(moment(request.ttl)));
-                if (duration.asHours() >= numericConstants.ONE) {
-                    const deleteIndex = requests.findIndex(value => value.phone_number == request.phone_number);
-                    requests.splice(deleteIndex, numericConstants.ONE);
-                    return false;
-                } else {
-                    return true;
-                }
-            });
-            return notificationValues;
+            const notificationValues = requests.filter(request => !isNotificationExpired(request));
+            return notificationValues.length && notificationValues || false;
         }
     } catch (error) {
         console.error(errorModalMessageConstants.CANNOT_FETCH_SAVED_NOTIFICATIONS, error);
@@ -814,13 +805,26 @@ export const getSavedNotificationRequests = async () => {
     return false;
 }
 
+const isNotificationExpired = (request) => {
+    try {
+        const duration = moment.duration(moment(Date.now()).diff(moment(request.ttl)));
+        return duration.asHours() > numericConstants.ONE;
+    } catch (error) {
+        console.error(`Could not calculate duration`, error);
+    }
+}
+
 export const updateNotificationsStatus = async () => {
     try {
         const notificationValues = await getAllSavedNotificationRequests();
-        if (notificationValues) {
-            notificationValues.filter(request => request.new == true).map(value => value.new = false);
-            await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues),
-                { service: miscMessage.NOTIFICATION_REQUESTS });
+        if (notificationValues && notificationValues.length) {
+            notificationValues.filter(request => !isNotificationExpired(request)).
+                map(value => {
+                    if (value.new == true)
+                        value.new = false
+                });
+            await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues.length && notificationValues ||
+                stringConstants.ARRAY), { service: miscMessage.NOTIFICATION_REQUESTS });
         }
     } catch (error) {
         console.error(errorModalMessageConstants.CANNOT_UPDATE_NOTIFICATION_STATUS, error);
@@ -858,12 +862,13 @@ export const navigateToNotificationRequests = async (notificationDetails, setNot
     }
 }
 
-export const verifyOtpReceived = async (setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer) => {
+export const verifyOtpReceived = async (setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp) => {
     try {
         // docs: https://github.com/faizalshap/react-native-otp-verify
         if (isAndroid) {
             const otpMessage = await RNOtpVerify.getOtp();
-            otpMessage && RNOtpVerify.addListener((message) => listenOtp(message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer));
+            otpMessage && RNOtpVerify.addListener((message) =>
+                listenOtp(message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp));
         }
         // remove listener on unmount
         return () => isAndroid && RNOtpVerify.removeListener();
@@ -872,7 +877,7 @@ export const verifyOtpReceived = async (setOtpArray, setAutoSubmitOtpTime, start
     }
 }
 
-const listenOtp = (message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer) => {
+const listenOtp = (message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp) => {
     try {
         if (message) {
             const messageArray = message.split(stringConstants.NEW_LINE);
@@ -880,13 +885,23 @@ const listenOtp = (message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOt
                 const otp = messageArray[numericConstants.ZERO].split(stringConstants.SPACE)[numericConstants.EIGHT];
                 if (otp.length === numericConstants.SIX) {
                     setOtpArray(otp.split(stringConstants.EMPTY));
-                    // to auto submit otp in 4 secs
                     setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
                     startAutoSubmitOtpTimer();
+                    setAutoSubmittingOtp(true);
                 }
             }
         }
     } catch (error) {
         console.error(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
+    }
+}
+
+export const sendNotification = async (phoneNumber, requestForm) => {
+    const isNotified = await notifyBloodDoners(phoneNumber, requestForm);
+    if (isNotified) {
+        await saveBloodRequest(phoneNumber, requestForm);
+        showSnackBar(successFulMessages.NOTIFICATION_SENT_DONERS, true);
+    } else {
+        showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false);
     }
 }

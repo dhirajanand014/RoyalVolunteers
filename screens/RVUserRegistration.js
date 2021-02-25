@@ -13,7 +13,7 @@ import {
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
-import { displayNotificationPermissionWarning, getRegistrationStatus, handleUserSignUpRegistration, requestNotificationPermission, saveRegistrationStatus, showSnackBar } from '../helper/Helper';
+import { displayNotificationPermissionWarning, getRegistrationStatus, handleUserSignUpRegistration, requestNotificationPermission, saveRegistrationStatus } from '../helper/Helper';
 import { AuthenticatedInputText } from '../components/input/AuthenticatedInputText';
 import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInputPicker';
 import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';

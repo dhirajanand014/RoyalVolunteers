@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { actionButtonTextConstants, routeConsts, stringConstants } from '../../constants/Constants';
+import { actionButtonTextConstants, routeConsts } from '../../constants/Constants';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 
 export const RVUserDashBoardFooterButtons = props => {
@@ -15,7 +15,10 @@ export const RVUserDashBoardFooterButtons = props => {
                 </TouchableOpacity>
             </View>
             <View style={[RVGenericStyles.alignItemsCenter]}>
-                <TouchableOpacity activeOpacity={.7} style={RVStyles.dashBoardRequestBlood} onPress={() => props.navigation.navigate(routeConsts.BLOOD_REQUEST, { fromScreen: routeConsts.USER_DASHBOARD })}>
+                <TouchableOpacity activeOpacity={.7} style={RVStyles.dashBoardRequestBlood} onPress={() => props.navigation.navigate(routeConsts.BLOOD_REQUEST, {
+                    isFrom: routeConsts.USER_DASHBOARD,
+                    phoneNumber: props.userDashboard.phoneNumber
+                })}>
                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.REQUEST_FOR_BLOOD}</Text>
                 </TouchableOpacity>
             </View>

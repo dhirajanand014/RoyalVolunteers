@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Text, View, ActivityIndicator } from 'react-native';
-import { bloodGroupsList, fieldTextName, numericConstants, screenTitle } from '../../constants/Constants';
+import { bloodGroupsList, fieldTextName, screenTitle } from '../../constants/Constants';
 import { RVGenericStyles, colors, RVStyles } from '../../styles/Styles';
 
 export const RVUserDashBoardFooterTopView = props => {

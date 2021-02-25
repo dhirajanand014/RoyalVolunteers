@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator, Text } from 'react-native';
-import RNOtpVerify from 'react-native-otp-verify';
+import { View, Text } from 'react-native';
 import { RVGenericStyles, RVStyles, colors } from '../styles/Styles';
 import { OTPInputText } from '../components/input/OTPInputText';
 import { OTPTextView } from '../components/texts/OTPTextView';
@@ -16,8 +15,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useForm } from 'react-hook-form';
 import {
-    AUTO_SUBMIT_OTP_TIME_LIMIT, keyBoardTypeConst, isAndroid,
-    RESEND_OTP_TIME_LIMIT, screenTitle, stringConstants, OTP_INPUTS,
+    AUTO_SUBMIT_OTP_TIME_LIMIT, keyBoardTypeConst, isAndroid, screenTitle,
+    RESEND_OTP_TIME_LIMIT, stringConstants, OTP_INPUTS,
     numericConstants, actionButtonTextConstants, miscMessage, routeConsts
 } from '../constants/Constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -32,30 +31,22 @@ export const SignUpOTPVerification = props => {
     const { otpRequestData, attempts } = props;
     let [attemptsRemaining, setAttemptsRemaining] = useState(attempts);
     const [otpArray, setOtpArray] = useState(otpInputs);
-    const [submittingOtp, setSubmittingOtp] = useState(false);
+    const [autoSubmittingOtp, setAutoSubmittingOtp] = useState(false);
 
     const route = useRoute();
 
-    const phoneNumber = route?.params?.phoneNumber;
-
     const isFrom = route?.params?.isFrom;
-    const fromScreen = route?.params?.fromScreen;
 
     const { requestForm, signUpDetails, setLoader } = useContext(SignUpContext);
+
+    const phoneNumber = signUpDetails.phoneNumber || route?.params?.phoneNumber;
 
     const navigation = useNavigation();
     const { handleSubmit, control, setError, formState, clearErrors } = useForm();
 
     // in secs, if value is greater than 0 then button will be disabled
-    const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
-        RESEND_OTP_TIME_LIMIT,
-    );
-
-    // 0 < autoSubmitOtpTime < 3 to show auto submitting OTP text
-    const [autoSubmitOtpTime, setAutoSubmitOtpTime] = useState(
-        AUTO_SUBMIT_OTP_TIME_LIMIT,
-    );
-
+    const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(RESEND_OTP_TIME_LIMIT);
+    const [autoSubmitOtpTime, setAutoSubmitOtpTime] = useState(AUTO_SUBMIT_OTP_TIME_LIMIT);
     // TextInput refs to focus programmatically while entering OTP
     const firstTextInputRef = useRef(null);
     const secondTextInputRef = useRef(null);
@@ -66,7 +57,6 @@ export const SignUpOTPVerification = props => {
 
     const verifyButtonRef = useRef(null);
 
-    // a reference to autoSubmitOtpTimerIntervalCallback to always get updated value of autoSubmitOtpTime
     const autoSubmitOtpTimerIntervalCallbackReference = useRef();
 
     useEffect(() => {
@@ -74,22 +64,19 @@ export const SignUpOTPVerification = props => {
         // in that case we have to start auto submit timer
         autoSubmitOtpTimerIntervalCallbackReference.current = autoSubmitOtpTimerIntervalCallback;
     });
-
     useEffect(() => {
         startResendOtpTimer()
-        return () => {
-            if (resendOtpTimerInterval) {
-                clearInterval(resendOtpTimerInterval);
-            }
-        };
+        return () => resendOtpTimerInterval && clearInterval(resendOtpTimerInterval);
     }, [resendButtonDisabledTime]);
 
-    useEffect(() => { verifyOtpReceived(setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer) }, []);
+    useEffect(() => {
+        (async () => {
+            await verifyOtpReceived(setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp);
+        })();
+    }, []);
 
     const startResendOtpTimer = () => {
-        if (resendOtpTimerInterval) {
-            clearInterval(resendOtpTimerInterval);
-        }
+        resendOtpTimerInterval && clearInterval(resendOtpTimerInterval);
         resendOtpTimerInterval = setInterval(() => {
             if (resendButtonDisabledTime <= numericConstants.ZERO) {
                 clearInterval(resendOtpTimerInterval);
@@ -103,17 +90,18 @@ export const SignUpOTPVerification = props => {
     // since useEffect use closure to cache variables data, we will not be able to get updated autoSubmitOtpTime value
     // as a solution we are using useRef by keeping its value always updated inside useEffect(componentDidUpdate)
     const autoSubmitOtpTimerIntervalCallback = async () => {
+        setLoader(true);
         if (autoSubmitOtpTime <= numericConstants.ZERO) {
             clearInterval(autoSubmitOtpTimerInterval);
             await onSubmit();
+            setLoader(false);
+            setAutoSubmittingOtp(false);
         }
         setAutoSubmitOtpTime(autoSubmitOtpTime - numericConstants.ONE);
     };
 
     const startAutoSubmitOtpTimer = () => {
-        if (autoSubmitOtpTimerInterval) {
-            clearInterval(autoSubmitOtpTimerInterval);
-        }
+        autoSubmitOtpTimerInterval && clearInterval(autoSubmitOtpTimerInterval);
         autoSubmitOtpTimerInterval = setInterval(() => {
             autoSubmitOtpTimerIntervalCallbackReference.current();
         }, numericConstants.THOUSAND);
@@ -124,12 +112,12 @@ export const SignUpOTPVerification = props => {
     };
 
     const onSubmit = async () => {
+        setLoader(true);
         const otpString = otpArray.reduce((result, item) => { return `${result}${item}` }, stringConstants.EMPTY);
         const isValid = identifyOtpError(otpString, otpArray, setError, clearErrors);
-        setLoader(true);
         if (isValid) {
             const randomNumber = route.params?.rand_number || false;
-            const navigationResponse = await verifyOtpRequest(otpString, isFrom, fromScreen, signUpDetails, requestForm, randomNumber);
+            const navigationResponse = await verifyOtpRequest(otpString, isFrom, phoneNumber, requestForm, randomNumber);
             if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.DASHBOARD == navigationResponse ||
                 miscMessage.CONFIRM_SECRET == navigationResponse) {
                 clearInterval(resendOtpTimerInterval);
@@ -170,27 +158,23 @@ export const SignUpOTPVerification = props => {
                 <Text style={RVStyles.otpErrorMessageStyle}>{formState.errors.otpInput?.message}</Text>
                 {
                     resendButtonDisabledTime > numericConstants.ZERO && <OTPTimeText text={miscMessage.RESEND_OTP_IN} time={resendButtonDisabledTime} />
-                    || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={RVStyles.otpResendButtonText}
+                    || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={[RVGenericStyles.colorBlue, RVGenericStyles.bold,
+                    RVGenericStyles.fontFamilyNormal, RVGenericStyles.ft16]}
                         onPress={async () => await onResendOtpButtonPress(firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-                            attemptsRemaining, startResendOtpTimer, signUpDetails, isFrom, fromScreen, navigation, clearErrors, setLoader)} />
-                }
-                <View style={RVGenericStyles.fill} />
-                {
-                    submittingOtp && <ActivityIndicator />
-                }
-                {
-                    autoSubmitOtpTime > numericConstants.ZERO && autoSubmitOtpTime < AUTO_SUBMIT_OTP_TIME_LIMIT &&
-                    <OTPTimeText text={miscMessage.SUBMITTING_IN} time={autoSubmitOtpTime} />
+                            attemptsRemaining, startResendOtpTimer, phoneNumber, isFrom, navigation, clearErrors, setLoader)} />
                 }
                 <View style={RVStyles.signUpPrimaryButtonView}>
                     <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt36]}>
-                        {attemptsRemaining || numericConstants.ZERO} Attempts remaining
+                        {attemptsRemaining || numericConstants.ZERO} {miscMessage.ATTEMPT_REMAINING}
                     </OTPTextView>
-                    <TouchableOpacity ref={verifyButtonRef} activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
-                        <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
-                            <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.VERIFY}</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+                    {
+                        !autoSubmittingOtp &&
+                        <TouchableOpacity ref={verifyButtonRef} activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
+                            <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
+                                <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.VERIFY}</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    }
                 </View>
             </View>
         </View>

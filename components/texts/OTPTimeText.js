@@ -1,4 +1,5 @@
 import React from 'react';
+import { stringConstants } from '../../constants/Constants';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { OTPTextView } from './OTPTextView';
 
@@ -7,7 +8,7 @@ export const OTPTimeText = props => {
     return (
         <OTPTextView style={[RVGenericStyles.centerAlignedText, RVStyles.otpResendTimerText, RVGenericStyles.mt24]}>
             {text}
-            <OTPTextView style={RVGenericStyles.bold}>{` ` + time}s</OTPTextView>
+            <OTPTextView style={[RVGenericStyles.bold]}>{stringConstants.SPACE + time}s</OTPTextView>
         </OTPTextView>
     );
 };

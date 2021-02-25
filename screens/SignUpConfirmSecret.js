@@ -108,7 +108,7 @@ export const SignUpConfirmSecret = () => {
                     <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
                         defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.SECRET} textContentType={keyBoardTypeConst.PASSWORD}
                         keyboardType={keyBoardTypeConst.DEFAULT} icon={<RVLoginSecretIcon />} formState={formState} maxLength={numericConstants.THOUSAND}
-                        autofocus={true} isSecureTextEntry={true} onSubmitEditing={(event) => focusOnSecretIfFormInvalid(formState, confirmSecretRef)} />
+                        autofocus={true} isSecureTextEntry={true} onSubmitEditing={() => focusOnSecretIfFormInvalid(formState, confirmSecretRef)} />
 
                     <FormInput inputTextName={fieldTextName.CONFIRM_PASSWORD} inputName={fieldControllerName.CONFIRM_SECRET} control={control} rules={formRequiredRules.passwordFormRule}
                         defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.CONFIRM_PASSWORD} textContentType={keyBoardTypeConst.PASSWORD} isSecureTextEntry={true}

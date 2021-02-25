@@ -36,7 +36,7 @@ export const RVUserDashBoardAgeText = props => {
                     <TouchableOpacity onPress={() => setUserDashboard({ ...userDashboard, isAgeEdit: true, editText: props.text })}>
                         <RVEditIcon />
                     </TouchableOpacity> || userDashboard.isAgeEdit &&
-                    <TouchableOpacity onPress={props.handleSubmit(async data => {
+                    <TouchableOpacity onPress={props.handleSubmit(async () => {
                         await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.AGE, userDashboard.age, setLoader);
                         setUserDashboard({ ...userDashboard, isAgeEdit: false, editText: stringConstants.EMPTY });
                         setLoader(false);

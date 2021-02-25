@@ -20,7 +20,7 @@ export const Home = () => {
                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{screenTitle.SIGN_UP}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.7} style={RVStyles.homeRequestBloodBlood} onPress={() => navigation.navigate(routeConsts.BLOOD_REQUEST,
-                    { fromScreen: routeConsts.HOME })}>
+                    { isFrom: routeConsts.HOME })}>
                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{screenTitle.REQUEST_FOR_BLOOD}</Text>
                 </TouchableOpacity>
             </View>
