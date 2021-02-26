@@ -288,6 +288,7 @@ export const numericConstants = {
     TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
     FOUR_HUNDRED_ONE: 401,
+    FIVE_HUNDRED: 500,
     THOUSAND: 1000
 }
 
@@ -325,7 +326,7 @@ export const fieldTextName = {
 }
 
 export const placeHolderText = {
-    PHONE_NUMBER: `Enter 10 digit Mobile Number`,
+    PHONE_NUMBER: `Enter 10 digit Number`,
     NAME: `Enter Name`,
     AGE: `Enter Age`,
     SECRET: `Enter 4 digit Password`,

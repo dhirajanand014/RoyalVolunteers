@@ -92,8 +92,10 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
             const notificationValues = await getSavedNotificationRequests();
             if (notificationValues) {
                 userDashboard.isNewNotification = notificationValues.some(request => request.new == true);
+                setTimeout(() => setUserDashboard({ ...userDashboard, ...userDashboardDetails.user }), numericConstants.FIVE_HUNDRED);
+            } else {
+                setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
             }
-            setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
         }
     } catch (error) {
         console.error(error);
