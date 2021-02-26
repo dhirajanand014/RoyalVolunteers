@@ -18,6 +18,9 @@ export const RVGenericStyles = StyleSheet.create({
     fill_75: {
         flex: 0.75
     },
+    elevation3: {
+        elevation: 3
+    },
     bold: {
         fontWeight: 'bold',
     },
@@ -42,8 +45,11 @@ export const RVGenericStyles = StyleSheet.create({
     mv30: {
         marginVertical: 30,
     },
+    mb15: {
+        marginBottom: 15,
+    },
     mb30: {
-        marginBottom: 35,
+        marginBottom: 30,
     },
     width120: {
         width: 120
@@ -84,8 +90,14 @@ export const RVGenericStyles = StyleSheet.create({
     marginVertical5: {
         marginVertical: 5
     },
-    marginVertical10: {
+    mv10: {
         marginVertical: 10
+    },
+    mv15: {
+        marginVertical: 15
+    },
+    mv20: {
+        marginVertical: 20
     },
     borderBottomWidth1: {
         borderBottomWidth: 1
@@ -396,7 +408,7 @@ export const RVStyles = StyleSheet.create({
     actionButtonStyle: {
         flexDirection: `column`,
         alignItems: 'center',
-        elevation: 8
+        elevation: 3
     },
     primaryActionButtonLinearGradient: {
         width: width / 1.35,
@@ -610,7 +622,7 @@ export const RVStyles = StyleSheet.create({
         width: 180,
         marginVertical: 4
     },
-    hospiatalTextHeight: {
+    hospitalTextHeight: {
         justifyContent: 'center',
         maxHeight: 50
     },
@@ -705,6 +717,12 @@ export const RVStyles = StyleSheet.create({
         elevation: 3,
         backgroundColor: "#DE1F25"
     },
+    dashBoardTestimonials: {
+        borderRadius: 25,
+        paddingVertical: 12,
+        width: 140,
+        elevation: 3,
+    },
     dashBoardEdit: {
         fontSize: 18,
         marginLeft: 95,
@@ -733,6 +751,17 @@ export const RVStyles = StyleSheet.create({
         fontSize: 16,
         color: '#05375a'
     },
+    testimonialModalTextInput: {
+        borderWidth: 2,
+        borderRadius: 8,
+        width: 310,
+        paddingLeft: 3,
+        paddingVertical: 5,
+        borderBottomWidth: 1,
+        height: 100,
+        fontSize: 16,
+        color: '#05375a'
+    },
     feedBackCancelText: {
         color: 'grey',
         textAlign: 'center',
@@ -745,6 +774,14 @@ export const RVStyles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         marginVertical: 15,
+        width: 120,
+        elevation: 3,
+        backgroundColor: '#fec72e'
+    },
+    testimonialSubmitButton: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
         width: 120,
         elevation: 3,
         backgroundColor: '#fec72e'

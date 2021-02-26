@@ -10,14 +10,13 @@ import {
     fieldControllerName, fieldTextName, formRequiredRules,
     keyBoardTypeConst, miscMessage, numericConstants, placeHolderText,
     routeConsts, screenTitle, stringConstants, successFulMessages,
-    actionButtonTextConstants, errorModalMessageConstants
+    actionButtonTextConstants, errorModalMessageConstants, isAndroid
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import {
-    access_token_request_response, focusOnSecretIfFormInvalid,
-    handleUserSignUpRegistration, resetTokens, saveRegistrationStatus, setErrorModal,
-    showSnackBar
+    access_token_request_response, focusOnInputIfFormInvalid, showSnackBar,
+    handleUserSignUpRegistration, resetTokens, saveRegistrationStatus, setErrorModal
 } from '../helper/Helper';
 import { FormInput } from '../components/input/FormInput';
 export const SignUpConfirmSecret = () => {
@@ -92,8 +91,12 @@ export const SignUpConfirmSecret = () => {
                     isSuccess = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
                     isFromForgotPassword = false;
                 }
-                isSuccess && await navigateUser(data, isFromForgotPassword) || setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
-                    errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
+                if (isSuccess) {
+                    await navigateUser(data, isFromForgotPassword);
+                } else {
+                    setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
+                        errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
+                }
             }
         }
         setLoader(false);
@@ -106,13 +109,14 @@ export const SignUpConfirmSecret = () => {
                 <Text style={RVStyles.signUpTextHeader}>{screenTitle.ENTER_PASSWORD}</Text>
                 <Animated.ScrollView>
                     <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
-                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.SECRET} textContentType={keyBoardTypeConst.PASSWORD}
-                        keyboardType={keyBoardTypeConst.DEFAULT} icon={<RVLoginSecretIcon />} formState={formState} maxLength={numericConstants.THOUSAND}
-                        autofocus={true} isSecureTextEntry={true} onSubmitEditing={() => focusOnSecretIfFormInvalid(formState, confirmSecretRef)} />
+                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.SECRET} textContentType={keyBoardTypeConst.NEW_PASSWORD} maxLength={numericConstants.FOUR}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVLoginSecretIcon />} formState={formState}
+                        autofocus={true} isSecureTextEntry={true} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, confirmSecretRef)} />
 
                     <FormInput inputTextName={fieldTextName.CONFIRM_PASSWORD} inputName={fieldControllerName.CONFIRM_SECRET} control={control} rules={formRequiredRules.passwordFormRule}
-                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.CONFIRM_PASSWORD} textContentType={keyBoardTypeConst.PASSWORD} isSecureTextEntry={true}
-                        keyboardType={keyBoardTypeConst.DEFAULT} icon={<RVLoginSecretIcon />} formState={formState} maxLength={numericConstants.THOUSAND} refCallback={refCallback} />
+                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.CONFIRM_PASSWORD} textContentType={keyBoardTypeConst.NEW_PASSWORD} isSecureTextEntry={true}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVLoginSecretIcon />} formState={formState} maxLength={numericConstants.THOUSAND}
+                        refCallback={refCallback} maxLength={numericConstants.FOUR} />
                 </Animated.ScrollView>
                 <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpConfirmSecretGradient} onPress={handleSubmit(onSubmit)} >
                     <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>

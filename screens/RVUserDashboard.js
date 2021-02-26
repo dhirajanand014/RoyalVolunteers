@@ -29,7 +29,9 @@ export const RVUserDashboard = () => {
         donor_count: numericConstants.ZERO,
         phone: stringConstants.EMPTY,
         availability_status: stringConstants.EMPTY,
+        testimonialStars: numericConstants.ZERO,
         showFeedbackModal: false,
+        showTestimonialModal: false,
         editText: stringConstants.EMPTY,
         isAgeEdit: false,
         isPincodeEdit: false,
@@ -43,12 +45,9 @@ export const RVUserDashboard = () => {
 
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
-            if (phoneNumber && phoneNumber != remoteMessage.data.phone_number) {
-                await updateSetNotifications(remoteMessage);
-                setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage, isNewNotification: true })
-            }
-        }
-        );
+            await updateSetNotifications(remoteMessage);
+            setNotificationDetails({ ...notificationDetails, showNotificationModal: true, message: remoteMessage, isNewNotification: true })
+        });
     }, []);
 
     return (

@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Text, View, Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,13 +13,16 @@ import {
 } from '../constants/Constants';
 import { HeaderForm } from '../layouts/HeaderForm';
 import * as Animatable from 'react-native-animatable';
-import { displayNotificationPermissionWarning, getRegistrationStatus, handleUserSignUpRegistration, requestNotificationPermission, saveRegistrationStatus } from '../helper/Helper';
+import {
+    displayNotificationPermissionWarning, focusOnInputIfFormInvalid,
+    getRegistrationStatus, handleUserSignUpRegistration, requestNotificationPermission,
+    saveRegistrationStatus
+} from '../helper/Helper';
 import { AuthenticatedInputText } from '../components/input/AuthenticatedInputText';
 import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInputPicker';
 import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';
 import messaging from '@react-native-firebase/messaging';
 import { SignUpContext } from '../App';
-
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
@@ -29,6 +32,16 @@ export const RVUserRegistration = () => {
     const route = useRoute();
 
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
+
+    const ageRef = useRef(null);
+    const pincodeRef = useRef(null);
+
+    const ageRefCallback = node => {
+        ageRef.current = node;
+    };
+    const pincodeRefCallback = node => {
+        pincodeRef.current = node;
+    };
 
     const onSubmit = async (data) => {
         setLoader(true);
@@ -62,14 +75,14 @@ export const RVUserRegistration = () => {
                 <Animated.ScrollView>
                     <AuthenticatedInputText inputTextName={fieldTextName.NAME} inputName={fieldControllerName.NAME} control={control} rules={formRequiredRules.nameFormRule}
                         defaultValue={stringConstants.EMPTY} autofocus={true} placHol keyboardType={keyBoardTypeConst.DEFAULT} textContentType={keyBoardTypeConst.NAME}
-                        formState={formState} placeHolderText={placeHolderText.NAME} />
+                        formState={formState} placeHolderText={placeHolderText.NAME} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, ageRef)} />
 
-                    <AuthenticatedInputText inputTextName={fieldTextName.AGE} inputName={fieldControllerName.AGE} control={control} rules={formRequiredRules.ageRule}
-                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THREE} placeHolderText={placeHolderText.AGE}
+                    <AuthenticatedInputText inputTextName={fieldTextName.AGE} inputName={fieldControllerName.AGE} control={control} rules={formRequiredRules.ageRule} refCallback={ageRefCallback}
+                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THREE} placeHolderText={placeHolderText.AGE} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, pincodeRef)}
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
 
-                    <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule}
-                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE}
+                    <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule} refCallback={pincodeRefCallback}
+                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} textContentType={keyBoardTypeConst.PINCODE}
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
 
                     <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}

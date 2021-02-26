@@ -56,7 +56,7 @@ export const RVBloodRequest = () => {
                         defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} requestForm={requestForm}
                         setRequestForm={setRequestForm} isFromBloodRequestForm={true} />
 
-                    <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule}
+                    <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule} textContentType={keyBoardTypeConst.PINCODE}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} requestForm={requestForm} setRequestForm={setRequestForm}
                         isFromBloodRequestForm={true} keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
 
@@ -68,8 +68,8 @@ export const RVBloodRequest = () => {
                         formState={formState} mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={`default`} />
 
                     <AuthenticatedInputText inputTextName={fieldTextName.HOSPITAL_NAME} inputName={fieldControllerName.HOSPITAL_NAME} control={control} rules={formRequiredRules.hospitalNameFormRule}
-                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.HOSPITAL_NAME} requestForm={requestForm} setRequestForm={setRequestForm} extraStyles={RVStyles.hospiatalTextHeight}
-                        isFromBloodRequestForm={true} formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO} />
+                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.HOSPITAL_NAME} requestForm={requestForm} setRequestForm={setRequestForm} extraStyles={RVStyles.hospitalTextHeight}
+                        isFromBloodRequestForm={true} formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO} textContentType={keyBoardTypeConst.ADDRESS_CITY_STATE} />
                 </Animated.ScrollView>
                 <View style={RVStyles.requestBloodButtonStyle}>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(onSubmit)} >

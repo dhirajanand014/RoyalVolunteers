@@ -142,9 +142,9 @@ export const SignUpOTPVerification = props => {
                                 { borderColor: otpArray[index] && colors.GREEN || textInputRef?.current?.isFocused() && !otpArray[index] && colors.BLUE || colors.ORANGE }]} value={otpArray[index].toString()}
                                     onKeyPress={onOtpKeyPress(index, otpArray, firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
                                         fifthTextInputRef, setOtpArray, setError, clearErrors)} onChangeText={onOtpChange(index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-                                            fifthTextInputRef, sixththTextInputRef)} keyboardType={keyBoardTypeConst.NUMERIC} textContentType={keyBoardTypeConst.ONETIMECODE}
+                                            fifthTextInputRef, sixththTextInputRef)} textContentType={keyBoardTypeConst.ONETIMECODE} maxLength={numericConstants.ONE}
                                     keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} refCallback={refCallback(textInputRef)}
-                                    maxLength={numericConstants.ONE} key={index} autoFocus={index === numericConstants.ZERO && true || false} />
+                                    key={index} autoFocus={index === numericConstants.ZERO && true || false} />
                             ))}
                 </View>
                 <Text style={RVStyles.otpErrorMessageStyle}>{formState.errors.otpInput?.message}</Text>

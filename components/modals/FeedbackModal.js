@@ -19,12 +19,12 @@ export const FeedbackModal = props => {
 
     return (
         <View style={[RVGenericStyles.fill, RVGenericStyles.justifyContentCenter]} >
-            <Modal animationType="fade" transparent visible={userDashboard.showFeedbackModal}
+            <Modal animationType={`fade`} transparent visible={userDashboard.showFeedbackModal}
                 onRequestClose={() => setUserDashboard({ ...userDashboard, showFeedbackModal: false })} >
                 <View style={RVGenericStyles.alignItemsCenter}>
                     <View style={[RVStyles.feedBackModalView, RVGenericStyles.alignItemsCenter]}>
                         <RegistrationInput inputName={fieldControllerName.FEEDBACK} control={control} rules={formRequiredRules.feedBackInputRule}
-                            defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.FEEDBACK} extraStyles={RVStyles.hospiatalTextHeight}
+                            defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.FEEDBACK} extraStyles={RVStyles.hospitalTextHeight}
                             formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO}
                             extraStyles={[RVStyles.feedBackModalTextInput, RVGenericStyles.justifyContentCenter]} isFeedbackInput={true} />
 

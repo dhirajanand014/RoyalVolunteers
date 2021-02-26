@@ -10,6 +10,7 @@ import { RVUserDashBoardFooterButtons } from '../../components/view/RVUserDashBo
 import * as Animatable from 'react-native-animatable';
 import { RVUserDashBoardHeaderView } from './RVUserDashBoardHeaderView';
 import { Animated } from 'react-native';
+import { TestimonialModal } from '../modals/TestimonalModal';
 
 export const RVDashBoardDetails = (props) => {
     const { userDashboard, handleSubmit, setUserDashboard, control, formState, setLoader, navigation, phoneNumber } = props;
@@ -32,6 +33,7 @@ export const RVDashBoardDetails = (props) => {
                 </Animated.ScrollView>
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
                 <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
+                <TestimonialModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
             </Animatable.View>
         </React.Fragment>
     )

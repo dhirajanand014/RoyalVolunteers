@@ -37,7 +37,7 @@ export const SignUp = () => {
                 <Animated.ScrollView>
                     <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
                         defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER} isSignUp={true}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon />} textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />} textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState}
                         setSignUpDetails={setSignUpDetails} signUpDetails={signUpDetails} autofocus={true} />
                 </Animated.ScrollView>
                 <View style={RVStyles.signUpPrimaryButtonView}>

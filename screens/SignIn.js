@@ -18,7 +18,7 @@ import * as Animatable from 'react-native-animatable';
 import { RVLoginSecretIcon } from '../components/icons/RVLoginSecretIcon';
 import { SignUpContext } from '../App';
 import {
-    focusOnSecretIfFormInvalid, getRegistrationStatus, getSavedToken,
+    focusOnInputIfFormInvalid, getRegistrationStatus, getSavedToken,
     saveRegistrationStatus, handleUserLogin, handleForgotPassword,
     setErrorModal, showSnackBar, validateSavedToken,
 } from '../helper/Helper';
@@ -64,6 +64,7 @@ export const SignIn = () => {
                 navigateUser(responseNavigation, data);
                 setLoader(false);
             } else {
+                console.error(errorModalMessageConstants.REQUEST_IS_INVALID, isValidRequest);
                 setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
                     errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
                 setLoader(false);
@@ -84,12 +85,12 @@ export const SignIn = () => {
                 <Animated.ScrollView>
                     <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
                         defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon />}
-                        textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState} autofocus={true} onSubmitEditing={() => focusOnSecretIfFormInvalid(formState, secretRef)} />
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />}
+                        textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState} autofocus={true} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, secretRef)} />
 
                     <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
-                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THOUSAND} placeHolderText={placeHolderText.SECRET} refCallback={refCallback}
-                        keyboardType={keyBoardTypeConst.DEFAULT} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
+                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.FOUR} placeHolderText={placeHolderText.SECRET} refCallback={refCallback}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
                     <View style={RVStyles.signInLinks}>
                         <View style={RVStyles.signInForgotPassword}>
                             <TouchableOpacity style={RVStyles.signInForgotPasswordLink}

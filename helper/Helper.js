@@ -29,7 +29,6 @@ export const saveBloodRequest = async (phoneNumber, requestForm) => {
             phone: phoneNumber,
             ...requestForm
         };
-
         const requestBloodJSON = JSON.stringify(bloodRequstData);
 
         const saveResponse = await axios.post(urlConstants.SAVE_BLOOD_REQUEST, requestBloodJSON);
@@ -51,13 +50,18 @@ export const notifyBloodDoners = async (phoneNumber, requestForm) => {
         }
         const JSONPayload = JSON.stringify(payLoad);
         const notifyResponse = await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
-        const responseData = notifyResponse.data;
-        console.log(responseData && responseData || `No response`);
-        const bloodGroupLabel = bloodGroupsList.find(bloodGroup => bloodGroup.value == requestForm.blood_group).label;
-        !responseData && showSnackBar(`No user available with blood group ${bloodGroupLabel} in ${requestForm.pincode} area.`, false);
-        return true;
+        const responseData = typeof (notifyResponse.data) == stringConstants.STRING &&
+            notifyResponse.data.replace(stringConstants.REPLACE_CRLF, stringConstants.EMPTY) || notifyResponse.data;
+        console.log(responseData && responseData || errorModalMessageConstants.NOTIFICATION_FAIL_DONERS);
+        if (responseData && responseData.success >= numericConstants.ONE) {
+            return miscMessage.SUCCESSFUL;
+        } else if (responseData && responseData.failure >= numericConstants.ONE) {
+            return miscMessage.UNSUCCESSFUL
+        } else {
+            return stringConstants.EMPTY;
+        }
     } catch (error) {
-        console.error(`Could not send request to notify blood requests`, error);
+        console.error(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, error);
     }
     return false;
 }
@@ -163,7 +167,7 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isR
         }
         showSnackBar(successFulMessages.SENT_SMS_SUCCESSFULLY, true);
     } catch (error) {
-        console.error(`Cannot request OTP for number :${signUpDetails.phoneNumber}`, error);
+        console.error(`${errorModalMessageConstants.REQUEST_OTP_FAILED} : ${signUpDetails.phoneNumber}`, error);
     }
     setLoader(false);
     return false;
@@ -304,7 +308,7 @@ export const onOtpKeyPress = (index, otpArray, firstTextInputRef, secondTextInpu
     fifthTextInputRef, setOtpArray, setError, clearErrors) => {
     return ({ nativeEvent: { key: value } }) => {
         // auto focus to previous InputText if value is blank and existing value is also blank
-        if (value === 'Backspace' && otpArray[index] === stringConstants.EMPTY) {
+        if (value === miscMessage.BACKSPACE && otpArray[index] === stringConstants.EMPTY) {
             switch (index) {
                 case numericConstants.ONE:
                     firstTextInputRef.current.focus();
@@ -410,16 +414,16 @@ export const verifyOtpRequest = async (otpString, isFrom, phoneNumber, requestFo
     }
 }
 
-export const focusOnSecretIfFormInvalid = (formState, secretRef) => {
+export const focusOnInputIfFormInvalid = (formState, inputRef) => {
     if (!formState.isValid)
-        secretRef?.current?.focus();
+        inputRef?.current?.focus();
 }
 
-export const showSnackBar = (message, success) => {
+export const showSnackBar = (message, success, isLong) => {
     Snackbar.show({
         text: message,
         textColor: colors.WHITE,
-        duration: Snackbar.LENGTH_SHORT,
+        duration: isLong && Snackbar.LENGTH_LONG || Snackbar.LENGTH_SHORT,
         backgroundColor: success && colors.GREEN || colors.RED
     })
 }
@@ -593,7 +597,7 @@ export const getSavedToken = async (error, setError) => {
                 ...JSON.parse(tokenSaved.password)
             }
         }
-        console.warn(errorModalMessageConstants.TOKEN_FETCH_FAILED);
+        console.warn(errorModalMessageConstants.TOKEN_FETCH_FAILED, tokenSaved);
     } catch (error_response) {
         console.error(errorModalMessageConstants.SAVED_TOKEN_FETCH_FAILED, error_response);
         setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
@@ -711,7 +715,7 @@ export const updateDeviceToken = async (messaging, currentDeviceToken, phoneNumb
             return response && response.data;
         }
     } catch (error) {
-        console.error(`Could not update the device token for the phone number: ${phoneNumber}`, error);
+        console.error(`Could not update the device token for the phone number: ${phoneNumber} `, error);
     }
 }
 
@@ -721,9 +725,9 @@ export const requestNotificationPermission = async (messaging) => {
         return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     } catch (error) {
-        console.error(`Could not request permission to the user`, error);
+        console.error(errorModalMessageConstants.CANNOT_REQUEST_PERMISSION_TO_USER, error);
     }
-    console.warn("User denied the notification!");
+    console.warn(errorModalMessageConstants.USER_DENIED_NOTIFICATION);
     return false;
 }
 
@@ -734,10 +738,10 @@ export const displayNotificationPermissionWarning = () => {
             text: actionButtonTextConstants.OK, onPress: () => {
                 if (isIOS) {
                     try {
-                        const canOpen = Linking.canOpenURL('app-settings:');
-                        canOpen && Linking.openURL('app-settings:');
+                        const canOpen = Linking.canOpenURL(miscMessage.APP_SETTINGS);
+                        canOpen && Linking.openURL(miscMessage.APP_SETTINGS);
                     } catch (error) {
-                        console.error(`Cannot open settings screen`, error)
+                        console.error(errorModalMessageConstants.CANNOT_OPEN_SETTINGS_SCREEN, error)
                     }
                 }
             }
@@ -808,7 +812,7 @@ const isNotificationExpired = (request) => {
         const duration = moment.duration(moment(Date.now()).diff(moment(request.ttl)));
         return duration.asHours() > numericConstants.ONE;
     } catch (error) {
-        console.error(`Could not calculate duration`, error);
+        console.error(errorModalMessageConstants.CANNOT_CALCULATE_DURATION, error);
     }
 }
 
@@ -841,7 +845,7 @@ export const logoutUser = async (error, setError, setLoader, menuRef, navigation
             numericConstants.THREE_HUNDRED);
         setLoader(false)
     } catch (error) {
-        console.error(`Cannot logout user`, error);
+        console.error(errorModalMessageConstants.CANNOT_LOGOUT_USER, error);
     }
 }
 
@@ -856,7 +860,7 @@ export const navigateToNotificationRequests = async (notificationDetails, setNot
         setNotificationDetails({ ...notificationDetails, isNewNotification: false });
         setLoader(false);
     } catch (error) {
-        console.error(`Cannot navigate to notification requests`, error);
+        console.error(errorModalMessageConstants.CANNOT_NAVIGATE_TO_NOTIFICATION_REQUEST, error);
     }
 }
 
@@ -896,10 +900,13 @@ const listenOtp = (message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOt
 
 export const sendNotification = async (phoneNumber, requestForm) => {
     const isNotified = await notifyBloodDoners(phoneNumber, requestForm);
-    if (isNotified) {
+    if (isNotified == miscMessage.SUCCESSFUL) {
         await saveBloodRequest(phoneNumber, requestForm);
-        showSnackBar(successFulMessages.NOTIFICATION_SENT_DONERS, true);
+        showSnackBar(successFulMessages.NOTIFICATION_SENT_DONERS, true, true);
+    } else if (isNotified == miscMessage.UNSUCCESSFUL) {
+        showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false, true);
     } else {
-        showSnackBar(errorModalMessageConstants.NOTIFICATION_FAIL_DONERS, false);
+        const bloodGroupLabel = bloodGroupsList.find(bloodGroup => bloodGroup.value == requestForm.blood_group).label;
+        showSnackBar(`No user available with blood group ${bloodGroupLabel} in ${requestForm.pincode} area.`, false, true);
     }
 }

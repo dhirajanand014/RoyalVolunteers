@@ -14,7 +14,7 @@ export const RVBloodRequestsFlatList = props => {
         <View style={[RVGenericStyles.colorWhite]}>
             <FlatList data={data} contentContainerStyle={RVGenericStyles.padding5}
                 keyExtractor={item => item.phone_number} renderItem={({ item, index }) => {
-                    return (<View key={`${item.phone_number}_${index}`} style={[RVGenericStyles.marginVertical10, RVStyles.notificationsFlatListRow]}>
+                    return (<View key={`${item.phone_number}_${index}`} style={[RVGenericStyles.mv10, RVStyles.notificationsFlatListRow]}>
                         <View style={[RVStyles.bloodNotificationsFlatListRow, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View>
                                 <View style={RVStyles.notificationsFlatListRowView}>
@@ -31,9 +31,9 @@ export const RVBloodRequestsFlatList = props => {
                                 <Text style={[RVGenericStyles.ft24, RVGenericStyles.ftWeight700, RVGenericStyles.marginBottom4, RVGenericStyles.fontFamilyNormal]}>{item.phone_number}</Text>
                                 <Text style={[RVGenericStyles.ft20, RVGenericStyles.opacitypt7, RVGenericStyles.marginBottom10]}>{item.pincode}</Text>
                                 <TouchableOpacity style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentCenter, RVGenericStyles.backGroundColorGreen,
-                                RVGenericStyles.alignItemsCenter, RVGenericStyles.paddingHorizontal15, RVStyles.notificationsCallStyle]}
+                                RVGenericStyles.alignItemsCenter, RVGenericStyles.paddingHorizontal15, RVStyles.notificationsCallStyle, RVGenericStyles.elevation3]}
                                     onPress={() => Linking.openURL(`tel:${countryCodesConstants.INDIA}${item.phone_number}`)}>
-                                    <RVPhoneIcon />
+                                    <RVPhoneIcon stroke={colors.WHITE_GREY} />
                                     <Text style={[RVGenericStyles.bold, RVGenericStyles.ml_8, RVGenericStyles.colorWhite, RVGenericStyles.ft18, RVGenericStyles.fontFamilyNormal]}>
                                         {miscMessage.CALL}
                                     </Text>

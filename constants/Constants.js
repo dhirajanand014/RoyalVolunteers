@@ -15,6 +15,7 @@ export const stringConstants = {
     NODE: {},
     ARRAY: [],
     REPLACE_REGEX: /[- #*;,.<>\{\}\[\]\\\/]/gi,
+    REPLACE_CRLF: /(\r\n|\n|\r)/gm,
     STRING: `string`,
     OBJECT: `object`,
     NEW_LINE: `\n`,
@@ -67,7 +68,8 @@ export const actionButtonTextConstants = {
     OK: `OK`,
     DATE: `Date`,
     SEND_FEEDBACK: `Send Feedback`,
-    REQUEST_FOR_BLOOD: `Request for blood`
+    REQUEST_FOR_BLOOD: `Request for blood`,
+    TESTIMONIAL: `Testimonial`
 }
 
 export const stackOptions = {
@@ -97,6 +99,10 @@ export const formRequiredRules = {
         required: {
             value: true,
             message: `Please enter the password`
+        },
+        minLength: {
+            value: 4,
+            message: `Please enter only 4 digit password`
         }
     },
     otpFormRule: {
@@ -173,6 +179,16 @@ export const formRequiredRules = {
             value: true,
             message: `Please enter a value`
         }
+    },
+    testimnialRule: {
+        maxLength: {
+            value: 1000,
+            message: `Please enter only 1000 characters`
+        },
+        required: {
+            value: true,
+            message: `Please enter a value`
+        }
     }
 };
 
@@ -196,7 +212,7 @@ export const countryCodesConstants = {
 
 export const bloodGroupsList = [
     {
-        label: ``,
+        label: stringConstants.EMPTY,
         value: -1
     }, {
         label: `Select a blood group`,
@@ -287,7 +303,8 @@ export const fieldControllerName = {
     AVAILABILITY_STATUS: `availability_status`,
     DATE_PICKER: `datePicker`,
     HOSPITAL_NAME: `hospitalName`,
-    FEEDBACK: `feedback`
+    FEEDBACK: `feedback`,
+    TESTIMONIAL: `testimonial`
 }
 
 export const fieldTextName = {
@@ -311,21 +328,26 @@ export const placeHolderText = {
     PHONE_NUMBER: `Enter 10 digit Mobile Number`,
     NAME: `Enter Name`,
     AGE: `Enter Age`,
-    SECRET: `Enter Password`,
+    SECRET: `Enter 4 digit Password`,
     PINCODE: `Enter 6 digit pincode`,
-    CONFIRM_PASSWORD: `Confirm Password`,
+    CONFIRM_PASSWORD: `Confirm 4 digit Password`,
     SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`,
     HOSPITAL_NAME: `Enter Hospital name`,
-    FEEDBACK: `Enter Feedback`
+    FEEDBACK: `Enter Feedback`,
+    TESTIMONIAL: `Enter Testimonials`
 }
 
 export const keyBoardTypeConst = {
     DEFAULT: `default`,
     ANDROID_NUMERIC: `numeric`,
-    IOS_NUMERIC: `name-phone-pad`,
+    IOS_NUMERIC: `number-pad`,
     TELPHONETYPE: `telephoneNumber`,
+    USERNAME: `username`,
+    NEW_PASSWORD: `newPassword`,
     ONETIMECODE: `oneTimeCode`,
     NAME: `name`,
+    PINCODE: `postalCode`,
+    ADDRESS_CITY_STATE: `addressCityAndState`,
     PASSWORD: `password`
 }
 
@@ -375,13 +397,15 @@ export const miscMessage = {
     INFINITE: `infinite`,
     NEEDED_REQUEST: `needed_request`,
     IMMEDIATE: `Immediate`,
-    ATTEMPT_REMAINING: `Attempts remaining`
+    ATTEMPT_REMAINING: `Attempts remaining`,
+    BACKSPACE: `Backspace`,
+    APP_SETTINGS: 'app-settings:'
 }
 
 export const successFulMessages = {
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
     SENT_SMS_SUCCESSFULLY: `Successfully sent message!`,
-    NOTIFICATION_SENT_DONERS: `Notification sent to doners`,
+    NOTIFICATION_SENT_DONERS: `Notification sent to doners. Someone will call you!`,
     SUCCESSFULLY_REGISTERED: `Successfully registered your details`,
     SUCCESSFULLY_RESET_PASSWORD: `Password reset sucessful. Please sign in`,
     ACCESS_TOKEN_RETRIEVED_SUCCESSFULLY: `Access Token retrieved successfully!`,
@@ -426,7 +450,15 @@ export const errorModalMessageConstants = {
     CANNOT_FETCH_SAVED_ACCOUNT_STATUS: `Cannot not fetch user registration status`,
     ENABLE_NOTIFICATIONS_SETTINGS: `To receive notifications about blood requests, you need to enable receiving notifications.\n
         Clicking on OK will navigate you to settings dialog to allow notifications.Click Cancel to close.`,
-    CANNOT_UPDATE_NOTIFICATION_STATUS: `Cannot update notification status`
+    CANNOT_UPDATE_NOTIFICATION_STATUS: `Cannot update notification status`,
+    REQUEST_IS_INVALID: `Request is invalid`,
+    REQUEST_OTP_FAILED: `Cannot request OTP for number`,
+    CANNOT_REQUEST_PERMISSION_TO_USER: `Could not request permission to the user`,
+    USER_DENIED_NOTIFICATION: `User denied the notification!`,
+    CANNOT_OPEN_SETTINGS_SCREEN: `Cannot open settings screen`,
+    CANNOT_CALCULATE_DURATION: `Could not calculate duration`,
+    CANNOT_LOGOUT_USER: `Cannot logout user`,
+    CANNOT_NAVIGATE_TO_NOTIFICATION_REQUEST: `Cannot navigate to notification requests`
 }
 
 export const tokenRequestResponseConst = {
