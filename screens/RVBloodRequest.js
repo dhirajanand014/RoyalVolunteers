@@ -39,8 +39,7 @@ export const RVBloodRequest = () => {
                 navigation.goBack();
             } else {
                 navigation.navigate(routeConsts.SIGN_UP, {
-                    isFrom: miscMessage.BLOOD_REQUEST,
-                    isFrom: isFrom
+                    isFrom: miscMessage.BLOOD_REQUEST
                 });
             }
             setLoader(false);

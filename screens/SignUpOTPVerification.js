@@ -118,18 +118,10 @@ export const SignUpOTPVerification = props => {
         if (isValid) {
             const randomNumber = route.params?.rand_number || false;
             const navigationResponse = await verifyOtpRequest(otpString, isFrom, phoneNumber, requestForm, randomNumber);
-            if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.DASHBOARD == navigationResponse ||
-                miscMessage.CONFIRM_SECRET == navigationResponse) {
+            if (miscMessage.RESET_NAVIGATION == navigationResponse || miscMessage.CONFIRM_SECRET == navigationResponse) {
                 clearInterval(resendOtpTimerInterval);
                 if (miscMessage.RESET_NAVIGATION == navigationResponse)
                     navigation.reset({ index: numericConstants.ZERO, routes: [{ name: routeConsts.HOME }] });
-                else if (miscMessage.DASHBOARD == navigationResponse)
-                    navigation.reset({
-                        index: numericConstants.ZERO, routes: [{
-                            name: routeConsts.USER_DASHBOARD,
-                            params: { phoneNumber: phoneNumber }
-                        }]
-                    });
                 else if (miscMessage.CONFIRM_SECRET == navigationResponse)
                     navigation.navigate(routeConsts.SIGN_UP_SECRET, { isFrom: isFrom, phoneNumber: phoneNumber });
             }

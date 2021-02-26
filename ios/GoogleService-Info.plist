@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>661328225266-gbf616mk9hhhfdhjnifp307g566o0tps.apps.googleusercontent.com</string>
+	<string>661328225266-s2isaoemldaqa64k6ieo4r4r64i5smdc.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.661328225266-gbf616mk9hhhfdhjnifp307g566o0tps</string>
+	<string>com.googleusercontent.apps.661328225266-s2isaoemldaqa64k6ieo4r4r64i5smdc</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>661328225266-vvgdnsdkehooe5hed0goka7b04oaa8sg.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.RoyalVolunteers</string>
+	<string>com.royalperkk.RoyalVolunteers</string>
 	<key>PROJECT_ID</key>
 	<string>royalvolunteer-49e09</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:661328225266:ios:bfd25dd6d4dc7ff69f416b</string>
+	<string>1:661328225266:ios:e97734cc7f52731c9f416b</string>
 </dict>
 </plist>

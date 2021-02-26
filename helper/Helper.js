@@ -41,13 +41,11 @@ export const saveBloodRequest = async (phoneNumber, requestForm) => {
 }
 
 export const notifyBloodDoners = async (phoneNumber, requestForm) => {
-    const bloodGroupLabel = bloodGroupsList.find(bloodGroup =>
-        bloodGroup.value == requestForm.blood_group).label;
     try {
         const payLoad = {
             [fieldControllerName.PHONE_NUMBER]: phoneNumber,
             [fieldControllerName.PINCODE]: requestForm.pincode,
-            [fieldControllerName.BLOOD_GROUP]: bloodGroupLabel,
+            [fieldControllerName.BLOOD_GROUP]: requestForm.blood_group,
             [miscMessage.NEEDED_REQUEST]: requestForm.needed_request == neededOptions[numericConstants.ZERO].label &&
                 neededOptions[numericConstants.ZERO].label || moment(requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT)
         }
@@ -55,6 +53,7 @@ export const notifyBloodDoners = async (phoneNumber, requestForm) => {
         const notifyResponse = await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
         const responseData = notifyResponse.data;
         console.log(responseData && responseData || `No response`);
+        const bloodGroupLabel = bloodGroupsList.find(bloodGroup => bloodGroup.value == requestForm.blood_group).label;
         !responseData && showSnackBar(`No user available with blood group ${bloodGroupLabel} in ${requestForm.pincode} area.`, false);
         return true;
     } catch (error) {
@@ -676,8 +675,7 @@ export const handleForgotPassword = async (watchMobileNumber, navigation, trigge
         if (watchMobileNumber && watchMobileNumber.length >= numericConstants.TEN) {
             clearErrors(fieldControllerName.PHONE_NUMBER);
             const phone = { phoneNumber: watchMobileNumber };
-            await handleUserSignUpOtp(phone, miscMessage.FORGOT_PASSWORD, routeConsts.SIGN_IN, navigation,
-                false, setLoader);
+            await handleUserSignUpOtp(phone, miscMessage.FORGOT_PASSWORD, navigation, false, setLoader);
         } else {
             trigger(fieldControllerName.PHONE_NUMBER);
         }
