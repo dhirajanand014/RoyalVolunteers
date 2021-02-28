@@ -91,8 +91,10 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
             userDashboardDetails = userDashboardDetails.data;
             const notificationValues = await getSavedNotificationRequests();
             if (notificationValues) {
-                userDashboard.isNewNotification = notificationValues.some(request => request.new == true);
-                setTimeout(() => setUserDashboard({ ...userDashboard, ...userDashboardDetails.user }), numericConstants.FIVE_HUNDRED);
+                setTimeout(() => {
+                    userDashboard.isNewNotification = notificationValues.some(request => request.new == true);
+                    setUserDashboard({ ...userDashboard, ...userDashboardDetails.user })
+                }, numericConstants.FIVE_HUNDRED);
             } else {
                 setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
             }
@@ -449,12 +451,14 @@ const datePickerConvert = (event, date) => {
     return false;
 }
 
-export const access_token_request_response = async (phoneNumber, data, error, setErrorMod, isValidateNewToken) => {
+export const access_token_request_response = async (phoneNumber, data, error, setErrorMod, signUpDetails,
+    setSignUpDetails, isValidateNewToken) => {
     try {
         const token_request = prepareTokenRequest(phoneNumber, data, tokenRequestResponseConst.TYPE_NEW);
         const token_response = await requestForToken(token_request, error, setErrorMod);
         if (token_response) {
-            return await validateAndSaveToken(phoneNumber, token_response, error, setErrorMod, isValidateNewToken);
+            await validateAndSaveToken(phoneNumber, token_response, error, setErrorMod, signUpDetails, setSignUpDetails,
+                isValidateNewToken);
         } else {
             console.error(errorModalMessageConstants.ERROR_FETCHING_TOKEN);
             setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
@@ -509,12 +513,15 @@ export const requestForToken = async (request_token, error, setErrorMod) => {
         if (numericConstants.FOUR_HUNDRED_ONE == error_response.status) {
             console.error(errorModalMessageConstants.ACCESS_TOKEN_COULD_NOT_BE_RETRIEVED, error_response.status);
             console.error(errorModalTitleConstants.ERROR, error_response.data.error_description);
+        } else {
+            console.error(errorModalMessageConstants.ERROR_REQUESTING_TOKEN, error_response);
         }
     }
     return false;
 }
 
-export const validateAndSaveToken = async (phoneNumber, response_token, error, setErrorMod, isValidateNewToken) => {
+export const validateAndSaveToken = async (phoneNumber, response_token, error, setErrorMod, signUpDetails, setSignUpDetails,
+    isValidateNewToken) => {
     try {
         const request_token = response_token.access_token;
         console.log(successFulMessages.VALIDATING_ACCESS_TOKEN);
@@ -522,25 +529,28 @@ export const validateAndSaveToken = async (phoneNumber, response_token, error, s
         if (miscMessage.TOKEN_VALID == token_validate_response) {
             console.log(successFulMessages.TOKEN_IS_VALID);
             if (isValidateNewToken) {
-                return await saveTokenData(phoneNumber, response_token, error, setErrorMod);
+                const savedData = await saveTokenData(phoneNumber, response_token, error, setErrorMod);
+                signUpDetails.tokenValidation = savedData;
+            } else {
+                signUpDetails.tokenValidation = miscMessage.TOKEN_VALID;
             }
-            return miscMessage.TOKEN_VALID;
         } else if (miscMessage.TOKEN_EXPIRED == token_validate_response) {
             console.log(errorModalMessageConstants.TOKEN_EXPIRED);
             const token_request = prepareTokenRequest(phoneNumber, response_token,
                 tokenRequestResponseConst.TYPE_REFRESH);
             const response_refresh_token = await requestForToken(token_request, error, setErrorMod);
-            await validateAndSaveToken(phoneNumber, response_refresh_token, error, setErrorMod, true);
+            await validateAndSaveToken(phoneNumber, response_refresh_token, error, setErrorMod, signUpDetails,
+                setSignUpDetails, true);
         }
     } catch (error_response) {
         console.error(errorModalMessageConstants.TOKEN_VALIDATION_FAILED, error_response);
         setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,
             errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
     }
-    return false;
+    setSignUpDetails({ ...signUpDetails, tokenValidation: signUpDetails.tokenValidation || false });
 }
 
-export const validateToken = async (token) => {
+export const validateToken = async (token, error, setErrorMod) => {
     let tokenResponseData;
     try {
         const headerParam = { headers: { [tokenRequestResponseConst.AUTHORIZATION_BEARER]: tokenRequestResponseConst.BEARER + token } };
@@ -608,20 +618,23 @@ export const getSavedToken = async (error, setError) => {
     return false;
 }
 
-export const validateSavedToken = async (savedToken, data, error, setError, isFromSplashScreen) => {
+export const validateSavedToken = async (savedToken, data, error, setError, signUpDetails, setSignUpDetails,
+    isFromSplashScreen) => {
     try {
         if (savedToken) {
             const phoneNumber = !isFromSplashScreen && data.phoneNumber || savedToken.username.
                 split(tokenRequestResponseConst.CLIENT_ID_VALUE)[numericConstants.ONE];
-            return await validateAndSaveToken(phoneNumber, savedToken, error, setError, false);
+            return await validateAndSaveToken(phoneNumber, savedToken, error, setError, signUpDetails, setSignUpDetails, false);
         } else {
-            return !isFromSplashScreen && await access_token_request_response(data.phoneNumber, data, error, setError, true) ||
-                false;
+            if (!isFromSplashScreen) {
+                await access_token_request_response(data.phoneNumber, data, error, setError, signUpDetails,
+                    setSignUpDetails, true)
+            }
         }
     } catch (error_response) {
-        console.error(error_response)
+        console.error(errorModalMessageConstants.CANNOT_VALIDATE_SAVED_TOKEN, error_response)
     }
-    return false;
+    setSignUpDetails({ ...signUpDetails, tokenValidation: signUpDetails.tokenValidation || false });
 }
 
 export const fetchUserRegistrationStatus = async (phoneNumber) => {
@@ -657,18 +670,20 @@ export const getRegistrationStatus = async () => {
     return false;
 }
 
-export const fetchSplashScreenRoute = async (savedToken, isValidRequest) => {
-    if (isValidRequest && isValidRequest == miscMessage.TOKEN_VALID) {
+export const fetchSplashScreenRoute = async (username, signUpDetails) => {
+    if (signUpDetails.tokenValidation == miscMessage.TOKEN_VALID) {
         const account_status = await getRegistrationStatus();
+        console.log(successFulMessages.USER_ACCOUNT_STATUS, account_status);
         const navigationRoute = account_status.account_status == miscMessage.VERIFIED && routeConsts.USER_REGISTRATION ||
             account_status.account_status == miscMessage.REGISTERED && routeConsts.USER_DASHBOARD || false;
-        const phone = savedToken.username.split(tokenRequestResponseConst.CLIENT_ID_VALUE)[numericConstants.ONE];
+        const phone = username.split(tokenRequestResponseConst.CLIENT_ID_VALUE)[numericConstants.ONE];
         return route = {
             name: navigationRoute && navigationRoute || routeConsts.HOME, params: {
                 phoneNumber: phone
             }
         }
     } else {
+        console.warn(successFulMessages.USER_LOGIN_TOKEN_STATUS, signUpDetails.tokenValidation);
         return route = {
             name: routeConsts.HOME
         }

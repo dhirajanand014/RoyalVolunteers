@@ -30,7 +30,8 @@ export default function App() {
   const [signUpDetails, setSignUpDetails] = useState({
     phoneNumber: stringConstants.EMPTY,
     secret: stringConstants.EMPTY,
-    registrationSuccessful: false
+    registrationSuccessful: false,
+    tokenValidation: false
   });
 
   const [requestForm, setRequestForm] = useState({

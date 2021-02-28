@@ -48,9 +48,9 @@ export const TestimonialModal = props => {
                                         setLoader(true);
                                         const testimonialResponse = await saveFeedbackText(data.testimonial, phoneNumber);
                                         testimonialResponse == miscMessage.SUCCESS &&
-                                            setTimeout(() => showSnackBar(successFulMessages.FEEDBACK_SUBMITTED_SUCCESSFULLY, true), numericConstants.THREE_HUNDRED);
+                                            setTimeout(() => showSnackBar(successFulMessages.TESTIMONIAL_SUBMITTED_SUCCESSFULLY, true), numericConstants.THREE_HUNDRED);
                                         testimonialResponse == miscMessage.ERROR &&
-                                            setTimeout(() => showSnackBar(errorModalMessageConstants.FEEDBACK_SUBMITTED_UNSUCCESSFULLY, false), numericConstants.THREE_HUNDRED);
+                                            setTimeout(() => showSnackBar(errorModalMessageConstants.TESTIMONIAL_SUBMITTED_UNSUCCESSFULLY, false), numericConstants.THREE_HUNDRED);
                                         setUserDashboard({ ...userDashboard, showTestimonialModal: false });
                                         setLoader(false);
                                     })}>

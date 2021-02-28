@@ -82,16 +82,16 @@ export const SignUpConfirmSecret = () => {
             const phoneNumber = isFrom == miscMessage.FORGOT_PASSWORD && route?.params?.phoneNumber || signUpDetails.phoneNumber;
             const registrationResponse = await handleUserSignUpRegistration(phoneNumber, data, false, isFrom);
             if (registrationResponse) {
-                let isSuccess;
                 let isFromForgotPassword = false;
                 if (registrationResponse == `${miscMessage.RESET}_${miscMessage.SUCCESSFUL}`) {
-                    isSuccess = await resetTokens(error, setErrorMod);
+                    await resetTokens(error, setErrorMod);
                     isFromForgotPassword = true;
                 } else {
-                    isSuccess = await access_token_request_response(phoneNumber, data, error, setErrorMod, true);
+                    await access_token_request_response(phoneNumber, data, error, setErrorMod, signUpDetails,
+                        setSignUpDetails, true);
                     isFromForgotPassword = false;
                 }
-                if (isSuccess) {
+                if (signUpDetails.tokenValidation) {
                     await navigateUser(data, isFromForgotPassword);
                 } else {
                     setErrorModal(error, setErrorMod, errorModalMessageConstants.UNEXPECTED_ERROR,

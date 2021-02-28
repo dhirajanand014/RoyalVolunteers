@@ -10,17 +10,17 @@ import messaging from '@react-native-firebase/messaging';
 export const SplashScreen = () => {
 
     const navigation = useNavigation();
-    const { error, setError, notificationDetails, setNotificationDetails } = useContext(SignUpContext);
+    const { error, setError, notificationDetails, setNotificationDetails, signUpDetails, setSignUpDetails } = useContext(SignUpContext);
 
-    const navigateUser = async (savedToken, isValidRequest) => {
-        const route = await fetchSplashScreenRoute(savedToken, isValidRequest);
+    const navigateUser = async (username) => {
+        const route = await fetchSplashScreenRoute(username, signUpDetails);
         navigation.reset({ index: numericConstants.ZERO, routes: [route] });
     }
 
     const fetchNavigationDetails = async () => {
         const savedToken = await getSavedToken(error, setError);
-        const isValidRequest = await validateSavedToken(savedToken, stringConstants.EMPTY, error, setError, true);
-        await navigateUser(savedToken, isValidRequest);
+        await validateSavedToken(savedToken, stringConstants.EMPTY, error, setError, signUpDetails, setSignUpDetails, true);
+        await navigateUser(savedToken.username);
     }
 
     useEffect(() => {

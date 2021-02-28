@@ -36,7 +36,7 @@ export const SignIn = () => {
     const refCallback = node => {
         secretRef.current = node;
     };
-    const { error, setError, setLoader } = useContext(SignUpContext);
+    const { error, setError, signUpDetails, setSignUpDetails, setLoader } = useContext(SignUpContext);
 
     const navigateUser = async (responseNavigation, data) => {
         const status = await getRegistrationStatus();
@@ -59,8 +59,10 @@ export const SignIn = () => {
         const responseNavigation = await handleUserLogin(data, messaging);
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
             const savedToken = await getSavedToken(error, setError);
-            const isValidRequest = await validateSavedToken(savedToken, data, error, setError, false);
-            if (isValidRequest && isValidRequest == miscMessage.TOKEN_VALID) {
+            debugger
+            await validateSavedToken(savedToken, data, error, setError, signUpDetails,
+                setSignUpDetails, false);
+            if (signUpDetails.tokenValidation == miscMessage.TOKEN_VALID) {
                 navigateUser(responseNavigation, data);
                 setLoader(false);
             } else {

@@ -405,6 +405,7 @@ export const miscMessage = {
 
 export const successFulMessages = {
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
+    TESTIMONIAL_SUBMITTED_SUCCESSFULLY: `Testimonial submitted successfully`,
     SENT_SMS_SUCCESSFULLY: `Successfully sent message!`,
     NOTIFICATION_SENT_DONERS: `Notification sent to doners. Someone will call you!`,
     SUCCESSFULLY_REGISTERED: `Successfully registered your details`,
@@ -416,6 +417,8 @@ export const successFulMessages = {
     TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`,
     SUCCESSFUL_LOG_OUT: `SuccessFully logged out`,
     DASHBOARD_DETAILS_UPDATE: `Updated your availability successfully!`,
+    USER_LOGIN_TOKEN_STATUS: `User login token status`,
+    USER_ACCOUNT_STATUS: `User account status`
 }
 
 export const errorModalTitleConstants = {
@@ -431,6 +434,7 @@ export const errorModalMessageConstants = {
     USER_LOGIN_FAILED: `Username and Password does not match`,
     NOTIFICATION_FAIL_DONERS: `Could not notify doners`,
     FEEDBACK_SUBMITTED_UNSUCCESSFULLY: `Could not submit feedback`,
+    TESTIMONIAL_SUBMITTED_UNSUCCESSFULLY: `Could not submit testimonial`,
     USER_NOT_REGISTERED: `Could not register user.`,
     USER_ALREADY_REGISTERED: `User already registerd. Please sign in`,
     INCORRECT_OTP_ENTERED: `Incorrect OTP entered`,
@@ -459,7 +463,9 @@ export const errorModalMessageConstants = {
     CANNOT_OPEN_SETTINGS_SCREEN: `Cannot open settings screen`,
     CANNOT_CALCULATE_DURATION: `Could not calculate duration`,
     CANNOT_LOGOUT_USER: `Cannot logout user`,
-    CANNOT_NAVIGATE_TO_NOTIFICATION_REQUEST: `Cannot navigate to notification requests`
+    CANNOT_NAVIGATE_TO_NOTIFICATION_REQUEST: `Cannot navigate to notification requests`,
+    ERROR_REQUESTING_TOKEN: `Error requsting for token`,
+    CANNOT_VALIDATE_SAVED_TOKEN: `Cannot validate saved token`
 }
 
 export const tokenRequestResponseConst = {
