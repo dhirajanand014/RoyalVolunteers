@@ -121,14 +121,10 @@ export const formRequiredRules = {
             message: `Please enter a name`
         }
     },
-    ageRule: {
+    dobRule: {
         required: {
             value: true,
-            message: `Please enter a name`
-        },
-        maxLength: {
-            value: 3,
-            message: `Please enter a valid age`
+            message: `Please select a date of birth`
         }
     },
     bloodGroupRule: {
@@ -298,7 +294,7 @@ export const fieldControllerName = {
     CONFIRM_SECRET: `confirmSecret`,
     OTP_INPUT: `otpInput`,
     NAME: `name`,
-    AGE: `age`,
+    DOB: `dob`,
     PINCODE: `pincode`,
     BLOOD_GROUP: `blood_group`,
     AVAILABILITY_STATUS: `availability_status`,
@@ -314,7 +310,7 @@ export const fieldTextName = {
     PASSWORD: `Password`,
     CONFIRM_PASSWORD: `Confirm Password`,
     NAME: `Name : `,
-    AGE: `Age : `,
+    DOB: `Date of birth : `,
     PINCODE: `Pincode : `,
     BLOOD_GROUP: `Blood Group : `,
     AVAILABILITY_STATUS: `Status of availability : `,
@@ -329,6 +325,7 @@ export const placeHolderText = {
     PHONE_NUMBER: `Enter 10 digit Number`,
     NAME: `Enter Name`,
     AGE: `Enter Age`,
+    DOB: `Enter date of birth`,
     SECRET: `Enter 4 digit Password`,
     PINCODE: `Enter 6 digit pincode`,
     CONFIRM_PASSWORD: `Confirm 4 digit Password`,

@@ -46,7 +46,8 @@ export const notifyBloodDoners = async (phoneNumber, requestForm) => {
             [fieldControllerName.PINCODE]: requestForm.pincode,
             [fieldControllerName.BLOOD_GROUP]: requestForm.blood_group,
             [miscMessage.NEEDED_REQUEST]: requestForm.needed_request == neededOptions[numericConstants.ZERO].label &&
-                neededOptions[numericConstants.ZERO].label || moment(requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT)
+                neededOptions[numericConstants.ZERO].label || moment(requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT),
+            [fieldControllerName.HOSPITAL_NAME]: requestForm.hospital
         }
         const JSONPayload = JSON.stringify(payLoad);
         const notifyResponse = await axios.post(urlConstants.NOTIFY_BLOOD_REQUEST, JSONPayload);
@@ -82,7 +83,7 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
     return miscMessage.ERROR;
 }
 
-export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, setLoader) => {
+export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, navigation, setLoader) => {
     try {
         setLoader(true);
         const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}${miscMessage.PH_QUERY_PARAM}${phoneNumber}`;
@@ -91,13 +92,10 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
             userDashboardDetails = userDashboardDetails.data;
             const notificationValues = await getSavedNotificationRequests();
             if (notificationValues) {
-                setTimeout(() => {
-                    userDashboard.isNewNotification = notificationValues.some(request => request.new == true);
-                    setUserDashboard({ ...userDashboard, ...userDashboardDetails.user })
-                }, numericConstants.FIVE_HUNDRED);
-            } else {
-                setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
+                setTimeout(() => navigation.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION, { phoneNumber: phoneNumber }),
+                    numericConstants.FIVE_HUNDRED);
             }
+            setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
         }
     } catch (error) {
         console.error(error);

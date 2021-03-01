@@ -59,7 +59,6 @@ export const SignIn = () => {
         const responseNavigation = await handleUserLogin(data, messaging);
         if (responseNavigation === routeConsts.USER_REGISTRATION || responseNavigation === routeConsts.USER_DASHBOARD) {
             const savedToken = await getSavedToken(error, setError);
-            debugger
             await validateSavedToken(savedToken, data, error, setError, signUpDetails,
                 setSignUpDetails, false);
             if (signUpDetails.tokenValidation == miscMessage.TOKEN_VALID) {
