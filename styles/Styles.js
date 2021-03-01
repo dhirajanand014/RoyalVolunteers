@@ -114,6 +114,12 @@ export const RVGenericStyles = StyleSheet.create({
     centerAlignedText: {
         textAlign: 'center',
     },
+    inputTextColor: {
+        color: '#05375a'
+    },
+    leftAlignedText: {
+        textAlign: 'left',
+    },
     alignItemsEnd: {
         alignItems: 'flex-end'
     },
@@ -149,6 +155,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     colorBlue: {
         color: '#3543bf'
+    },
+    colorGrey: {
+        color: '#555555'
     },
     colorBlack: {
         color: `black`
@@ -567,7 +576,7 @@ export const RVStyles = StyleSheet.create({
         elevation: 8
     },
     authenticatedUserInputViewStyle: {
-        marginTop: 10,
+        marginTop: 12,
     },
     bloodGroupPickerStyle: {
         borderWidth: isAndroid && 1 || 0,
@@ -597,9 +606,8 @@ export const RVStyles = StyleSheet.create({
     RVDatePickerView: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'flex-end',
         marginRight: 10,
-        marginTop: 10
+        marginTop: isIOS && -12 || 10
     },
     androidDatePickerViewStyle: {
         flexDirection: `row`,
@@ -611,6 +619,16 @@ export const RVStyles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 25,
         justifyContent: 'flex-end',
+    },
+    androidRegistrationDatePickerViewStyle: {
+        flex: 1,
+        paddingLeft: 3,
+        marginTop: isIOS && 0 || -12,
+        paddingVertical: 5,
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        width: width / 1.10,
+        borderBottomColor: '#999999'
     },
     androidDatePickerCalenderIcon: {
         width: 25,

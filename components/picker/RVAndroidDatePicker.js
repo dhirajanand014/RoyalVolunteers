@@ -15,25 +15,32 @@ export const RVAndroidDatePicker = props => {
 
     return (
         <React.Fragment>
-            <View style={RVStyles.androidDatePickerViewStyle}>
-                <TouchableOpacity onPress={() => setShow(true)}>
-                    <Text style={RVGenericStyles.centerAlignedText}>{props.requestForm.needed_request_date
-                        && moment(props.requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT) || miscMessage.SELECT_DATE}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setShow(true)}>
-                    <Image source={image} style={RVStyles.androidDatePickerCalenderIcon} />
-                </TouchableOpacity>
-                {
-                    show &&
-                    <Controller name={props.inputName} control={props.control} defaultValue={props.defaultValue} rules={props.rules} render={(datePickerProps) => (
-                        <DateTimePicker minimumDate={props.minimumDate} display={props.display} mode={props.mode} value={props.requestForm.needed_request_date}
-                            onChange={(event, date) => {
+            <Controller name={props.inputName} control={props.control} defaultValue={props.defaultValue} rules={props.rules} render={(datePickerProps) => (
+                <View style={props.isFromBloodRequestForm && RVStyles.androidDatePickerViewStyle || RVStyles.androidRegistrationDatePickerViewStyle}>
+                    <TouchableOpacity activeOpacity={.4} onPress={() => setShow(true)}>
+                        {props.isFromBloodRequestForm &&
+                            <Text style={RVGenericStyles.centerAlignedText}>{props.requestForm.needed_request_date
+                                && moment(props.requestForm.needed_request_date).format(miscMessage.DATE_PICKER_FORMAT) || miscMessage.SELECT_DATE}</Text>
+                            || props.isFromRegistration &&
+                            <Text style={[RVGenericStyles.leftAlignedText, datePickerProps.value && RVGenericStyles.inputTextColor || RVGenericStyles.colorGrey, RVGenericStyles.ft16]}>
+                                {datePickerProps.value && moment(datePickerProps.value).format(miscMessage.DATE_PICKER_FORMAT) || miscMessage.SELECT_DATE}</Text>
+                        }
+                    </TouchableOpacity>
+                    {
+                        props.isFromBloodRequestForm &&
+                        <TouchableOpacity onPress={() => setShow(true)}>
+                            <Image source={image} style={RVStyles.androidDatePickerCalenderIcon} />
+                        </TouchableOpacity>
+                    }
+                    {show &&
+                        <DateTimePicker minimumDate={props.minimumDate} display={props.display} mode={props.mode} value={props.isFromBloodRequestForm && props.requestForm.needed_request_date ||
+                            datePickerProps.value || new Date()} is24Hour={false} onChange={(event, date) => {
                                 setShow(false);
                                 convertDate(event, datePickerProps, props, date);
-                            }} is24Hour={false} />
-                    )} />
-                }
-            </View>
-        </React.Fragment>
+                            }} />
+                    }
+                </View>
+            )} />
+        </React.Fragment >
     );
 }

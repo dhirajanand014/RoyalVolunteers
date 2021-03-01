@@ -23,6 +23,9 @@ import { AuthenticatedInputPicker } from '../components/picker/AuthenticatedInpu
 import { AuthenticatedSelectorInput } from '../components/picker/AuthenticatedSelectorInput';
 import messaging from '@react-native-firebase/messaging';
 import { SignUpContext } from '../App';
+import { RVDatePickerView } from '../components/view/RVDatePickerView';
+import { AuthenticatedDatePicker } from '../components/input/AuthenticatedDatePicker';
+import { string } from 'prop-types';
 export const RVUserRegistration = () => {
 
     const navigation = useNavigation();
@@ -33,11 +36,11 @@ export const RVUserRegistration = () => {
 
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
-    const ageRef = useRef(null);
+    const dobRef = useRef(null);
     const pincodeRef = useRef(null);
 
-    const ageRefCallback = node => {
-        ageRef.current = node;
+    const dobRefCallback = node => {
+        dobRef.current = node;
     };
     const pincodeRefCallback = node => {
         pincodeRef.current = node;
@@ -75,11 +78,12 @@ export const RVUserRegistration = () => {
                 <Animated.ScrollView>
                     <AuthenticatedInputText inputTextName={fieldTextName.NAME} inputName={fieldControllerName.NAME} control={control} rules={formRequiredRules.nameFormRule}
                         defaultValue={stringConstants.EMPTY} autofocus={true} placHol keyboardType={keyBoardTypeConst.DEFAULT} textContentType={keyBoardTypeConst.NAME}
-                        formState={formState} placeHolderText={placeHolderText.NAME} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, ageRef)} />
+                        formState={formState} placeHolderText={placeHolderText.NAME} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, dobRef)} />
 
-                    <AuthenticatedInputText inputTextName={fieldTextName.AGE} inputName={fieldControllerName.AGE} control={control} rules={formRequiredRules.ageRule} refCallback={ageRefCallback}
-                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.THREE} placeHolderText={placeHolderText.AGE} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, pincodeRef)}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
+                    <AuthenticatedDatePicker inputTextName={fieldTextName.DOB} inputName={fieldControllerName.DOB} control={control} rules={formRequiredRules.dobRule} refCallback={dobRefCallback}
+                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.DOB} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, pincodeRef)}
+                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} defaultValue={stringConstants.EMPTY}
+                        mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={`default`} isFromRegistration={true} />
 
                     <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule} refCallback={pincodeRefCallback}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} textContentType={keyBoardTypeConst.PINCODE}

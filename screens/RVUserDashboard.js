@@ -9,7 +9,6 @@ import messaging from '@react-native-firebase/messaging';
 import { SignUpContext } from '../App';
 import { NotificationReceivedModal } from '../components/modals/NotificationReceivedModal';
 import { RVDashBoardDetails } from '../components/view/RVDashBoardDetails';
-import { RVBloodRequestsNotifications } from './RVBloodRequestsNotifications';
 
 export const RVUserDashboard = () => {
 
@@ -40,7 +39,7 @@ export const RVUserDashboard = () => {
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     useEffect(() => {
-        fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber, setLoader);
+        fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber, navigation, setLoader);
     }, []);
 
     useEffect(() => {
@@ -52,11 +51,8 @@ export const RVUserDashboard = () => {
 
     return (
         <View style={RVStyles.headerContainer}>
-            {
-                userDashboard.isNewNotification && <RVBloodRequestsNotifications phoneNumber={phoneNumber} />
-                || <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
-                    control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
-            }
+            <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
+                control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
             <NotificationReceivedModal />
         </View>
     )
