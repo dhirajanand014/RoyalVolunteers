@@ -23,11 +23,11 @@ export const RVUserDashBoardFooterButtons = props => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={[RVGenericStyles.alignItemsCenter, RVGenericStyles.mb30]}>
+            {/* <View style={[RVGenericStyles.alignItemsCenter, RVGenericStyles.mb30]}>
                 <TouchableOpacity activeOpacity={.7} style={[RVStyles.dashBoardTestimonials, RVGenericStyles.backGroundColorGreen]} onPress={() => props.setUserDashboard({ ...props.userDashboard, showTestimonialModal: true })}>
                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.TESTIMONIAL}</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </React.Fragment>
     )
 }

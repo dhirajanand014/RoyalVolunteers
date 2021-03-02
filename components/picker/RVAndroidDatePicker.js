@@ -37,7 +37,7 @@ export const RVAndroidDatePicker = props => {
                             datePickerProps.value || new Date()} is24Hour={false} onChange={(event, date) => {
                                 setShow(false);
                                 convertDate(event, datePickerProps, props, date);
-                            }} />
+                            }} maximumDate={props.maximumDate} ref={props.refCallback} />
                     }
                 </View>
             )} />

@@ -191,11 +191,11 @@ dependencies {
     // For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
 
-//   if (useIntlJsc) {
-//       implementation 'org.webkit:android-jsc-intl:+'
-//   } else {
-//       implementation 'org.webkit:android-jsc:+'
-//   }
+   if (useIntlJsc) {
+       implementation 'org.webkit:android-jsc-intl:+'
+   } else {
+       implementation 'org.webkit:android-jsc:+'
+   }
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

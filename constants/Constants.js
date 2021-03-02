@@ -310,6 +310,7 @@ export const fieldTextName = {
     PASSWORD: `Password`,
     CONFIRM_PASSWORD: `Confirm Password`,
     NAME: `Name : `,
+    AGE: `Age : `,
     DOB: `Date of birth : `,
     PINCODE: `Pincode : `,
     BLOOD_GROUP: `Blood Group : `,
@@ -380,6 +381,7 @@ export const miscMessage = {
     INVALID_USER: `invalidUser`,
     TRANSPARENT: `transparent`,
     DATE_PICKER_FORMAT: `DD/MM/YYYY`,
+    DOB_DATE_FORMAT: `YYYY-MM-DD`,
     HARDWARE_BACK_PRESS: `hardwareBackPress`,
     SELECT_DATE: `Select a Date`,
     TOKEN_VALID: `TokenValid`,
@@ -397,7 +399,11 @@ export const miscMessage = {
     IMMEDIATE: `Immediate`,
     ATTEMPT_REMAINING: `Attempts remaining`,
     BACKSPACE: `Backspace`,
-    APP_SETTINGS: 'app-settings:'
+    YEARS: `Years`,
+    YEARS_MOMENT: `years`,
+    APP_SETTINGS: 'app-settings:',
+    SAVE: `Save`,
+    EDIT: `Edit`
 }
 
 export const successFulMessages = {

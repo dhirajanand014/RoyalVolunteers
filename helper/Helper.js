@@ -91,7 +91,8 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
             const notificationValues = await getSavedNotificationRequests();
-            if (notificationValues) {
+            if (notificationValues && notificationValues.some(notification => notification.new)) {
+                debugger
                 setTimeout(() => navigation.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION, { phoneNumber: phoneNumber }),
                     numericConstants.FIVE_HUNDRED);
             }
@@ -243,9 +244,8 @@ export const onChangeByValueType = async (inputProps, value, props) => {
             inputProps.onChange(value);
             props.isFromBloodRequestForm && props.setRequestForm({ ...props.requestForm, blood_group: value });
             break;
-        case fieldControllerName.AGE:
+        case fieldControllerName.DOB:
             inputProps.onChange(value);
-            props.isFromDashBoard && props.setUserDashboard({ ...props.userDashboard, age: value });
             break;
         case fieldControllerName.PINCODE:
             const pinCodeValue = value.replace(stringConstants.REPLACE_REGEX, stringConstants.EMPTY);
@@ -837,6 +837,7 @@ export const updateNotificationsStatus = async () => {
         if (notificationValues && notificationValues.length) {
             notificationValues.filter(request => !isNotificationExpired(request)).
                 map(value => {
+                    debugger
                     if (value.new == true)
                         value.new = false
                 });

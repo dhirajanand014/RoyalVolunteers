@@ -21,7 +21,7 @@ export const RVUserDashboard = () => {
     const [userDashboard, setUserDashboard] = useState({
         phoneNumber: stringConstants.EMPTY,
         name: stringConstants.EMPTY,
-        age: stringConstants.EMPTY,
+        dob: stringConstants.EMPTY,
         pincode: stringConstants.EMPTY,
         blood_group: numericConstants.MINUS_ONE,
         benefiters_count: numericConstants.ZERO,
@@ -32,9 +32,7 @@ export const RVUserDashboard = () => {
         showFeedbackModal: false,
         showTestimonialModal: false,
         editText: stringConstants.EMPTY,
-        isAgeEdit: false,
-        isPincodeEdit: false,
-        isNewNotification: false
+        isPincodeEdit: false
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 

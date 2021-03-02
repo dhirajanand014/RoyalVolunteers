@@ -147,6 +147,9 @@ export const RVGenericStyles = StyleSheet.create({
     textLeftAlign: {
         textAlign: 'left'
     },
+    textCenterAlign: {
+        textAlign: 'center'
+    },
     textRightAlign: {
         textAlign: 'right'
     },
@@ -176,6 +179,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     ml_24: {
         marginLeft: 24
+    },
+    ml_40: {
+        marginLeft: 40
     },
     marginHorizontal4: {
         marginHorizontal: 4
@@ -278,6 +284,7 @@ export const RVStyles = StyleSheet.create({
     pickerItemStyleIOS: {
         alignItems: 'center',
         justifyContent: 'center',
+        fontSize: 24,
         fontFamily: 'Times New Roman'
     },
     registrationUserInputPickerText: {
@@ -581,7 +588,7 @@ export const RVStyles = StyleSheet.create({
     bloodGroupPickerStyle: {
         borderWidth: isAndroid && 1 || 0,
         justifyContent: 'center',
-        width: 215,
+        width: 228,
         height: 20
     },
     availabilityStatusStyle: {
@@ -740,10 +747,6 @@ export const RVStyles = StyleSheet.create({
         paddingVertical: 12,
         width: 140,
         elevation: 3,
-    },
-    dashBoardEdit: {
-        fontSize: 18,
-        marginLeft: 95,
     },
     feedBackModalView: {
         margin: 250,

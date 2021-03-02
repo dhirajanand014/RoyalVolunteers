@@ -1,8 +1,7 @@
 import React from 'react';
-import { fieldTextName } from '../../constants/Constants';
+import { fieldTextName, miscMessage, stringConstants } from '../../constants/Constants';
 import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { RVUserDashboardDetailsText } from '../../components/texts/RVUserDashboardDetailsText';
-import { RVUserDashBoardAgeText } from '../../components/texts/RVUserDashBoardAgeText';
 import { RVUserDashBoardPincodeText } from '../../components/texts/RVUserDashBoardPincodeText';
 import { FeedbackModal } from '../../components/modals/FeedbackModal';
 import { RVUserDashBoardFooterTopView } from '../../components/view/RVUserDashBoardFooterTopView';
@@ -10,10 +9,14 @@ import { RVUserDashBoardFooterButtons } from '../../components/view/RVUserDashBo
 import * as Animatable from 'react-native-animatable';
 import { RVUserDashBoardHeaderView } from './RVUserDashBoardHeaderView';
 import { Animated } from 'react-native';
+import moment from 'moment';
 import { TestimonialModal } from '../modals/TestimonalModal';
 
 export const RVDashBoardDetails = (props) => {
     const { userDashboard, handleSubmit, setUserDashboard, control, formState, setLoader, navigation, phoneNumber } = props;
+
+    const dobYears = userDashboard.dob && moment().diff(userDashboard.dob, miscMessage.YEARS_MOMENT) || stringConstants.EMPTY;
+
     return (
         <React.Fragment>
             <RVUserDashBoardHeaderView {...userDashboard} navigation={navigation} />
@@ -22,8 +25,7 @@ export const RVDashBoardDetails = (props) => {
                 <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phoneNumber} />
 
-                    <RVUserDashBoardAgeText text={fieldTextName.AGE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
-                        setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.age} setLoader={setLoader} />
+                    <RVUserDashboardDetailsText text={fieldTextName.AGE} value={dobYears && `${dobYears} ${miscMessage.YEARS}`} />
 
                     <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
                         setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} setLoader={setLoader} />

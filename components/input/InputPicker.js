@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker'
 import { onChangeByValueType } from '../../helper/Helper';
-import { colors, RVStyles } from '../../styles/Styles';
+import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { isIOS, numericConstants } from '../../constants/Constants';
 
 export const InputPicker = props => {
