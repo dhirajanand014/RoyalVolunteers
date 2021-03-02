@@ -108,7 +108,7 @@ export const SignIn = () => {
                         </LinearGradient>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={.2} style={RVStyles.secondaryActionButtonStyle} onPress={() => navigation.navigate(routeConsts.SIGN_UP)} >
-                        <Text style={RVStyles.secondaryActionButtonText}>{actionButtonTextConstants.SIGN_UP}</Text>
+                        <Text style={RVStyles.secondaryActionButtonText}>{actionButtonTextConstants.REGISTER}</Text>
                     </TouchableOpacity>
                 </View>
             </Animatable.View>

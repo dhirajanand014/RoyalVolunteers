@@ -2,7 +2,7 @@ import { TouchableOpacity, Text, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { RVStyles } from '../../styles/Styles';
-import { stringConstants } from '../../constants/Constants';
+import { keyBoardTypeConst, stringConstants } from '../../constants/Constants';
 
 export const OTPResendButton = props => {
     const style = { borderWidth: 0 };
@@ -15,7 +15,7 @@ export const OTPResendButton = props => {
 };
 
 OTPResendButton.defaultProps = {
-    type: 'default',
+    type: keyBoardTypeConst.DEFAULT,
     disabled: false,
 };
 

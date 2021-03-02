@@ -51,6 +51,9 @@ export const RVGenericStyles = StyleSheet.create({
     mb30: {
         marginBottom: 30,
     },
+    width100: {
+        width: 100
+    },
     width120: {
         width: 120
     },
@@ -146,6 +149,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     textLeftAlign: {
         textAlign: 'left'
+    },
+    ml_95: {
+        marginLeft: 95
     },
     textCenterAlign: {
         textAlign: 'center'
@@ -284,7 +290,7 @@ export const RVStyles = StyleSheet.create({
     pickerItemStyleIOS: {
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 24,
+        fontSize: 22,
         fontFamily: 'Times New Roman'
     },
     registrationUserInputPickerText: {

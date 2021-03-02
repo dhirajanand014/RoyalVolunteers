@@ -17,7 +17,7 @@ export const Home = () => {
                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{screenTitle.SIGN_IN}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.7} style={RVStyles.homeSignUpButton} onPress={() => navigation.navigate(routeConsts.SIGN_UP)}>
-                    <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{screenTitle.SIGN_UP}</Text>
+                    <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{screenTitle.REGISTER}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.7} style={RVStyles.homeRequestBloodBlood} onPress={() => navigation.navigate(routeConsts.BLOOD_REQUEST,
                     { isFrom: routeConsts.HOME })}>

@@ -45,6 +45,7 @@ export const screenOptions = {
 export const screenTitle = {
     SIGN_IN: `SIGN IN`,
     SIGN_UP: `SIGN UP`,
+    REGISTER: `REGISTER`,
     ENTER_MOBILE_NUMBER: `ENTER MOBILE NUMBER`,
     USER_REGISTRATION: `USER REGISTRATION`,
     ENTER_PASSWORD: `ENTER PASSWORD`,
@@ -58,6 +59,7 @@ export const screenTitle = {
 export const actionButtonTextConstants = {
     SIGN_IN: `Sign in`,
     SIGN_UP: `Sign up`,
+    REGISTER: `Register`,
     SUBMIT: `Submit`,
     VIEW_REQUESTS: `View requests`,
     CANCEL: `Cancel`,
@@ -281,6 +283,7 @@ export const numericConstants = {
     TWENTY_FOUR: 24,
     THIRTY: 30,
     ONE_HUNDRED: 100,
+    ONE_HUNDRED_FIFTY: 150,
     TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
     FOUR_HUNDRED_ONE: 401,
@@ -319,7 +322,8 @@ export const fieldTextName = {
     HOSPITAL_NAME: `Hospital : `,
     BENIFITERS: `Benifiters`,
     VOLUNTEERS: `Volunteers`,
-    BLOOD_TYPE: `Blood Type`
+    BLOOD_TYPE: `Blood Type`,
+    SENT_TIME: `Sent : `
 }
 
 export const placeHolderText = {
@@ -403,7 +407,9 @@ export const miscMessage = {
     YEARS_MOMENT: `years`,
     APP_SETTINGS: 'app-settings:',
     SAVE: `Save`,
-    EDIT: `Edit`
+    EDIT: `Edit`,
+    TAIL: `tail`,
+    TIME_FORMAT: `HH:mm`
 }
 
 export const successFulMessages = {

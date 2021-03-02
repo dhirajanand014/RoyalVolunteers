@@ -81,7 +81,7 @@ export const RVUserRegistration = () => {
                     <AuthenticatedDatePicker inputTextName={fieldTextName.DOB} inputName={fieldControllerName.DOB} control={control} rules={formRequiredRules.dobRule} refCallback={dobRefCallback}
                         defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.DOB} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, pincodeRef)}
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} defaultValue={stringConstants.EMPTY}
-                        mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={`default`} isFromRegistration={true} maximumDate={new Date()} />
+                        mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={keyBoardTypeConst.DEFAULT} isFromRegistration={true} maximumDate={new Date()} />
 
                     <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule} refCallback={pincodeRefCallback}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} textContentType={keyBoardTypeConst.PINCODE}

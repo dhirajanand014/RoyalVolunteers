@@ -92,7 +92,6 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
             userDashboardDetails = userDashboardDetails.data;
             const notificationValues = await getSavedNotificationRequests();
             if (notificationValues && notificationValues.some(notification => notification.new)) {
-                debugger
                 setTimeout(() => navigation.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION, { phoneNumber: phoneNumber }),
                     numericConstants.FIVE_HUNDRED);
             }
@@ -813,7 +812,9 @@ export const getSavedNotificationRequests = async () => {
         const notificationRequests = await Keychain.getGenericPassword({ service: miscMessage.NOTIFICATION_REQUESTS });
         if (notificationRequests) {
             const requests = JSON.parse(notificationRequests.password);
-            const notificationValues = requests.filter(request => !isNotificationExpired(request));
+
+            const notificationValues = requests.filter(request => !isNotificationExpired(request)).
+                sort((req1, req2) => req2.ttl - req1.ttl);
             return notificationValues.length && notificationValues || false;
         }
     } catch (error) {
@@ -837,7 +838,6 @@ export const updateNotificationsStatus = async () => {
         if (notificationValues && notificationValues.length) {
             notificationValues.filter(request => !isNotificationExpired(request)).
                 map(value => {
-                    debugger
                     if (value.new == true)
                         value.new = false
                 });

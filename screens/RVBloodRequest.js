@@ -65,7 +65,7 @@ export const RVBloodRequest = () => {
 
                     <RVDatePickerView inputName={fieldControllerName.DATE_PICKER} control={control} rules={formRequiredRules.datePickerFormRule} minimumDate={Date.now()}
                         defaultValue={stringConstants.EMPTY} requestForm={requestForm} setRequestForm={setRequestForm} isFromBloodRequestForm={true}
-                        formState={formState} mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={`default`} />
+                        formState={formState} mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={keyBoardTypeConst.DEFAULT} />
 
                     <AuthenticatedInputText inputTextName={fieldTextName.HOSPITAL_NAME} inputName={fieldControllerName.HOSPITAL_NAME} control={control} rules={formRequiredRules.hospitalNameFormRule}
                         defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.HOSPITAL_NAME} requestForm={requestForm} setRequestForm={setRequestForm} extraStyles={RVStyles.hospitalTextHeight}

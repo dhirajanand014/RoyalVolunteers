@@ -2,13 +2,12 @@ import React, { useContext } from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import {
     actionButtonTextConstants, errorModalTitleConstants,
-    numericConstants, routeConsts, stringConstants
+    routeConsts, stringConstants
 } from "../../constants/Constants";
 import { colors, RVGenericStyles, RVStyles } from "../../styles/Styles";
 import LinearGradient from "react-native-linear-gradient";
 import { SignUpContext } from "../../App";
 import { useNavigation } from "@react-navigation/native";
-import { getSavedNotificationRequests } from "../../helper/Helper";
 
 export const NotificationReceivedModal = () => {
 
@@ -41,9 +40,7 @@ export const NotificationReceivedModal = () => {
                         <View>
                             <TouchableOpacity activeOpacity={.7} style={RVStyles.viewRequestButton}
                                 onPress={async () => {
-                                    navigation.reset({
-                                        index: numericConstants.ZERO, routes: [{ name: routeConsts.BLOOD_REQUEST_NOTIFICATION }]
-                                    });
+                                    navigation.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION);
                                     setNotificationDetails({ ...notificationDetails, showNotificationModal: false, message: stringConstants.EMPTY });
                                 }}>
                                 <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.VIEW_REQUESTS}</Text>
