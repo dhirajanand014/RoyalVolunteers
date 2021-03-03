@@ -52,7 +52,7 @@ export const RVBloodRequestsFlatList = props => {
                                     </Text>
                                 </TouchableOpacity>
                                 <View style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.mv10]}>
-                                    <Text style={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{fieldTextName.SENT_TIME}</Text>
+                                    <Text style={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{fieldTextName.RECEIVED_TIME}</Text>
                                     <Text style={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal, RVGenericStyles.colorBlue]}>{moment(item.ttl).format(miscMessage.TIME_FORMAT)}</Text>
                                 </View>
                             </View>

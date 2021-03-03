@@ -34,7 +34,7 @@ export const RVUserDashBoardPincodeText = props => {
                 userDashboard && (!userDashboard.isPincodeEdit &&
                     <TouchableOpacity onPress={() => setUserDashboard({ ...userDashboard, isPincodeEdit: true, editText: props.text })}>
                         <Text style={[RVGenericStyles.alignItemsCenter, RVGenericStyles.colorBlue, RVGenericStyles.ft16, RVGenericStyles.bold,
-                        RVGenericStyles.fontFamilyNormal, RVGenericStyles.marginHorizontal4]}>{miscMessage.EDIT}</Text>
+                        RVGenericStyles.fontFamilyNormal, RVGenericStyles.marginHorizontal4, RVGenericStyles.justifyContentCenter]}>{miscMessage.EDIT}</Text>
                     </TouchableOpacity> || userDashboard.isPincodeEdit &&
                     <TouchableOpacity onPress={props.handleSubmit(async data => {
                         await updateDataFromDashBoard(userDashboard, setUserDashboard, fieldControllerName.PINCODE, userDashboard.pincode, setLoader);

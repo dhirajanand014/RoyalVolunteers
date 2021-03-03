@@ -85,6 +85,8 @@ export const SignUpConfirmSecret = () => {
                 let isFromForgotPassword = false;
                 if (registrationResponse == `${miscMessage.RESET}_${miscMessage.SUCCESSFUL}`) {
                     await resetTokens(error, setErrorMod);
+                    signUpDetails.tokenValidation = miscMessage.TOKEN_VALID;
+                    await setSignUpDetails({ ...signUpDetails });
                     isFromForgotPassword = true;
                 } else {
                     await access_token_request_response(phoneNumber, data, error, setErrorMod, signUpDetails,

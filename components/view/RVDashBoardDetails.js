@@ -1,6 +1,6 @@
 import React from 'react';
-import { fieldTextName, miscMessage, stringConstants } from '../../constants/Constants';
-import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { fieldTextName, miscMessage, numericConstants } from '../../constants/Constants';
+import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { RVUserDashboardDetailsText } from '../../components/texts/RVUserDashboardDetailsText';
 import { RVUserDashBoardPincodeText } from '../../components/texts/RVUserDashBoardPincodeText';
 import { FeedbackModal } from '../../components/modals/FeedbackModal';
@@ -15,7 +15,7 @@ import { TestimonialModal } from '../modals/TestimonalModal';
 export const RVDashBoardDetails = (props) => {
     const { userDashboard, handleSubmit, setUserDashboard, control, formState, setLoader, navigation, phoneNumber } = props;
 
-    const dobYears = userDashboard.dob && moment().diff(userDashboard.dob, miscMessage.YEARS_MOMENT) || stringConstants.EMPTY;
+    const dobYears = userDashboard.dob && moment().diff(userDashboard.dob, miscMessage.YEARS_MOMENT) || numericConstants.ZERO;
 
     return (
         <React.Fragment>
@@ -25,7 +25,7 @@ export const RVDashBoardDetails = (props) => {
                 <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phoneNumber} />
 
-                    <RVUserDashboardDetailsText text={fieldTextName.AGE} value={dobYears && `${dobYears} ${miscMessage.YEARS}`} />
+                    <RVUserDashboardDetailsText text={fieldTextName.AGE} value={`${dobYears} ${miscMessage.YEARS}`} />
 
                     <RVUserDashBoardPincodeText text={fieldTextName.PINCODE} userDashboard={userDashboard} editText={userDashboard.editText} handleSubmit={handleSubmit}
                         setUserDashboard={setUserDashboard} control={control} formState={formState} value={userDashboard.pincode} setLoader={setLoader} />

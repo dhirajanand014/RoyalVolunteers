@@ -873,7 +873,7 @@ export const RVStyles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         marginVertical: 15,
-        width: 300,
+        width: width / 1.35,
         elevation: 3,
         backgroundColor: "#DE1F25"
     },
@@ -881,7 +881,7 @@ export const RVStyles = StyleSheet.create({
         borderRadius: 25,
         paddingHorizontal: 20,
         paddingVertical: 15,
-        width: 300,
+        width: width / 1.35,
         marginVertical: 15,
         elevation: 3,
         backgroundColor: "#DE1F25"
@@ -891,7 +891,7 @@ export const RVStyles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         marginVertical: 15,
-        width: 300,
+        width: width / 1.35,
         elevation: 3,
         backgroundColor: "#DE1F25"
     },

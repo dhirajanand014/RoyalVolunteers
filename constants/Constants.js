@@ -323,7 +323,7 @@ export const fieldTextName = {
     BENIFITERS: `Benifiters`,
     VOLUNTEERS: `Volunteers`,
     BLOOD_TYPE: `Blood Type`,
-    SENT_TIME: `Sent : `
+    RECEIVED_TIME: `Received : `
 }
 
 export const placeHolderText = {
@@ -409,7 +409,7 @@ export const miscMessage = {
     SAVE: `Save`,
     EDIT: `Edit`,
     TAIL: `tail`,
-    TIME_FORMAT: `HH:mm`
+    TIME_FORMAT: `hh:mm A`
 }
 
 export const successFulMessages = {
