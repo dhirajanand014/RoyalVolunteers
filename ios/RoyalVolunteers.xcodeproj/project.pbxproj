@@ -19,8 +19,6 @@
 		598D2C45CBDAAE9ED0C3DBA9 /* libPods-RoyalVolunteers-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 010A5F4EB3834EBBF4CE835F /* libPods-RoyalVolunteers-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9C8EDE7C25E8E510009278D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C8EDE7B25E8E510009278D6 /* GoogleService-Info.plist */; };
-		9CAB537E25E5786B0024340C /* rv_launch_screen_logo_ios.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CAB537D25E5786A0024340C /* rv_launch_screen_logo_ios.png */; };
-		9CAB537F25E5786B0024340C /* rv_launch_screen_logo_ios.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CAB537D25E5786A0024340C /* rv_launch_screen_logo_ios.png */; };
 		9CC54F0325F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CC54F0225F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg */; };
 		9CC54F0425F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CC54F0225F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg */; };
 		9CC54F4025F11BB700D59850 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -67,7 +65,6 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RoyalVolunteers/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C40BAC825E6EF7300D1B991 /* RoyalVolunteers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RoyalVolunteers.entitlements; path = RoyalVolunteers/RoyalVolunteers.entitlements; sourceTree = "<group>"; };
 		9C8EDE7B25E8E510009278D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		9CAB537D25E5786A0024340C /* rv_launch_screen_logo_ios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rv_launch_screen_logo_ios.png; sourceTree = "<group>"; };
 		9CC54F0225F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rv_launch_screen_logo_ios.jpg; sourceTree = "<group>"; };
 		A0FBC469CDAB0D487090F4F8 /* Pods-RoyalVolunteersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoyalVolunteersTests.release.xcconfig"; path = "Target Support Files/Pods-RoyalVolunteersTests/Pods-RoyalVolunteersTests.release.xcconfig"; sourceTree = "<group>"; };
 		B3742FD4D7FADF87EBB47FC1 /* Pods-RoyalVolunteers-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoyalVolunteers-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RoyalVolunteers-tvOSTests/Pods-RoyalVolunteers-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,7 +141,6 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				9CAB537D25E5786A0024340C /* rv_launch_screen_logo_ios.png */,
 				9CC54F0225F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -364,7 +360,6 @@
 				9C8EDE7C25E8E510009278D6 /* GoogleService-Info.plist in Resources */,
 				9CC54F0325F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				9CAB537E25E5786B0024340C /* rv_launch_screen_logo_ios.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,7 +367,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CAB537F25E5786B0024340C /* rv_launch_screen_logo_ios.png in Resources */,
 				9CC54F4025F11BB700D59850 /* LaunchScreen.storyboard in Resources */,
 				9CC54F0425F11A0D00D59850 /* rv_launch_screen_logo_ios.jpg in Resources */,
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
