@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text, View, Animated } from 'react-native';
+import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors, RVStyles } from '../styles/Styles';
@@ -73,9 +73,9 @@ export const RVUserRegistration = () => {
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>{screenTitle.USER_REGISTRATION}</Text>
-                <Animated.ScrollView>
+                <View>
                     <AuthenticatedInputText inputTextName={fieldTextName.NAME} inputName={fieldControllerName.NAME} control={control} rules={formRequiredRules.nameFormRule}
-                        defaultValue={stringConstants.EMPTY} autofocus={true} placHol keyboardType={keyBoardTypeConst.DEFAULT} textContentType={keyBoardTypeConst.NAME}
+                        defaultValue={stringConstants.EMPTY} autofocus={true} keyboardType={keyBoardTypeConst.DEFAULT} textContentType={keyBoardTypeConst.NAME}
                         formState={formState} placeHolderText={placeHolderText.NAME} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, dobRef)} />
 
                     <AuthenticatedDatePicker inputTextName={fieldTextName.DOB} inputName={fieldControllerName.DOB} control={control} rules={formRequiredRules.dobRule} refCallback={dobRefCallback}
@@ -94,7 +94,7 @@ export const RVUserRegistration = () => {
                         initial={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}
                         fontSize={numericConstants.TWELVE} initial={numericConstants.ZERO} isFromDashBoard={false} defaultValue={miscMessage.YES} />
 
-                </Animated.ScrollView>
+                </View>
                 <View style={RVStyles.userRegistrationSubmitButton}>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(onSubmit)} >
                         <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>

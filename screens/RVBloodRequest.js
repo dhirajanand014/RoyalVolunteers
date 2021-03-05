@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text, View, Animated } from 'react-native';
+import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors, RVStyles } from '../styles/Styles';
@@ -51,7 +51,7 @@ export const RVBloodRequest = () => {
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>{screenTitle.REQUEST_FOR_BLOOD}</Text>
-                <Animated.ScrollView>
+                <View>
                     <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
                         defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} requestForm={requestForm}
                         setRequestForm={setRequestForm} isFromBloodRequestForm={true} />
@@ -70,7 +70,7 @@ export const RVBloodRequest = () => {
                     <AuthenticatedInputText inputTextName={fieldTextName.HOSPITAL_NAME} inputName={fieldControllerName.HOSPITAL_NAME} control={control} rules={formRequiredRules.hospitalNameFormRule}
                         defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.HOSPITAL_NAME} requestForm={requestForm} setRequestForm={setRequestForm} extraStyles={RVStyles.hospitalTextHeight}
                         isFromBloodRequestForm={true} formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO} textContentType={keyBoardTypeConst.ADDRESS_CITY_STATE} />
-                </Animated.ScrollView>
+                </View>
                 <View style={RVStyles.requestBloodButtonStyle}>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(onSubmit)} >
                         <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>

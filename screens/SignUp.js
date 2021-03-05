@@ -34,12 +34,10 @@ export const SignUp = () => {
                 <Text style={RVStyles.signUpTextHeader}>   {
                     isFrom == miscMessage.BLOOD_REQUEST && screenTitle.ENTER_MOBILE_NUMBER || screenTitle.SIGN_UP}
                 </Text>
-                <Animated.ScrollView>
-                    <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
-                        defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER} isSignUp={true}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />} textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState}
-                        setSignUpDetails={setSignUpDetails} signUpDetails={signUpDetails} autofocus={true} />
-                </Animated.ScrollView>
+                <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
+                    defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER} isSignUp={true}
+                    keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />} textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState}
+                    setSignUpDetails={setSignUpDetails} signUpDetails={signUpDetails} autofocus={true} />
                 <View style={RVStyles.signUpPrimaryButtonView}>
                     <Text style={RVStyles.signUpDescription}>{placeHolderText.SIGN_UP_DESCRIPTION}</Text>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpActionButton} onPress={handleSubmit(() =>

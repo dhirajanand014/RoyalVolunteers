@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text, View, Animated } from 'react-native';
+import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
@@ -83,7 +83,7 @@ export const SignIn = () => {
             <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
                 <Text style={RVStyles.signUpTextHeader}>{screenTitle.SIGN_IN}</Text>
-                <Animated.ScrollView>
+                <View>
                     <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
                         defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER}
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />}
@@ -100,7 +100,7 @@ export const SignIn = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </Animated.ScrollView>
+                </View>
                 <View style={RVStyles.signInSecondaryButtonView}>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(submitDetails)} >
                         <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>
@@ -113,6 +113,6 @@ export const SignIn = () => {
                 </View>
             </Animatable.View>
             <ErrorModal error={error} setError={setError} />
-        </View >
+        </View>
     )
 }

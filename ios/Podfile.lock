@@ -324,7 +324,7 @@ PODS:
     - React-Core
   - RNKeychain (6.2.0):
     - React
-  - RNScreens (2.18.0):
+  - RNScreens (2.18.1):
     - React-Core
   - RNSnackbar (2.3.2):
     - React-Core
@@ -516,7 +516,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 1823217d31e942531cc3f51fb5367dcbc69c1e10
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
-  RNScreens: f0d7a2a440a8ba9f4574ca1ddb3368f473891be4
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSnackbar: 2c5f131fe85b333ff497a34c3ba94a0c1e9ee1f0
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6

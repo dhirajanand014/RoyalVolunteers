@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { isAndroid, isIOS, width } from '../constants/Constants';
+import { isAndroid, isIOS, width, height } from '../constants/Constants';
 
 /**
  * mr - margin right
@@ -224,7 +224,7 @@ export const RVStyles = StyleSheet.create({
         fontWeight: 'bold',
         justifyContent: 'flex-start',
         fontSize: 20,
-        marginVertical: 10,
+        marginVertical: 15,
         fontFamily: isAndroid && `normal` || `System`,
         paddingVertical: 10,
     },
@@ -256,8 +256,8 @@ export const RVStyles = StyleSheet.create({
         flex: 1,
         paddingLeft: 3,
         justifyContent: 'center',
-        marginTop: isIOS && 0 || -12,
-        paddingVertical: 5,
+        marginTop: isIOS && 0 || -25,
+        paddingVertical: isIOS && 5 || 5,
         borderBottomWidth: 1,
         fontSize: 16,
         color: '#05375a'
@@ -305,6 +305,7 @@ export const RVStyles = StyleSheet.create({
     registrationUserInputTextView: {
         color: 'black',
         fontSize: 15,
+        marginBottom: 12,
         paddingLeft: 3
     },
     userInput: {
@@ -471,8 +472,10 @@ export const RVStyles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     signInSecondaryButtonView: {
-        marginBottom: isIOS && 180 || 60,
-        marginTop: 20,
+        justifyContent: 'space-between',
+        position: 'absolute', //Here is the trick
+        bottom: 0,
+        marginBottom: isIOS && 100 || 50,
     },
     secondaryActionButtonStyle: {
         flexDirection: `column`,
@@ -552,10 +555,10 @@ export const RVStyles = StyleSheet.create({
     },
     signUpPrimaryButtonView: {
         flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingVertical: 2,
-        marginBottom: isIOS && 370 || 220,
+        justifyContent: 'space-between',
+        position: 'absolute', //Here is the trick
+        bottom: 0,
+        marginBottom: isIOS && 100 || 50,
     },
     signUpActionButton: {
         alignItems: 'center',
@@ -589,22 +592,26 @@ export const RVStyles = StyleSheet.create({
         elevation: 8
     },
     authenticatedUserInputViewStyle: {
-        marginTop: 12,
+        marginTop: 16,
     },
     bloodGroupPickerStyle: {
         borderWidth: isAndroid && 1 || 0,
         justifyContent: 'center',
         width: 228,
-        height: 20
+        marginVertical: 2,
+        height: 25
     },
     availabilityStatusStyle: {
         width: 100,
         marginHorizontal: 3
     },
     userRegistrationSubmitButton: {
-        marginBottom: isIOS && 90 || 20,
+        marginBottom: isIOS && (height == 736 && 12 || 80) || isAndroid && 20,
         alignItems: 'center',
-        elevation: 8
+        justifyContent: 'flex-end',
+        elevation: 8,
+        position: 'absolute', //Here is the trick
+        bottom: 0,
     },
     neededOptionsView: {
         flexDirection: 'row',
@@ -636,9 +643,10 @@ export const RVStyles = StyleSheet.create({
     androidRegistrationDatePickerViewStyle: {
         flex: 1,
         paddingLeft: 3,
-        marginTop: isIOS && 0 || -12,
-        paddingVertical: 5,
         borderBottomWidth: 1,
+        marginTop: -3,
+        position: 'absolute', //Here is the trick
+        bottom: 1,
         justifyContent: 'center',
         width: width / 1.10,
         borderBottomColor: '#999999'
@@ -658,8 +666,10 @@ export const RVStyles = StyleSheet.create({
         maxHeight: 50
     },
     requestBloodButtonStyle: {
-        marginBottom: isIOS && 180 || 70,
+        marginBottom: isIOS && 150 || 70,
         alignItems: 'center',
+        position: 'absolute', //Here is the trick
+        bottom: 0,
         elevation: 8
     },
     dashBoardUserDetailsTextView: {
