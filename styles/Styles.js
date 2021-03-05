@@ -212,7 +212,7 @@ export const RVStyles = StyleSheet.create({
         backgroundColor: '#fcc200'
     },
     headerImage: {
-        marginTop: 40,
+        marginTop: 25,
         alignItems: 'center',
         paddingVertical: 20
     },
@@ -257,9 +257,20 @@ export const RVStyles = StyleSheet.create({
         paddingLeft: 3,
         justifyContent: 'center',
         marginTop: isIOS && 0 || -25,
-        paddingVertical: isIOS && 5 || 5,
+        paddingVertical: isIOS && 1 || 5,
         borderBottomWidth: 1,
         fontSize: 16,
+        color: '#05375a'
+    },
+    underlineTextInputBloodRequest: {
+        flex: 1,
+        paddingLeft: 10,
+        justifyContent: 'center',
+        paddingVertical: 8,
+        borderBottomWidth: 1,
+        fontSize: 16,
+        position: 'absolute',
+        bottom: 0,
         color: '#05375a'
     },
     userInputView: {
@@ -277,7 +288,8 @@ export const RVStyles = StyleSheet.create({
     },
     registrationUserInputPickerView: {
         marginTop: isIOS && 25 || 0,
-        paddingVertical: isIOS && 10 || 0,
+        paddingTop: isIOS && 28 || 0,
+        paddingBottom: -12,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start'
@@ -403,6 +415,12 @@ export const RVStyles = StyleSheet.create({
         borderColor: 'black',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    neededRadioSlop: {
+        top: 20,
+        bottom: 20,
+        left: 0,
+        right: 50
     },
     neededSelectedRb: {
         width: 10,
@@ -606,7 +624,7 @@ export const RVStyles = StyleSheet.create({
         marginHorizontal: 3
     },
     userRegistrationSubmitButton: {
-        marginBottom: isIOS && (height == 736 && 12 || 80) || isAndroid && 20,
+        marginBottom: height == 736 && 1 || isIOS && 80 || 40,
         alignItems: 'center',
         justifyContent: 'flex-end',
         elevation: 8,
@@ -628,6 +646,10 @@ export const RVStyles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: 10,
         marginTop: isIOS && -12 || 10
+    },
+    RVDatePickerViewBloodRequest: {
+        paddingVertical: 6,
+        marginRight: 10
     },
     androidDatePickerViewStyle: {
         flexDirection: `row`,
@@ -666,7 +688,7 @@ export const RVStyles = StyleSheet.create({
         maxHeight: 50
     },
     requestBloodButtonStyle: {
-        marginBottom: isIOS && 150 || 70,
+        marginBottom: height == 736 && 40 || 80,
         alignItems: 'center',
         position: 'absolute', //Here is the trick
         bottom: 0,
@@ -675,7 +697,7 @@ export const RVStyles = StyleSheet.create({
     dashBoardUserDetailsTextView: {
         flexDirection: 'row',
         width: width / 1.1,
-        paddingVertical: 10,
+        paddingVertical: 15,
         paddingLeft: 8
     },
     dashBoardUserTextStyle: {

@@ -1,6 +1,7 @@
 import React from 'react';
+import { View } from 'react-native';
 import { fieldTextName, miscMessage, numericConstants } from '../../constants/Constants';
-import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { RVUserDashboardDetailsText } from '../../components/texts/RVUserDashboardDetailsText';
 import { RVUserDashBoardPincodeText } from '../../components/texts/RVUserDashBoardPincodeText';
 import { FeedbackModal } from '../../components/modals/FeedbackModal';
@@ -8,7 +9,6 @@ import { RVUserDashBoardFooterTopView } from '../../components/view/RVUserDashBo
 import { RVUserDashBoardFooterButtons } from '../../components/view/RVUserDashBoardFooterButtons';
 import * as Animatable from 'react-native-animatable';
 import { RVUserDashBoardHeaderView } from './RVUserDashBoardHeaderView';
-import { Animated } from 'react-native';
 import moment from 'moment';
 import { TestimonialModal } from '../modals/TestimonalModal';
 
@@ -22,7 +22,7 @@ export const RVDashBoardDetails = (props) => {
             <RVUserDashBoardHeaderView {...userDashboard} navigation={navigation} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
                 <RVUserDashBoardFooterTopView name={userDashboard.name} blood_group={userDashboard.blood_group} />
-                <Animated.ScrollView contentContainerStyle={RVGenericStyles.justifyContentCenter}>
+                <View style={RVGenericStyles.justifyContentCenter}>
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phoneNumber} />
 
                     <RVUserDashboardDetailsText text={fieldTextName.AGE} value={`${dobYears} ${miscMessage.YEARS}`} />
@@ -32,7 +32,7 @@ export const RVDashBoardDetails = (props) => {
 
                     <RVUserDashboardDetailsText text={fieldTextName.AVAILABILITY_STATUS} value={userDashboard.availability_status} setLoader={setLoader}
                         formState={formState} control={control} userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
-                </Animated.ScrollView>
+                </View>
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
                 <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
                 <TestimonialModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />

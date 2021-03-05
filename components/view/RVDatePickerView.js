@@ -6,7 +6,8 @@ import { RVIOSDatePicker } from '../picker/RVIOSDatePicker';
 import { RVAndroidDatePicker } from '../picker/RVAndroidDatePicker';
 export const RVDatePickerView = props => {
     return (
-        <View style={[RVStyles.RVDatePickerView, props.isFromBloodRequestForm && RVGenericStyles.alignItemsEnd]}>
+        <View style={[props.isFromBloodRequestForm && RVStyles.RVDatePickerViewBloodRequest ||
+            RVStyles.RVDatePickerView, props.isFromBloodRequestForm && RVGenericStyles.alignItemsEnd]}>
             {
                 (props.isFromBloodRequestForm && props.requestForm.needed_request == actionButtonTextConstants.DATE
                     || props.isFromRegistration) &&

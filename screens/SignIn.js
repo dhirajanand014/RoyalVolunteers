@@ -65,7 +65,7 @@ export const SignIn = () => {
                 navigateUser(responseNavigation, data);
                 setLoader(false);
             } else {
-                console.error(errorModalMessageConstants.REQUEST_IS_INVALID, isValidRequest);
+                console.error(errorModalMessageConstants.REQUEST_IS_INVALID, signUpDetails.tokenValidation);
                 setErrorModal(error, setError, errorModalMessageConstants.UNEXPECTED_ERROR,
                     errorModalMessageConstants.SOMETHING_WENT_WRONG, true);
                 setLoader(false);

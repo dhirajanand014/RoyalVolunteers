@@ -5,7 +5,7 @@ import { NeededOptions } from '../input/NeededOptions';
 
 export const NeededRadioOptions = props => {
     return (
-        <View style={RVStyles.neededOptionsView}>
+        <View style={RVStyles.neededOptionsView} hitSlop={RVStyles.neededRadioSlop}>
             <Text style={RVStyles.registrationUserInputPickerText}>{props.inputTextName}</Text>
             <NeededOptions {...props} />
         </View>
