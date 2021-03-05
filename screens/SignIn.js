@@ -94,8 +94,7 @@ export const SignIn = () => {
                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
                     <View style={RVStyles.signInLinks}>
                         <View style={RVStyles.signInForgotPassword}>
-                            <TouchableOpacity style={RVStyles.signInForgotPasswordLink}
-                                onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>
+                            <TouchableOpacity onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>
                                 <Text style={RVStyles.signInForgotPasswordText}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
                             </TouchableOpacity>
                         </View>

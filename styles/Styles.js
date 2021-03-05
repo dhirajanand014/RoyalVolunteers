@@ -264,13 +264,12 @@ export const RVStyles = StyleSheet.create({
     },
     underlineTextInputBloodRequest: {
         flex: 1,
-        paddingLeft: 10,
+        paddingLeft: 3,
         justifyContent: 'center',
-        paddingVertical: 8,
+        marginTop: isIOS && 0 || -25,
+        paddingVertical: isIOS && 3 || 5,
         borderBottomWidth: 1,
         fontSize: 16,
-        position: 'absolute',
-        bottom: 0,
         color: '#05375a'
     },
     userInputView: {
@@ -429,7 +428,6 @@ export const RVStyles = StyleSheet.create({
         backgroundColor: 'black',
     },
     signInLinks: {
-        flexDirection: 'row',
         marginTop: 8
     },
     signInRememberPasswordText: {
@@ -439,9 +437,6 @@ export const RVStyles = StyleSheet.create({
     signInForgotPassword: {
         flex: 1,
         alignItems: 'flex-end'
-    },
-    signInForgotPasswordLink: {
-        flex: 0.5
     },
     signInForgotPasswordText: {
         color: `#c08`
