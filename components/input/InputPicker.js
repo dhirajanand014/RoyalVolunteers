@@ -11,7 +11,7 @@ export const InputPicker = props => {
             render={inputProps => {
                 return (
                     <Picker selectedValue={inputProps.value} style={RVStyles.bloodGroupPickerStyle}
-                        itemStyle={[isIOS && RVStyles.pickerItemStyleIOS, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}
+                        itemStyle={[isIOS && RVStyles.pickerItemStyleIOS]}
                         onValueChange={(value) => onChangeByValueType(inputProps, value, props)}>
                         {
                             props.list.map((item, index) => {

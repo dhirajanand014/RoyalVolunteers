@@ -12,7 +12,6 @@ export const RVDatePickerView = props => {
                     || props.isFromRegistration) &&
                 (isIOS && <RVIOSDatePicker {...props} /> || isAndroid && <RVAndroidDatePicker {...props} />)
             }
-            <Text style={RVStyles.registrationFormInputError}>{props.formState.errors[props.inputName]?.message}</Text>
         </View>
     );
 }

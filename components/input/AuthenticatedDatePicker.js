@@ -9,6 +9,7 @@ export const AuthenticatedDatePicker = props => {
         RVStyles.registrationUserInputView]}>
             <Text style={RVStyles.registrationUserInputTextView}>{props.inputTextName}</Text>
             <RVDatePickerView {...props} />
+            <Text style={RVStyles.registrationFormInputError}>{props.formState.errors[props.inputName]?.message}</Text>
         </View>
     );
 }

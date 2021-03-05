@@ -8,7 +8,7 @@ export const RVIOSDatePicker = props => {
         <Controller name={props.inputName} control={props.control} defaultValue={props.isFromRegistration && new Date() || props.defaultValue} rules={props.rules}
             render={(datePickerProps) => (
                 <DateTimePicker minimumDate={props.minimumDate} display={props.display} mode={props.mode} value={props.isFromBloodRequestForm &&
-                    props.requestForm.needed_request_date || datePickerProps.value || new Date()} maximumDate={props.maximumDate} ref={props.refCallback}
+                    props.requestForm.needed_request_date || datePickerProps.value || new Date()} maximumDate={props.maximumDate}
                     onChange={(event, date) => convertDate(event, datePickerProps, props, date)} is24Hour={false} style={RVStyles.iosDatePickerStyle} />
             )} />
     );
