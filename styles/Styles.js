@@ -48,6 +48,9 @@ export const RVGenericStyles = StyleSheet.create({
     mb15: {
         marginBottom: 15,
     },
+    mb20: {
+        marginBottom: 20,
+    },
     mb30: {
         marginBottom: 30,
     },
@@ -120,6 +123,9 @@ export const RVGenericStyles = StyleSheet.create({
     inputTextColor: {
         color: '#05375a'
     },
+    textItalic: {
+        fontStyle: 'italic'
+    },
     leftAlignedText: {
         textAlign: 'left',
     },
@@ -140,6 +146,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     padding5: {
         padding: 5
+    },
+    padding10: {
+        padding: 10
     },
     paddingHorizontal10: {
         paddingHorizontal: 10
@@ -197,6 +206,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     opacitypt2: {
         opacity: .2
+    },
+    width1pt08: {
+        width: width / 1.08
     }
 });
 
@@ -692,7 +704,7 @@ export const RVStyles = StyleSheet.create({
     dashBoardUserDetailsTextView: {
         flexDirection: 'row',
         width: width / 1.1,
-        paddingVertical: 15,
+        paddingVertical: 13,
         paddingLeft: 8
     },
     dashBoardUserTextStyle: {
@@ -710,21 +722,24 @@ export const RVStyles = StyleSheet.create({
     },
     dashBoardHeaderStyle: {
         paddingVertical: 2,
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     dashBoardCountsViewStyle: {
-        alignSelf: 'center',
+        alignSelf: 'flex-end',
         borderColor: 'red',
         borderWidth: 2,
         borderRadius: 20,
         backgroundColor: 'white',
-        width: width / 1.05,
+        width: width / 1.66,
         marginVertical: 10
     },
     dashBoardCountsView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
+        paddingBottom: 20,
+        paddingTop: 30,
+        paddingRight: 10,
+        paddingLeft: 10,
         overflow: 'hidden'
     },
     dashBoardFooterTopView: {
@@ -944,6 +959,18 @@ export const RVStyles = StyleSheet.create({
         position: 'absolute',
         left: 18,
         borderRadius: 50
+    },
+    testimonialsStyle: {
+        height: 120,
+        width: width,
+        marginTop: 2
+    },
+    testimonialSwiperList: {
+        borderWidth: 0.5,
+        borderColor: '#7e7e7e',
+        borderRadius: 15,
+        height: isIOS && (height == 736 && 130 || 70) || 130,
+        paddingVertical: 6
     }
 });
 

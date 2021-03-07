@@ -10,8 +10,6 @@ export const RESEND_OTP_TIME_LIMIT = 20; // 30 secs
 export const AUTO_SUBMIT_OTP_TIME_LIMIT = 1;
 export const OTP_INPUTS = 6;
 
-console.log(width, height)
-
 export const stringConstants = {
     EMPTY: ``,
     NODE: {},

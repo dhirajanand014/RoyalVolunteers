@@ -32,8 +32,9 @@ export const TestimonialModal = props => {
 
                         <View style={[RVGenericStyles.mv20]}>
                             <Stars default={numericConstants.ZERO} update={(val) => setUserDashboard({ ...userDashboard, testimonialStars: val })}
-                                spacing={numericConstants.FOUR} count={numericConstants.FIVE} fullStar={<RVStarIcon fill={colors.GREEN} strokeColor={colors.BLACK} />}
-                                emptyStar={<RVStarIcon fill={miscMessage.NONE} strokeColor={colors.BLACK} />} />
+                                spacing={numericConstants.FOUR} count={numericConstants.FIVE} fullStar={<RVStarIcon fill={colors.GREEN} strokeColor={colors.BLACK} height={numericConstants.THIRTY}
+                                    width={numericConstants.THIRTY} />} emptyStar={<RVStarIcon fill={miscMessage.NONE} strokeColor={colors.BLACK} height={numericConstants.THIRTY}
+                                        width={numericConstants.THIRTY} />} />
                         </View>
                         <View style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View>
