@@ -85,7 +85,6 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
 
 export const saveTestimonialData = async (testimonialData, rating, phoneNumber) => {
     try {
-        debugger
         const testimonialRequest = {
             [fieldControllerName.PHONE_NUMBER]: phoneNumber,
             testimonial_description: testimonialData,
