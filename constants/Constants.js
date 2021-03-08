@@ -201,7 +201,8 @@ export const urlConstants = {
     VALIDATE_TOKEN: `https://royalvolunteers.in/resource_validate.php`,
     FORGOT_PASSWORD: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_pass_update.php`,
     NOTIFY_BLOOD_REQUEST: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_notify_blood_request.php`,
-    UPDATE_DEVICE_TOKEN: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_up_device_token.php`
+    UPDATE_DEVICE_TOKEN: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_up_device_token.php`,
+    SAVE_TESTIMONIAL: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_usr_testimonials.php`
 }
 
 export const countryCodesConstants = {
@@ -371,6 +372,7 @@ export const miscMessage = {
     DATE: `date`,
     SET: `set`,
     NO: `N`,
+    NOW: `Now`,
     YES: `Y`,
     CALL: `Call`,
     LOADING: `Loading`,
@@ -409,7 +411,8 @@ export const miscMessage = {
     SAVE: `Save`,
     EDIT: `Edit`,
     TAIL: `tail`,
-    TIME_FORMAT: `hh:mm A`
+    TIME_FORMAT: `hh:mm A`,
+    RELOAD_APPLICATION: `Reload Application`
 }
 
 export const successFulMessages = {
@@ -474,7 +477,8 @@ export const errorModalMessageConstants = {
     CANNOT_LOGOUT_USER: `Cannot logout user`,
     CANNOT_NAVIGATE_TO_NOTIFICATION_REQUEST: `Cannot navigate to notification requests`,
     ERROR_REQUESTING_TOKEN: `Error requsting for token`,
-    CANNOT_VALIDATE_SAVED_TOKEN: `Cannot validate saved token`
+    CANNOT_VALIDATE_SAVED_TOKEN: `Cannot validate saved token`,
+    ERROR_BOUNDARY: `The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.`,
 }
 
 export const tokenRequestResponseConst = {

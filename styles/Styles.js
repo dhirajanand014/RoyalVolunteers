@@ -524,7 +524,7 @@ export const RVStyles = StyleSheet.create({
         borderRadius: 20,
         padding: 25,
         width: 300,
-        height: 250,
+        height: 300,
         alignItems: "center",
         shadowColor: 'black',
         shadowOffset: {
@@ -971,8 +971,60 @@ export const RVStyles = StyleSheet.create({
         borderRadius: 15,
         height: isIOS && (height == 736 && 130 || 70) || 130,
         paddingVertical: 6
+    },
+    testimonialStars: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0
+    },
+    foregroundNotificationCallStyle: {
+        paddingHorizontal: 80,
+        paddingVertical: 10,
+        borderRadius: 20
     }
 });
+
+export const errorBoundaryStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: `#fec72e`
+    },
+    content: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        padding: 15
+    },
+    infoIconStyle: {
+        alignSelf: 'center',
+        width: 60,
+        height: 60
+    },
+    textMessage1Style: {
+        fontSize: 32,
+        textAlign: 'center',
+        fontFamily: 'wallpiper_roman_font',
+    },
+    textMessage2Style: {
+        marginVertical: 10,
+        lineHeight: 23,
+        textAlign: 'center',
+        fontWeight: '500',
+        fontFamily: 'wallpiper_roman_font'
+    },
+    resetButton: {
+        borderRadius: 25,
+        marginTop: 25,
+        padding: 15,
+        elevation: 3,
+        backgroundColor: "#3d3d3d"
+    },
+    redirectButtonText: {
+        color: "white",
+        fontFamily: 'wallpiper_roman_font',
+        textAlign: "center",
+        fontSize: 20
+    }
+})
 
 export const colors = {
     BLUE: '#3543bf',

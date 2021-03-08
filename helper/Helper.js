@@ -83,6 +83,24 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
     return miscMessage.ERROR;
 }
 
+export const saveTestimonialData = async (testimonialData, rating, phoneNumber) => {
+    try {
+        debugger
+        const testimonialRequest = {
+            [fieldControllerName.PHONE_NUMBER]: phoneNumber,
+            testimonial_description: testimonialData,
+            testimonial_rating: rating
+        }
+        const testimonialJSON = JSON.stringify(testimonialRequest);
+        const testimonialResponse = await axios.post(urlConstants.SAVE_TESTIMONIAL, testimonialJSON);
+        return testimonialResponse && testimonialResponse.data == miscMessage.SUCCESS &&
+            miscMessage.SUCCESS || miscMessage.ERROR;
+    } catch (error) {
+        console.error(error);
+    }
+    return miscMessage.ERROR;
+}
+
 export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, navigation, setLoader) => {
     try {
         setLoader(true);

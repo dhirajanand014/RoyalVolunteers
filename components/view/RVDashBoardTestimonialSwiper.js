@@ -24,8 +24,8 @@ export const RVDashBoardTestimonialSwiper = props => {
                                     {item.testimonial_description}
                                 </Text>
                             </View>
-                            <View style={[RVGenericStyles.alignItemsEnd, RVGenericStyles.justifyContentCenter, RVGenericStyles.padding10]}>
-                                <Stars default={item.testimonial_rating || numericConstants.ZERO} spacing={numericConstants.FOUR} count={numericConstants.FIVE} disabled
+                            <View style={[RVGenericStyles.alignItemsEnd, RVGenericStyles.justifyContentCenter, RVGenericStyles.paddingHorizontal10, RVGenericStyles.testimonialStars]}>
+                                <Stars default={parseInt(item.testimonial_rating) || numericConstants.ZERO} spacing={numericConstants.FOUR} count={numericConstants.FIVE} disabled
                                     fullStar={<RVStarIcon fill={colors.GREEN} strokeColor={colors.BLACK} height={numericConstants.TWENTY} width={numericConstants.TWENTY} />}
                                     emptyStar={<RVStarIcon fill={miscMessage.NONE} strokeColor={colors.BLACK} height={numericConstants.TWENTY} width={numericConstants.TWENTY} />} />
                             </View>

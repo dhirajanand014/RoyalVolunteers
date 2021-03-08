@@ -7,7 +7,7 @@ import {
     stringConstants, placeHolderText, numericConstants,
     actionButtonTextConstants, successFulMessages, errorModalMessageConstants
 } from "../../constants/Constants";
-import { saveFeedbackText, showSnackBar } from "../../helper/Helper";
+import { saveFeedbackText, saveTestimonialData, showSnackBar } from "../../helper/Helper";
 import { colors, RVGenericStyles, RVStyles } from "../../styles/Styles";
 import { RVStarIcon } from "../icons/RVStarIcon";
 import { RegistrationInput } from "../input/RegistrationInput";
@@ -29,7 +29,7 @@ export const TestimonialModal = props => {
                             defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.TESTIMONIAL} extraStyles={RVStyles.hospitalTextHeight}
                             formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO}
                             extraStyles={[RVStyles.testimonialModalTextInput, RVGenericStyles.justifyContentCenter]} isTestimonialInput={true} />
-
+                        <Text style={RVStyles.registrationFormInputError}>{formState.errors[fieldControllerName.TESTIMONIAL]?.message}</Text>
                         <View style={[RVGenericStyles.mv20]}>
                             <Stars default={numericConstants.ZERO} update={(val) => setUserDashboard({ ...userDashboard, testimonialStars: val })}
                                 spacing={numericConstants.FOUR} count={numericConstants.FIVE} fullStar={<RVStarIcon fill={colors.GREEN} strokeColor={colors.BLACK} height={numericConstants.THIRTY}
@@ -47,7 +47,7 @@ export const TestimonialModal = props => {
                                 <TouchableOpacity activeOpacity={.7} style={RVStyles.testimonialSubmitButton}
                                     onPress={handleSubmit(async data => {
                                         setLoader(true);
-                                        const testimonialResponse = await saveFeedbackText(data.testimonial, phoneNumber);
+                                        const testimonialResponse = await saveTestimonialData(data.testimonial, userDashboard.testimonialStars, phoneNumber);
                                         testimonialResponse == miscMessage.SUCCESS &&
                                             setTimeout(() => showSnackBar(successFulMessages.TESTIMONIAL_SUBMITTED_SUCCESSFULLY, true), numericConstants.THREE_HUNDRED);
                                         testimonialResponse == miscMessage.ERROR &&

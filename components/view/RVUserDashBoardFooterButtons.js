@@ -28,7 +28,7 @@ export const RVUserDashBoardFooterButtons = props => {
                 </View>
             </View>
             {
-                userDashboard.testimonials && userDashboard.testimonials.length &&
+                userDashboard.testimonials && userDashboard.testimonials.length && userDashboard.testimonials.some(testimonial => testimonial.testimonial_provided) &&
                 <RVDashBoardTestimonialSwiper userDashboard={userDashboard} /> ||
                 <View style={[RVGenericStyles.alignItemsCenter, RVGenericStyles.mb30]}>
                     <TouchableOpacity activeOpacity={.7} style={[RVStyles.dashBoardTestimonials, RVGenericStyles.backGroundColorGreen]} onPress={() => setUserDashboard({ ...userDashboard, showTestimonialModal: true })}>
