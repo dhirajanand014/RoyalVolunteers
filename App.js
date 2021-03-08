@@ -19,6 +19,7 @@ import { SplashScreen } from './screens/SplashScreen';
 import NetInfo from "@react-native-community/netinfo";
 import { showSnackBar } from './helper/Helper';
 import { RVLoaderView } from './components/view/RVLoaderView';
+import RVErrorBoundary from './components/view/RVErrorBounday';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
@@ -66,29 +67,31 @@ export default function App() {
   }, []);
 
   return (
-    <SignUpContext.Provider value={{
-      signUpDetails, setSignUpDetails, requestForm,
-      setRequestForm, error, setError, notificationDetails,
-      setNotificationDetails, loader, setLoader
-    }}>
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator initialRouteName={routeConsts.SPLASH_SCREEN} screenOptions={screenOptions}
-          headerMode='float' animation="fade">
-          <Stack.Screen name={routeConsts.SPLASH_SCREEN} component={SplashScreen} options={stackOptions} />
-          <Stack.Screen name={routeConsts.BLOOD_REQUEST_NOTIFICATION} component={RVBloodRequestsNotifications} options={stackOptions} />
-          <Stack.Screen name={routeConsts.HOME} component={Home} options={stackOptions} />
-          <Stack.Screen name={routeConsts.SIGN_IN} component={SignIn} options={stackOptions} />
-          <Stack.Screen name={routeConsts.SIGN_UP} component={SignUp} options={stackOptions} />
-          <Stack.Screen name={routeConsts.SIGN_UP_OTP_VERIFICATION} component={SignUpOTPVerification} options={stackOptions} />
-          <Stack.Screen name={routeConsts.SIGN_UP_SECRET} component={SignUpConfirmSecret} options={stackOptions} />
-          <Stack.Screen name={routeConsts.USER_REGISTRATION} component={RVUserRegistration} options={stackOptions} />
-          <Stack.Screen name={routeConsts.USER_DASHBOARD} component={RVUserDashboard} options={stackOptions} />
-          <Stack.Screen name={routeConsts.BLOOD_REQUEST} component={RVBloodRequest} options={stackOptions} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      {
-        loader && <RVLoaderView />
-      }
-    </SignUpContext.Provider>
+    <RVErrorBoundary>
+      <SignUpContext.Provider value={{
+        signUpDetails, setSignUpDetails, requestForm,
+        setRequestForm, error, setError, notificationDetails,
+        setNotificationDetails, loader, setLoader
+      }}>
+        <NavigationContainer ref={navigationRef}>
+          <Stack.Navigator initialRouteName={routeConsts.SPLASH_SCREEN} screenOptions={screenOptions}
+            headerMode='float' animation="fade">
+            <Stack.Screen name={routeConsts.SPLASH_SCREEN} component={SplashScreen} options={stackOptions} />
+            <Stack.Screen name={routeConsts.BLOOD_REQUEST_NOTIFICATION} component={RVBloodRequestsNotifications} options={stackOptions} />
+            <Stack.Screen name={routeConsts.HOME} component={Home} options={stackOptions} />
+            <Stack.Screen name={routeConsts.SIGN_IN} component={SignIn} options={stackOptions} />
+            <Stack.Screen name={routeConsts.SIGN_UP} component={SignUp} options={stackOptions} />
+            <Stack.Screen name={routeConsts.SIGN_UP_OTP_VERIFICATION} component={SignUpOTPVerification} options={stackOptions} />
+            <Stack.Screen name={routeConsts.SIGN_UP_SECRET} component={SignUpConfirmSecret} options={stackOptions} />
+            <Stack.Screen name={routeConsts.USER_REGISTRATION} component={RVUserRegistration} options={stackOptions} />
+            <Stack.Screen name={routeConsts.USER_DASHBOARD} component={RVUserDashboard} options={stackOptions} />
+            <Stack.Screen name={routeConsts.BLOOD_REQUEST} component={RVBloodRequest} options={stackOptions} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        {
+          loader && <RVLoaderView />
+        }
+      </SignUpContext.Provider>
+    </RVErrorBoundary>
   );
 }
