@@ -100,7 +100,8 @@ export const saveTestimonialData = async (testimonialData, rating, phoneNumber) 
     return miscMessage.ERROR;
 }
 
-export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, navigation, setLoader) => {
+export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, navigation, setLoader,
+    notificationDetails, setNotificationDetails) => {
     try {
         setLoader(true);
         const url = `${urlConstants.GET_USER_DASHBOARD_DETAILS}${miscMessage.PH_QUERY_PARAM}${phoneNumber}`;
@@ -108,11 +109,16 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
         if (userDashboardDetails.data) {
             userDashboardDetails = userDashboardDetails.data;
             const notificationValues = await getSavedNotificationRequests();
+            setNotificationDetails({
+                ...notificationDetails, requestCount: notificationValues && notificationValues.length ||
+                    numericConstants.ZERO
+            });
             if (notificationValues && notificationValues.some(notification => notification.new)) {
                 setTimeout(() => navigation.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION, { phoneNumber: phoneNumber }),
                     numericConstants.FIVE_HUNDRED);
             }
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
+
         }
     } catch (error) {
         console.error(error);
@@ -167,6 +173,7 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isR
         const random6Digit = Math.floor(Math.random() * 899999 + 100000);
 
         const hashValue = isAndroid && await RNOtpVerify.getHash() || "RaZGrAI03n4";
+        console.log(random6Digit, "rand");
 
         const otpRequestData = {
             phone: phoneNumber,

@@ -9,10 +9,10 @@ export const RVUserDashBoardFooterTopView = props => {
         <View style={RVGenericStyles.borderBottomWidth1}>
             <View style={[RVStyles.dashBoardFooterTopView, RVGenericStyles.justifyContentSpaceBetween]}>
                 <View style={RVGenericStyles.fill_75}>
-                    <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.ft18, RVGenericStyles.textBlackColor]}>
+                    <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.ft16, RVGenericStyles.textBlackColor]}>
                         {screenTitle.WELCOME}
                     </Text>
-                    <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.ft25, RVGenericStyles.textBlackColor, RVGenericStyles.marginVertical5]}>
+                    <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.ft20, RVGenericStyles.textBlackColor, RVGenericStyles.marginVertical5]}>
                         {props.name}
                     </Text>
                 </View>

@@ -69,8 +69,8 @@ export const actionButtonTextConstants = {
     RESET_PASSWORD: `Reset Password`,
     OK: `OK`,
     DATE: `Date`,
-    SEND_FEEDBACK: `Send Feedback`,
-    REQUEST_FOR_BLOOD: `Request for blood`,
+    FEEDBACK: `Feedback`,
+    REQUEST_BLOOD: `Request Blood`,
     TESTIMONIAL: `Testimonial`
 }
 
@@ -284,6 +284,7 @@ export const numericConstants = {
     TWENTY_FOUR: 24,
     THIRTY: 30,
     ONE_HUNDRED: 100,
+    ONE_HUNDRED_THIRTY: 130,
     ONE_HUNDRED_FIFTY: 150,
     TWO_HUNDRED: 200,
     THREE_HUNDRED: 300,
@@ -323,6 +324,7 @@ export const fieldTextName = {
     HOSPITAL_NAME: `Hospital : `,
     BENIFITERS: `Benifiters`,
     VOLUNTEERS: `Volunteers`,
+    REQUESTS: `Requests`,
     BLOOD_TYPE: `Blood Type`,
     RECEIVED_TIME: `Received : `
 }

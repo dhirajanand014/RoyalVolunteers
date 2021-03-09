@@ -48,6 +48,9 @@ export const RVGenericStyles = StyleSheet.create({
     mb15: {
         marginBottom: 15,
     },
+    mb5: {
+        marginBottom: 5,
+    },
     mb20: {
         marginBottom: 20,
     },
@@ -77,6 +80,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     ft30: {
         fontSize: 30
+    },
+    ft42: {
+        fontSize: 42
     },
     ftWeight700: {
         fontWeight: '700'
@@ -186,6 +192,15 @@ export const RVGenericStyles = StyleSheet.create({
     colorWhite: {
         color: `white`
     },
+    colorRed: {
+        color: `red`
+    },
+    paddingHorizontal12: {
+        paddingHorizontal: 12
+    },
+    alignItemsStart: {
+        alignItems: 'flex-start'
+    },
     colorGreen: {
         color: 'green'
     },
@@ -264,13 +279,27 @@ export const RVStyles = StyleSheet.create({
         textAlign: 'left',
         color: '#05375a'
     },
+    dashBoardUnderlineTextInput: {
+        flex: 1,
+        paddingLeft: 10,
+        justifyContent: 'center',
+        marginTop: isIOS && 0 || -5,
+        paddingVertical: isIOS && 1 || 1,
+        borderBottomWidth: 1,
+        color: '#05375a'
+    },
     underlineTextInput: {
         flex: 1,
         paddingLeft: 3,
         justifyContent: 'center',
         marginTop: isIOS && 0 || -25,
-        paddingVertical: isIOS && 1 || 5,
+        paddingVertical: isIOS && 1 || 1,
         borderBottomWidth: 1,
+        position: 'absolute', //Here is the trick
+        bottom: 0,
+        right: 0,
+        left: 0,
+        top: 0,
         fontSize: 16,
         color: '#05375a'
     },
@@ -306,6 +335,7 @@ export const RVStyles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     userDashBoardPickerView: {
+        paddingBottom: 10,
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'center'
@@ -617,7 +647,7 @@ export const RVStyles = StyleSheet.create({
         elevation: 8
     },
     authenticatedUserInputViewStyle: {
-        marginTop: 16,
+        marginTop: 16
     },
     bloodGroupPickerStyle: {
         borderWidth: isAndroid && 1 || 0,
@@ -704,7 +734,7 @@ export const RVStyles = StyleSheet.create({
     dashBoardUserDetailsTextView: {
         flexDirection: 'row',
         width: width / 1.1,
-        paddingVertical: 13,
+        paddingVertical: 8,
         paddingLeft: 8
     },
     dashBoardUserTextStyle: {
@@ -721,31 +751,32 @@ export const RVStyles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     dashBoardHeaderStyle: {
-        paddingVertical: 2,
+        paddingHorizontal: 10,
         alignItems: 'flex-start'
     },
     dashBoardCountsViewStyle: {
-        alignSelf: 'flex-end',
+        alignSelf: 'center',
         borderColor: 'red',
         borderWidth: 2,
         borderRadius: 20,
         backgroundColor: 'white',
-        width: width / 1.66,
-        marginVertical: 10
+        width: width / 1.01,
+        marginTop: 5,
+        marginBottom: 10
     },
     dashBoardCountsView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 20,
-        paddingTop: 30,
-        paddingRight: 10,
-        paddingLeft: 10,
+        padding: 8,
         overflow: 'hidden'
     },
     dashBoardFooterTopView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 16,
+        paddingTop: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingBottom: 7,
         width: width / 1.03,
         elevation: 8
     },
@@ -778,22 +809,22 @@ export const RVStyles = StyleSheet.create({
     sendFeedBackButtonStyle: {
         borderRadius: 25,
         paddingVertical: 12,
-        marginHorizontal: 12,
-        width: 140,
+        width: 100,
         elevation: 3,
         backgroundColor: '#fec72e'
     },
     dashBoardRequestBlood: {
         borderRadius: 25,
         paddingVertical: 12,
-        width: 150,
+        marginHorizontal: 6,
+        width: 130,
         elevation: 3,
         backgroundColor: "#DE1F25"
     },
     dashBoardTestimonials: {
         borderRadius: 25,
         paddingVertical: 12,
-        width: 140,
+        width: 110,
         elevation: 3,
     },
     feedBackModalView: {
@@ -962,15 +993,11 @@ export const RVStyles = StyleSheet.create({
     },
     testimonialsStyle: {
         height: 120,
-        width: width,
-        marginTop: 2
+        width: width
     },
     testimonialSwiperList: {
-        borderWidth: 0.5,
-        borderColor: '#7e7e7e',
-        borderRadius: 15,
         height: isIOS && (height == 736 && 130 || 70) || 130,
-        paddingVertical: 6
+        paddingVertical: 1
     },
     testimonialStars: {
         position: 'absolute',

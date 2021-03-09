@@ -16,25 +16,25 @@ export const RVUserDashBoardFooterButtons = props => {
                 <View style={[RVGenericStyles.alignItemsCenter]}>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.sendFeedBackButtonStyle}
                         onPress={() => setUserDashboard({ ...userDashboard, showFeedbackModal: true })}>
-                        <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.SEND_FEEDBACK}</Text>
+                        <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.FEEDBACK}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[RVGenericStyles.alignItemsCenter]}>
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.dashBoardRequestBlood} onPress={() => props.navigation.navigate(routeConsts.BLOOD_REQUEST, {
                         isFrom: routeConsts.USER_DASHBOARD, phoneNumber: userDashboard.phoneNumber
                     })}>
-                        <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.REQUEST_FOR_BLOOD}</Text>
+                        <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.REQUEST_BLOOD}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={RVGenericStyles.alignItemsCenter}>
+                    <TouchableOpacity activeOpacity={.7} style={[RVStyles.dashBoardTestimonials, RVGenericStyles.backGroundColorGreen]} onPress={() => setUserDashboard({ ...userDashboard, showTestimonialModal: true })}>
+                        <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.TESTIMONIAL}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
             {
                 userDashboard.testimonials && userDashboard.testimonials.length && userDashboard.testimonials.some(testimonial => testimonial.testimonial_provided) &&
-                <RVDashBoardTestimonialSwiper userDashboard={userDashboard} /> ||
-                <View style={[RVGenericStyles.alignItemsCenter, RVGenericStyles.mb30]}>
-                    <TouchableOpacity activeOpacity={.7} style={[RVStyles.dashBoardTestimonials, RVGenericStyles.backGroundColorGreen]} onPress={() => setUserDashboard({ ...userDashboard, showTestimonialModal: true })}>
-                        <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.TESTIMONIAL}</Text>
-                    </TouchableOpacity>
-                </View>
+                <RVDashBoardTestimonialSwiper userDashboard={userDashboard} />
             }
         </React.Fragment >
     )

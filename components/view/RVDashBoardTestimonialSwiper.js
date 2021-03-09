@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { errorModalTitleConstants, miscMessage, numericConstants, width } from '../../constants/Constants';
+import { errorModalTitleConstants, miscMessage, numericConstants } from '../../constants/Constants';
 import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
 import Stars from 'react-native-stars';
 import { RVStarIcon } from '../icons/RVStarIcon';
@@ -10,8 +10,8 @@ import { RVStarIcon } from '../icons/RVStarIcon';
 export const RVDashBoardTestimonialSwiper = props => {
     const { userDashboard } = props;
     return (
-        <SwiperFlatList autoplay autoplayLoop index={numericConstants.ZERO} disableGesturepaginationActiveColor={colors.YELLOW}
-            style={[RVStyles.testimonialSwiperList, RVGenericStyles.width1pt08]} paginationStyleItem={RVStyles.testimonialItemStyle}>
+        <SwiperFlatList autoplay autoplayLoop index={numericConstants.ZERO} disableGesture
+            style={[RVStyles.testimonialSwiperList, RVGenericStyles.width1pt08]}>
             {
                 userDashboard.testimonials.map((item, index) => {
                     return (
@@ -24,7 +24,7 @@ export const RVDashBoardTestimonialSwiper = props => {
                                     {item.testimonial_description}
                                 </Text>
                             </View>
-                            <View style={[RVGenericStyles.alignItemsEnd, RVGenericStyles.justifyContentCenter, RVGenericStyles.paddingHorizontal10, RVGenericStyles.testimonialStars]}>
+                            <View style={[RVGenericStyles.alignItemsCenter, RVGenericStyles.justifyContentCenter, RVGenericStyles.paddingHorizontal10]}>
                                 <Stars default={parseInt(item.testimonial_rating) || numericConstants.ZERO} spacing={numericConstants.FOUR} count={numericConstants.FIVE} disabled
                                     fullStar={<RVStarIcon fill={colors.GREEN} strokeColor={colors.BLACK} height={numericConstants.TWENTY} width={numericConstants.TWENTY} />}
                                     emptyStar={<RVStarIcon fill={miscMessage.NONE} strokeColor={colors.BLACK} height={numericConstants.TWENTY} width={numericConstants.TWENTY} />} />

@@ -54,7 +54,8 @@ export default function App() {
   const [notificationDetails, setNotificationDetails] = useState({
     showNotificationModal: false,
     message: stringConstants.EMPTY,
-    isNewNotification: false
+    isNewNotification: false,
+    requestCount: numericConstants.ZERO
   });
 
   useEffect(() => {

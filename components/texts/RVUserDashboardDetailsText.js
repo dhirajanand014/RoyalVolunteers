@@ -14,7 +14,7 @@ export const RVUserDashboardDetailsText = props => {
             RVGenericStyles.borderBottomWidthpt5]}>
             <View style={RVStyles.dashBoardUserTextStyle}>
                 <Text style={[props.text == fieldTextName.AVAILABILITY_STATUS && RVGenericStyles.marginVertical2,
-                RVGenericStyles.ft18]}>{props.text}</Text>
+                RVGenericStyles.ft16]}>{props.text}</Text>
             </View>
             <View style={RVStyles.dashBoardUserValueStyle}>
                 {
@@ -24,7 +24,7 @@ export const RVUserDashboardDetailsText = props => {
                         formState={props.formState} hasPadding={true} options={availablilityStatusOptions} fontSize={numericConstants.TWELVE}
                         initial={availablilityStatusOptions.findIndex(option => option.value == props.value)} isFromDashBoard={true}
                         value={numericConstants.ZERO} setLoader={props.setLoader} /> ||
-                    <Text style={[RVGenericStyles.ft18, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{props.value}</Text>
+                    <Text style={[RVGenericStyles.ft16, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{props.value}</Text>
                 }
             </View>
         </View>

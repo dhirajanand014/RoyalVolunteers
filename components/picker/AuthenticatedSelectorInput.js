@@ -12,7 +12,10 @@ export const AuthenticatedSelectorInput = props => {
                 <Text style={RVStyles.registrationUserInputPickerText}>{!props.isFromDashBoard && props.inputTextName || stringConstants.EMPTY}</Text>
                 <InputSelector {...props} />
             </View>
-            <Text style={RVStyles.registrationFormInputError}>{props.formState.errors[props.inputName]?.message}</Text>
+            {
+                props.isFromRegistration &&
+                <Text style={RVStyles.registrationFormInputError}>{props.formState.errors[props.inputName]?.message}</Text>
+            }
         </React.Fragment>
     );
 }

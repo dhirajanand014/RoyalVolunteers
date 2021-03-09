@@ -92,7 +92,7 @@ export const RVUserRegistration = () => {
 
                     <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
                         initial={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}
-                        fontSize={numericConstants.TWELVE} initial={numericConstants.ZERO} isFromDashBoard={false} defaultValue={miscMessage.YES} />
+                        fontSize={numericConstants.TWELVE} initial={numericConstants.ZERO} isFromRegistration={true} defaultValue={miscMessage.YES} />
 
                 </View>
                 <View style={RVStyles.userRegistrationSubmitButton}>

@@ -9,6 +9,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { SignUpContext } from "../../App";
 import { useNavigation } from "@react-navigation/native";
 import { RVPhoneIcon } from "../icons/RVPhoneIcon";
+import { updateNotificationsStatus } from "../../helper/Helper";
 
 export const NotificationReceivedModal = () => {
 
@@ -50,7 +51,10 @@ export const NotificationReceivedModal = () => {
                     </View>
                     <TouchableOpacity style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentCenter, RVGenericStyles.backGroundColorGreen,
                     RVGenericStyles.alignItemsCenter, RVStyles.foregroundNotificationCallStyle, RVGenericStyles.elevation3]}
-                        onPress={() => Linking.openURL(`tel:${countryCodesConstants.INDIA}${data.phone_number}`)}>
+                        onPress={async () => {
+                            Linking.openURL(`tel:${countryCodesConstants.INDIA}${data.phone_number}`);
+                            await updateNotificationsStatus();
+                        }}>
                         <RVPhoneIcon stroke={colors.WHITE_GREY} />
                         <Text style={[RVGenericStyles.bold, RVGenericStyles.ml_8, RVGenericStyles.colorWhite, RVGenericStyles.ft16, RVGenericStyles.fontFamilyNormal]}>
                             {miscMessage.CALL}{stringConstants.SPACE}{miscMessage.NOW}
@@ -60,4 +64,4 @@ export const NotificationReceivedModal = () => {
             </View>
         </Modal>
     );
-};
+}; ``
