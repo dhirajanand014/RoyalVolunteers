@@ -32,7 +32,8 @@ export const RVUserDashboard = () => {
         showFeedbackModal: false,
         showTestimonialModal: false,
         editText: stringConstants.EMPTY,
-        isPincodeEdit: false
+        isPincodeEdit: false,
+        testimonialAdded: false
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 

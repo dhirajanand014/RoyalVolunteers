@@ -47,12 +47,12 @@ export const TestimonialModal = props => {
                                 <TouchableOpacity activeOpacity={.7} style={RVStyles.testimonialSubmitButton}
                                     onPress={handleSubmit(async data => {
                                         setLoader(true);
-                                        const testimonialResponse = await saveTestimonialData(data.testimonial, userDashboard.testimonialStars, phoneNumber);
+                                        const testimonialResponse = await saveTestimonialData(data.testimonial, userDashboard.testimonialStars, phoneNumber,
+                                            userDashboard, setUserDashboard);
                                         testimonialResponse == miscMessage.SUCCESS &&
                                             setTimeout(() => showSnackBar(successFulMessages.TESTIMONIAL_SUBMITTED_SUCCESSFULLY, true), numericConstants.THREE_HUNDRED);
                                         testimonialResponse == miscMessage.ERROR &&
                                             setTimeout(() => showSnackBar(errorModalMessageConstants.TESTIMONIAL_SUBMITTED_UNSUCCESSFULLY, false), numericConstants.THREE_HUNDRED);
-                                        setUserDashboard({ ...userDashboard, showTestimonialModal: false });
                                         setLoader(false);
                                     })}>
                                     <Text style={[RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText]}>{actionButtonTextConstants.SUBMIT}</Text>

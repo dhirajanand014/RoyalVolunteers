@@ -11,6 +11,7 @@ import {
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
 import { Alert, Linking } from "react-native";
+import base64 from 'react-native-base64'
 import RNOtpVerify from 'react-native-otp-verify';
 
 export const SCREEN_WIDTH = width;
@@ -83,7 +84,7 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
     return miscMessage.ERROR;
 }
 
-export const saveTestimonialData = async (testimonialData, rating, phoneNumber) => {
+export const saveTestimonialData = async (testimonialData, rating, phoneNumber, userDashboard, setUserDashboard) => {
     try {
         const testimonialRequest = {
             [fieldControllerName.PHONE_NUMBER]: phoneNumber,
@@ -92,6 +93,10 @@ export const saveTestimonialData = async (testimonialData, rating, phoneNumber) 
         }
         const testimonialJSON = JSON.stringify(testimonialRequest);
         const testimonialResponse = await axios.post(urlConstants.SAVE_TESTIMONIAL, testimonialJSON);
+
+        userDashboard.testimonialAdded = true;
+
+        setUserDashboard({ ...userDashboard, showTestimonialModal: false });
         return testimonialResponse && testimonialResponse.data == miscMessage.SUCCESS &&
             miscMessage.SUCCESS || miscMessage.ERROR;
     } catch (error) {
@@ -173,7 +178,6 @@ export const handleUserSignUpOtp = async (signUpDetails, isFrom, navigation, isR
         const random6Digit = Math.floor(Math.random() * 899999 + 100000);
 
         const hashValue = isAndroid && await RNOtpVerify.getHash() || "RaZGrAI03n4";
-        console.log(random6Digit, "rand");
 
         const otpRequestData = {
             phone: phoneNumber,
