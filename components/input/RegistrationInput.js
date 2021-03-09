@@ -13,7 +13,7 @@ export const RegistrationInput = props => {
                     <TextInput {...inputProps} maxLength={props.maxLength} value={inputProps.value} textContentType={props.textContentType}
                         autoCapitalize={miscMessage.WORDS} placeholder={props.placeHolderText} secureTextEntry={props.isSecureTextEntry}
                         keyboardType={props.keyboardType} style={[!(props.isFeedbackInput || props.isTestimonialInput) && props.isFromBloodRequestForm &&
-                            RVStyles.underlineTextInputBloodRequest || RVStyles.underlineTextInput, props.formState.errors[props.inputName]?.message &&
+                            RVStyles.underlineTextInputBloodRequest || RVStyles.modalUnderlineTextInput, props.formState.errors[props.inputName]?.message &&
                             RVStyles.errorInputBorder || RVStyles.normalInputBorder, props.extraStyles]} placeholderTextColor={colors.DARK_GREY} placeHolderText={props.placeHolderText}
                         onChangeText={value => onChangeByValueType(inputProps, value, props)} autoFocus={props.autofocus} underlineColorAndroid={props.underlineColorAndroid}
                         onSubmitEditing={props.onSubmitEditing} ref={props.refCallback} multiline={props.multiline} numberOfLines={props.numberOfLines} />

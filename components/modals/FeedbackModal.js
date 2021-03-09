@@ -25,12 +25,12 @@ export const FeedbackModal = props => {
                     <View style={[RVStyles.feedBackModalView, RVGenericStyles.alignItemsCenter]}>
                         <RegistrationInput inputName={fieldControllerName.FEEDBACK} control={control} rules={formRequiredRules.feedBackInputRule}
                             defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.FEEDBACK} extraStyles={RVStyles.hospitalTextHeight}
-                            formState={formState} multiline={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO}
+                            formState={formState} multiline={true} autofocus={true} underlineColorAndroid={miscMessage.TRANSPARENT} numberOfLines={numericConstants.TWO}
                             extraStyles={[RVStyles.feedBackModalTextInput, RVGenericStyles.justifyContentCenter]} isFeedbackInput={true} />
                         <Text style={RVStyles.registrationFormInputError}>{formState.errors[fieldControllerName.FEEDBACK]?.message}</Text>
                         <View style={[RVGenericStyles.rowFlexDirection, RVGenericStyles.justifyContentSpaceBetween]}>
                             <View>
-                                <TouchableOpacity activeOpacity={.2} style={[RVGenericStyles.width120, RVGenericStyles.mv30]}
+                                <TouchableOpacity activeOpacity={.2} style={[RVGenericStyles.width120, RVGenericStyles.mv15]}
                                     onPress={() => setUserDashboard({ ...userDashboard, showFeedbackModal: false })}>
                                     <Text style={RVStyles.feedBackCancelText}>{actionButtonTextConstants.CANCEL}</Text>
                                 </TouchableOpacity>

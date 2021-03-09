@@ -303,6 +303,16 @@ export const RVStyles = StyleSheet.create({
         fontSize: 16,
         color: '#05375a'
     },
+    modalUnderlineTextInput: {
+        flex: 1,
+        paddingLeft: 3,
+        justifyContent: 'center',
+        marginTop: isIOS && 0 || -25,
+        paddingVertical: isIOS && 1 || 1,
+        borderBottomWidth: 1,
+        fontSize: 16,
+        color: '#05375a'
+    },
     underlineTextInputBloodRequest: {
         flex: 1,
         paddingLeft: 3,
@@ -831,7 +841,10 @@ export const RVStyles = StyleSheet.create({
         margin: 250,
         backgroundColor: "white",
         borderRadius: 20,
-        padding: 45,
+        paddingTop: 45,
+        paddingRight: 45,
+        paddingBottom: 15,
+        paddingLeft: 45,
         width: 370,
         height: 285,
         shadowColor: "#000",
@@ -845,7 +858,7 @@ export const RVStyles = StyleSheet.create({
         borderRadius: 8,
         width: 310,
         paddingLeft: 3,
-        paddingVertical: 5,
+        paddingVertical: 2,
         borderBottomWidth: 1,
         height: 150,
         fontSize: 16,
@@ -872,8 +885,8 @@ export const RVStyles = StyleSheet.create({
     feedBackSubmitButton: {
         borderRadius: 25,
         paddingHorizontal: 20,
-        paddingVertical: 15,
-        marginVertical: 15,
+        paddingVertical: 12,
+        marginVertical: 6,
         width: 120,
         elevation: 3,
         backgroundColor: '#fec72e'

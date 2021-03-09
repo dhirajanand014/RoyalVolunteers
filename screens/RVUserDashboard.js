@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { RVStyles } from '../styles/Styles';
 import { fetchUserDashboardDetails, getSavedNotificationRequests, updateSetNotifications } from '../helper/Helper';
 import { miscMessage, numericConstants, stringConstants } from '../constants/Constants';
@@ -51,10 +51,12 @@ export const RVUserDashboard = () => {
     }, []);
 
     return (
-        <View style={RVStyles.headerContainer}>
-            <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
-                control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
-            <NotificationReceivedModal />
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={RVStyles.headerContainer}>
+                <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
+                    control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
+                <NotificationReceivedModal />
+            </View>
+        </TouchableWithoutFeedback>
     )
 }

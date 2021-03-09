@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text, View, BackHandler, Animated } from 'react-native';
+import { Text, View, BackHandler, Animated, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { SignUpContext } from '../App';
@@ -105,28 +105,30 @@ export const SignUpConfirmSecret = () => {
     };
 
     return (
-        <Animated.View style={RVStyles.headerContainer}>
-            <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
-            <View style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>{screenTitle.ENTER_PASSWORD}</Text>
-                <Animated.ScrollView>
-                    <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
-                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.SECRET} textContentType={keyBoardTypeConst.NEW_PASSWORD} maxLength={numericConstants.FOUR}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVLoginSecretIcon />} formState={formState}
-                        autofocus={true} isSecureTextEntry={true} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, confirmSecretRef)} />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <Animated.View style={RVStyles.headerContainer}>
+                <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
+                <View style={RVStyles.signUpFooter}>
+                    <Text style={RVStyles.signUpTextHeader}>{screenTitle.ENTER_PASSWORD}</Text>
+                    <Animated.ScrollView>
+                        <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
+                            defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.SECRET} textContentType={keyBoardTypeConst.NEW_PASSWORD} maxLength={numericConstants.FOUR}
+                            keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVLoginSecretIcon />} formState={formState}
+                            autofocus={true} isSecureTextEntry={true} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, confirmSecretRef)} />
 
-                    <FormInput inputTextName={fieldTextName.CONFIRM_PASSWORD} inputName={fieldControllerName.CONFIRM_SECRET} control={control} rules={formRequiredRules.passwordFormRule}
-                        defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.CONFIRM_PASSWORD} textContentType={keyBoardTypeConst.NEW_PASSWORD} isSecureTextEntry={true}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVLoginSecretIcon />} formState={formState} maxLength={numericConstants.THOUSAND}
-                        refCallback={refCallback} maxLength={numericConstants.FOUR} />
-                </Animated.ScrollView>
-                <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpConfirmSecretGradient} onPress={handleSubmit(onSubmit)} >
-                    <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
-                        <Text style={RVStyles.primaryActionButtonButtonText}>{isFrom == miscMessage.FORGOT_PASSWORD &&
-                            actionButtonTextConstants.RESET_PASSWORD || actionButtonTextConstants.PROCEED}</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            </View>
-        </Animated.View>
+                        <FormInput inputTextName={fieldTextName.CONFIRM_PASSWORD} inputName={fieldControllerName.CONFIRM_SECRET} control={control} rules={formRequiredRules.passwordFormRule}
+                            defaultValue={stringConstants.EMPTY} placeHolderText={placeHolderText.CONFIRM_PASSWORD} textContentType={keyBoardTypeConst.NEW_PASSWORD} isSecureTextEntry={true}
+                            keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVLoginSecretIcon />} formState={formState} maxLength={numericConstants.THOUSAND}
+                            refCallback={refCallback} maxLength={numericConstants.FOUR} />
+                    </Animated.ScrollView>
+                    <TouchableOpacity activeOpacity={.7} style={RVStyles.signUpConfirmSecretGradient} onPress={handleSubmit(onSubmit)} >
+                        <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
+                            <Text style={RVStyles.primaryActionButtonButtonText}>{isFrom == miscMessage.FORGOT_PASSWORD &&
+                                actionButtonTextConstants.RESET_PASSWORD || actionButtonTextConstants.PROCEED}</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
+            </Animated.View>
+        </TouchableWithoutFeedback>
     )
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Text, View } from 'react-native';
 import { RVStyles } from '../../styles/Styles';
 import { ImageFormTextInput } from './ImageFormTextInput';

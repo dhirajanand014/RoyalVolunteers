@@ -21,7 +21,6 @@ export const RVUserDashBoardHeaderView = props => {
     return (
         <SafeAreaView>
             <View style={[RVStyles.dashBoardMenuStyle, RVGenericStyles.alignSelfEnd]}>
-                {/* <RVMenuIcon /> */}
                 <View style={RVGenericStyles.rowFlexDirection}>
                     <TouchableOpacity style={RVGenericStyles.paddingHorizontal15} onPress={async () =>
                         navigateToNotificationRequests(notificationDetails, setNotificationDetails, props.navigation, setLoader)}>

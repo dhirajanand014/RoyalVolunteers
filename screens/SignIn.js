@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text, View } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
@@ -36,6 +36,7 @@ export const SignIn = () => {
     const refCallback = node => {
         secretRef.current = node;
     };
+
     const { error, setError, signUpDetails, setSignUpDetails, setLoader } = useContext(SignUpContext);
 
     const navigateUser = async (responseNavigation, data) => {
@@ -79,39 +80,41 @@ export const SignIn = () => {
     }
 
     return (
-        <View style={RVStyles.headerContainer}>
-            <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
-            <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>{screenTitle.SIGN_IN}</Text>
-                <View>
-                    <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
-                        defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />}
-                        textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState} autofocus={true} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, secretRef)} />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={RVStyles.headerContainer}>
+                <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
+                <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
+                    <Text style={RVStyles.signUpTextHeader}>{screenTitle.SIGN_IN}</Text>
+                    <View>
+                        <FormInput inputTextName={fieldTextName.MOBILE_NUMBER} inputName={fieldControllerName.PHONE_NUMBER} control={control} rules={formRequiredRules.mobileInputFormRule}
+                            defaultValue={stringConstants.EMPTY} isPhoneNumberEntry={true} maxLength={numericConstants.TEN} placeHolderText={placeHolderText.PHONE_NUMBER}
+                            keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} icon={<RVPhoneIcon stroke={colors.BLACK} />}
+                            textContentType={keyBoardTypeConst.TELPHONETYPE} formState={formState} autofocus={true} onSubmitEditing={() => focusOnInputIfFormInvalid(formState, secretRef)} />
 
-                    <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
-                        defaultValue={stringConstants.EMPTY} maxLength={numericConstants.FOUR} placeHolderText={placeHolderText.SECRET} refCallback={refCallback}
-                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
-                    <View style={RVStyles.signInLinks}>
-                        <View style={RVStyles.signInForgotPassword}>
-                            <TouchableOpacity onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>
-                                <Text style={RVStyles.signInForgotPasswordText}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
-                            </TouchableOpacity>
+                        <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
+                            defaultValue={stringConstants.EMPTY} maxLength={numericConstants.FOUR} placeHolderText={placeHolderText.SECRET} refCallback={refCallback}
+                            keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
+                        <View style={RVStyles.signInLinks}>
+                            <View style={RVStyles.signInForgotPassword}>
+                                <TouchableOpacity onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>
+                                    <Text style={RVStyles.signInForgotPasswordText}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </View>
-                <View style={RVStyles.signInSecondaryButtonView}>
-                    <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(submitDetails)} >
-                        <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>
-                            <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.SIGN_IN}</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={.2} style={RVStyles.secondaryActionButtonStyle} onPress={() => navigation.navigate(routeConsts.SIGN_UP)} >
-                        <Text style={RVStyles.secondaryActionButtonText}>{actionButtonTextConstants.REGISTER}</Text>
-                    </TouchableOpacity>
-                </View>
-            </Animatable.View>
-            <ErrorModal error={error} setError={setError} />
-        </View>
+                    <View style={RVStyles.signInSecondaryButtonView}>
+                        <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(submitDetails)} >
+                            <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>
+                                <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.SIGN_IN}</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={.2} style={RVStyles.secondaryActionButtonStyle} onPress={() => navigation.navigate(routeConsts.SIGN_UP)} >
+                            <Text style={RVStyles.secondaryActionButtonText}>{actionButtonTextConstants.REGISTER}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Animatable.View>
+                <ErrorModal error={error} setError={setError} />
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
