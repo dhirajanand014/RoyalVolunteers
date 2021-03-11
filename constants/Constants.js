@@ -61,7 +61,6 @@ export const actionButtonTextConstants = {
     SIGN_UP: `Sign up`,
     REGISTER: `Register`,
     SUBMIT: `Submit`,
-    VIEW_REQUESTS: `View requests`,
     CANCEL: `Cancel`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
@@ -442,6 +441,17 @@ export const errorModalTitleConstants = {
     EXPIRED: `expired`,
     ENABLE_NOTIFICATIONS: `Enable Notifications`,
     NOT_AVAILABLE: `Not Available`
+}
+
+export const notificationConsts = {
+    CHANNEL_ID: `com.royalvolunteer`,
+    HIGH_PRIORITY: `high`,
+    CALL_NOW_ACTION: `Call now`,
+    VIEW_REQUESTS_ACTION: `View requests`,
+    SMALL_ICON: `ic_stat_name`,
+    GROUP: `RVNotificationGroup`,
+    CREATE_CHANNEL_CREATE: `createChannel returned`,
+    NOTIFICATION_CANCELLED: `Notification Cancelled`
 }
 
 export const errorModalMessageConstants = {

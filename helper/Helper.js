@@ -6,13 +6,15 @@ import {
     RESEND_OTP_TIME_LIMIT, stringConstants, urlConstants, width,
     errorModalMessageConstants, isIOS, routeConsts, bloodGroupsList,
     tokenRequestResponseConst, numericConstants, successFulMessages,
-    errorModalTitleConstants, neededOptions, actionButtonTextConstants, isAndroid, AUTO_SUBMIT_OTP_TIME_LIMIT
+    errorModalTitleConstants, neededOptions, actionButtonTextConstants,
+    isAndroid, AUTO_SUBMIT_OTP_TIME_LIMIT, countryCodesConstants,
+    notificationConsts, keyBoardTypeConst
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
 import { Alert, Linking } from "react-native";
-import base64 from 'react-native-base64'
 import RNOtpVerify from 'react-native-otp-verify';
+import PushNotification from "react-native-push-notification";
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -952,5 +954,80 @@ export const sendNotification = async (phoneNumber, requestForm) => {
     } else {
         const bloodGroupLabel = bloodGroupsList.find(bloodGroup => bloodGroup.value == requestForm.blood_group).label;
         showSnackBar(`No user available with blood group ${bloodGroupLabel} in ${requestForm.pincode} area.`, false, true);
+    }
+}
+
+export const getLocalNotificationDetails = (remoteMessage) => {
+    return {
+        channelId: notificationConsts.CHANNEL_ID,
+        autoCancel: true,
+        message: remoteMessage.notification.body,
+        title: remoteMessage.notification.title,
+        data: remoteMessage.data,
+        priority: notificationConsts.HIGH_PRIORITY,
+        color: colors.RED,
+        group: notificationConsts.GROUP,
+        actions: [notificationConsts.CALL_NOW_ACTION, notificationConsts.VIEW_REQUESTS_ACTION],
+        smallIcon: notificationConsts.SMALL_ICON
+    }
+}
+
+export const getNotificationConfiguration = (navigation) => {
+    return {
+        onRegister: () => {
+            PushNotification.createChannel(getNotificationChannelCreation(),
+                (created) => console.log(`${notificationConsts.CREATE_CHANNEL_CREATE}${stringConstants.SPACE}'${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+            );
+        }, onNotification: async (notification) => {
+            (async () => {
+                await notificationAction(notification, navigation);
+            })();
+        }, onAction: (notification) => {
+            (async () => {
+                await notificationAction(notification, navigation);
+            })();
+        },
+        onRegistrationError: (err) => {
+            console.error(err.message, err);
+        },
+        permissions: {
+            alert: true,
+            badge: true,
+            sound: true,
+        },
+        popInitialNotification: true,
+        requestPermissions: true,
+    }
+}
+
+export const getNotificationChannelCreation = () => {
+    return {
+        channelId: notificationConsts.CHANNEL_ID,
+        channelName: notificationConsts.CHANNEL_ID,
+        soundName: keyBoardTypeConst.DEFAULT,
+        importance: numericConstants.FOUR,
+        vibrate: true,
+    }
+}
+
+export const notificationAction = async (notification, navigation) => {
+    if (notification.foreground && notification.userInteraction) {
+        if (notification.action) {
+            switch (notification.action) {
+                case notificationConsts.CALL_NOW_ACTION:
+                    Linking.openURL(`tel:${countryCodesConstants.INDIA}${notification.data.phone_number}`);
+                    break;
+                case notificationConsts.VIEW_REQUESTS_ACTION:
+                default: navigation.current?.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION);
+                    PushNotification.cancelAllLocalNotifications()
+                    PushNotification.removeAllDeliveredNotifications();
+                    break;
+            }
+        } else {
+            navigation.current?.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION);
+            PushNotification.cancelAllLocalNotifications()
+            PushNotification.removeAllDeliveredNotifications();
+        }
+        await updateNotificationsStatus();
     }
 }

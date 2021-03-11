@@ -4,7 +4,6 @@ import { RVGenericStyles, RVStyles } from '../styles/Styles';
 import { RVBloodRequestsFlatList } from '../components/view/RVBloodRequestsFlatList';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { screenTitle, stringConstants } from '../constants/Constants';
-import { useRoute } from '@react-navigation/native';
 import { getSavedNotificationRequests, updateNotificationsStatus } from '../helper/Helper';
 
 export const RVBloodRequestsNotifications = props => {

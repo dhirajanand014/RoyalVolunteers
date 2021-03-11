@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from './screens/Home';
@@ -24,9 +24,7 @@ import RVErrorBoundary from './components/view/RVErrorBounday';
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
 
-export default function App() {
-
-  const navigationRef = useRef(null);
+export default function App({ navigationRef }) {
 
   const [signUpDetails, setSignUpDetails] = useState({
     phoneNumber: stringConstants.EMPTY,
