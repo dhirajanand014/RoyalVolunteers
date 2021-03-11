@@ -2,17 +2,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { RVStyles } from '../styles/Styles';
-import {
-    fetchUserDashboardDetails, getLocalNotificationDetails, getSavedNotificationRequests,
-    updateSetNotifications
-} from '../helper/Helper';
+import { fetchUserDashboardDetails, getSavedNotificationRequests, updateSetNotifications } from '../helper/Helper';
 import { miscMessage, numericConstants, stringConstants } from '../constants/Constants';
 import { useForm } from 'react-hook-form';
 import messaging from '@react-native-firebase/messaging';
 import { SignUpContext } from '../App';
 import { NotificationReceivedModal } from '../components/modals/NotificationReceivedModal';
 import { RVDashBoardDetails } from '../components/view/RVDashBoardDetails';
-import PushNotification from "react-native-push-notification";
+import { showNotification } from '../notification/notification';
 
 export const RVUserDashboard = () => {
 
@@ -51,8 +48,8 @@ export const RVUserDashboard = () => {
             await updateSetNotifications(remoteMessage);
             const notificationValues = await getSavedNotificationRequests();
             notificationDetails.requestCount = notificationValues && notificationValues.length;
-            PushNotification.localNotification(getLocalNotificationDetails(remoteMessage));
-            setNotificationDetails({ ...notificationDetails, message: remoteMessage, isNewNotification: true })
+            showNotification(remoteMessage);
+            setNotificationDetails({ ...notificationDetails, message: remoteMessage, isNewNotification: true });
         });
     }, []);
 

@@ -1,27 +1,25 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { Picker } from '@react-native-picker/picker'
+import DropDownPicker from 'react-native-dropdown-picker';
+import { miscMessage } from '../../constants/Constants';
 import { onChangeByValueType } from '../../helper/Helper';
-import { colors, RVGenericStyles, RVStyles } from '../../styles/Styles';
-import { isIOS, numericConstants } from '../../constants/Constants';
+import { RVGenericStyles, RVStyles } from '../../styles/Styles';
+import { RVArrowDownIcon } from '../icons/RVArrowDownIcon';
+import { RVArrowUpIcon } from '../icons/RVArrowUpIcon';
 
 export const InputPicker = props => {
     return (
         <Controller name={props.inputName} control={props.control} defaultValue={props.defaultValue} rules={props.rules}
             render={inputProps => {
                 return (
-                    <Picker selectedValue={inputProps.value} style={RVStyles.bloodGroupPickerStyle}
-                        itemStyle={[isIOS && RVStyles.pickerItemStyleIOS]}
-                        onValueChange={(value) => onChangeByValueType(inputProps, value, props)}>
-                        {
-                            props.list.map((item, index) => {
-                                return (
-                                    <Picker.Item key={index} color={item.value == numericConstants.ZERO && colors.LIGHT_GREY || colors.DARK_RED}
-                                        label={item.label} value={item.value} />
-                                )
-                            })
-                        }
-                    </Picker>
+                    <DropDownPicker items={props.list} containerStyle={RVStyles.bloodGroupPickerStyle} globalTextStyle={RVGenericStyles.ft16}
+                        selectedLabelStyle={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal, RVGenericStyles.selectedDropDownColor]}
+                        dropDownStyle={RVGenericStyles.dropDownBackGround} itemStyle={RVGenericStyles.justifyItemsStart} customArrowUp={(size, color) =>
+                            <RVArrowUpIcon width={size} height={size} color={color} />} customArrowDown={(size, color) =>
+                                <RVArrowDownIcon width={size} height={size} color={color} />}
+                        onChangeItem={item => onChangeByValueType(inputProps, item.value, props)} defaultValue={props.dropDownDefaultValue}
+                        placeholder={miscMessage.SELECT_A_BLOOD_GROUP} placeholderStyle={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal, RVGenericStyles.selectedDropDownColor]}
+                    />
                 )
             }} />
     )

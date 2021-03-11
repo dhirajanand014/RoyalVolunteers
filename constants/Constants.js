@@ -211,34 +211,64 @@ export const countryCodesConstants = {
 export const bloodGroupsList = [
     {
         label: stringConstants.EMPTY,
-        value: -1
+        value: -1,
+        untouchable: true
     }, {
         label: `Select a blood group`,
-        value: 0
+        value: 0,
+        untouchable: true,
+        textStyle: {
+            fontWeight: `bold`,
+            fontFamily: isAndroid && `normal` || `System`,
+        }
     }, {
         label: `A−`,
-        value: 1
+        value: 1,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `A+`,
-        value: 2
+        value: 2,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `B−`,
-        value: 3
+        value: 3,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `B+`,
-        value: 4
+        value: 4,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `AB−`,
-        value: 5
+        value: 5,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `AB+`,
-        value: 6
+        value: 6,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `O-`,
-        value: 7
+        value: 7,
+        textStyle: {
+            color: 'red'
+        }
     }, {
         label: `O+`,
-        value: 8
+        value: 8,
+        textStyle: {
+            color: 'red'
+        }
     }
 ];
 
@@ -339,7 +369,8 @@ export const placeHolderText = {
     SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`,
     HOSPITAL_NAME: `Enter Hospital name`,
     FEEDBACK: `Enter Feedback`,
-    TESTIMONIAL: `Enter Testimonials`
+    TESTIMONIAL: `Enter Testimonials`,
+    SELECT_A_BLOOD_GROUP: `Select a blood group`
 }
 
 export const keyBoardTypeConst = {
@@ -413,6 +444,7 @@ export const miscMessage = {
     EDIT: `Edit`,
     TAIL: `tail`,
     TIME_FORMAT: `hh:mm A`,
+    NOTIFICATION: `notification`,
     RELOAD_APPLICATION: `Reload Application`
 }
 
@@ -451,7 +483,10 @@ export const notificationConsts = {
     SMALL_ICON: `ic_stat_name`,
     GROUP: `RVNotificationGroup`,
     CREATE_CHANNEL_CREATE: `createChannel returned`,
-    NOTIFICATION_CANCELLED: `Notification Cancelled`
+    NOTIFICATION_CANCELLED: `Notification Cancelled`,
+    USER_ACTION_ID: `userAction`,
+    CALL_NOW_ID: `callNow`,
+    VIEW_REQUESTS_ID: `viewRequests`
 }
 
 export const errorModalMessageConstants = {

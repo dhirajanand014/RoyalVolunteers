@@ -14,7 +14,7 @@ import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
 import { Alert, Linking } from "react-native";
 import RNOtpVerify from 'react-native-otp-verify';
-import PushNotification from "react-native-push-notification";
+import { handleCancelNotification, createChannel } from '../notification/notification';
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -37,7 +37,7 @@ export const saveBloodRequest = async (phoneNumber, requestForm) => {
         const saveResponse = await axios.post(urlConstants.SAVE_BLOOD_REQUEST, requestBloodJSON);
         return saveResponse && saveResponse.data === miscMessage.SUCCESS;
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
     return false
 }
@@ -144,7 +144,7 @@ const loginUser = async (phoneNumber, secret) => {
                 return response;
         }
     } catch (error) {
-        console.log(error);
+        console.loerrorg(error);
     }
     return false;
 }
@@ -165,7 +165,7 @@ export const handleUserLogin = async (data, messaging) => {
             }
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
     return false;
 };
@@ -224,7 +224,7 @@ export const handleUserSignUpRegistration = async (phoneNumber, data, isFromBloo
         }
         return signUpPayloadString && await saveUserDetails(signUpPayloadString, isFrom) || false;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
     return false;
 }
@@ -472,7 +472,7 @@ const datePickerConvert = (event, date) => {
             return isIOS && date || moment(event.nativeEvent.timestamp).toDate();
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
     return false;
@@ -957,11 +957,12 @@ export const sendNotification = async (phoneNumber, requestForm) => {
     }
 }
 
-export const getLocalNotificationDetails = (remoteMessage) => {
+export const getAndroidLocalNotificationDetails = (remoteMessage) => {
     return {
         channelId: notificationConsts.CHANNEL_ID,
         autoCancel: true,
         message: remoteMessage.notification.body,
+        bigText: remoteMessage.notification.body,
         title: remoteMessage.notification.title,
         data: remoteMessage.data,
         priority: notificationConsts.HIGH_PRIORITY,
@@ -972,12 +973,20 @@ export const getLocalNotificationDetails = (remoteMessage) => {
     }
 }
 
+export const getIOSLocalNotificationDetails = (remoteMessage) => {
+    return {
+        id: remoteMessage.messageId,
+        title: remoteMessage.notification.title,
+        body: remoteMessage.notification.body,
+        userInfo: remoteMessage.data,
+        category: notificationConsts.USER_ACTION_ID
+    }
+}
+
 export const getNotificationConfiguration = (navigation) => {
     return {
         onRegister: () => {
-            PushNotification.createChannel(getNotificationChannelCreation(),
-                (created) => console.log(`${notificationConsts.CREATE_CHANNEL_CREATE}${stringConstants.SPACE}'${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-            );
+            createChannel();
         }, onNotification: async (notification) => {
             (async () => {
                 await notificationAction(notification, navigation);
@@ -1015,19 +1024,19 @@ export const notificationAction = async (notification, navigation) => {
         if (notification.action) {
             switch (notification.action) {
                 case notificationConsts.CALL_NOW_ACTION:
+                case notificationConsts.CALL_NOW_ID:
                     Linking.openURL(`tel:${countryCodesConstants.INDIA}${notification.data.phone_number}`);
+                    await updateNotificationsStatus();
                     break;
                 case notificationConsts.VIEW_REQUESTS_ACTION:
+                case notificationConsts.VIEW_REQUESTS_ID:
                 default: navigation.current?.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION);
-                    PushNotification.cancelAllLocalNotifications()
-                    PushNotification.removeAllDeliveredNotifications();
+                    handleCancelNotification();
                     break;
             }
         } else {
             navigation.current?.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION);
-            PushNotification.cancelAllLocalNotifications()
-            PushNotification.removeAllDeliveredNotifications();
+            handleCancelNotification();
         }
-        await updateNotificationsStatus();
     }
 }

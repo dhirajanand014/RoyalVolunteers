@@ -53,8 +53,8 @@ export const RVBloodRequest = () => {
                 <Text style={RVStyles.signUpTextHeader}>{screenTitle.REQUEST_FOR_BLOOD}</Text>
                 <View>
                     <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
-                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} requestForm={requestForm}
-                        setRequestForm={setRequestForm} isFromBloodRequestForm={true} />
+                        defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)}
+                        requestForm={requestForm} setRequestForm={setRequestForm} isFromBloodRequestForm={true} dropDownDefaultValue={bloodGroupsList.find(bloodGroup => bloodGroup.value == numericConstants.ZERO).value} />
 
                     <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule} textContentType={keyBoardTypeConst.PINCODE}
                         defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} requestForm={requestForm} setRequestForm={setRequestForm}

@@ -201,8 +201,17 @@ export const RVGenericStyles = StyleSheet.create({
     alignItemsStart: {
         alignItems: 'flex-start'
     },
+    justifyItemsStart: {
+        justifyContent: 'flex-start'
+    },
     colorGreen: {
         color: 'green'
+    },
+    dropDownBackGround: {
+        backgroundColor: '#fafafa'
+    },
+    selectedDropDownColor: {
+        color: '#39739d',
     },
     ml_8: {
         marginLeft: 8
@@ -349,12 +358,6 @@ export const RVStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'center'
-    },
-    pickerItemStyleIOS: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 22,
-        fontFamily: 'Times New Roman'
     },
     registrationUserInputPickerText: {
         color: 'black',
@@ -660,11 +663,9 @@ export const RVStyles = StyleSheet.create({
         marginTop: 16
     },
     bloodGroupPickerStyle: {
-        borderWidth: isAndroid && 1 || 0,
         justifyContent: 'center',
-        width: 228,
-        marginVertical: 2,
-        height: 25
+        width: width / 2,
+        height: 35
     },
     availabilityStatusStyle: {
         width: 100,
@@ -1063,6 +1064,10 @@ export const errorBoundaryStyles = StyleSheet.create({
         fontFamily: 'wallpiper_roman_font',
         textAlign: "center",
         fontSize: 20
+    },
+    bloodGroupDropDownStyle: {
+        backgroundColor: '#fafafa',
+        elevation: 4
     }
 })
 
