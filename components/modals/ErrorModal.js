@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Text, TouchableOpacity, View, Image } from "react-native";
 import { stringConstants, actionButtonTextConstants } from "../../constants/Constants";
 import { setErrorModal } from "../../helper/Helper";
-import { RVStyles } from "../../styles/Styles";
+import { RVGenericStyles, RVStyles } from "../../styles/Styles";
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from "react-native-linear-gradient";
 

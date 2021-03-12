@@ -11,6 +11,7 @@ import * as Animatable from 'react-native-animatable';
 import { RVUserDashBoardHeaderView } from './RVUserDashBoardHeaderView';
 import moment from 'moment';
 import { TestimonialModal } from '../modals/TestimonalModal';
+import { RateUsModal } from '../modals/RateUsModal';
 
 export const RVDashBoardDetails = (props) => {
     const { userDashboard, handleSubmit, setUserDashboard, control, formState, setLoader, navigation, phoneNumber } = props;
@@ -19,7 +20,7 @@ export const RVDashBoardDetails = (props) => {
 
     return (
         <React.Fragment>
-            <RVUserDashBoardHeaderView {...userDashboard} navigation={navigation} />
+            <RVUserDashBoardHeaderView userDashboard={userDashboard} setUserDashboard={setUserDashboard} navigation={navigation} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
                 <RVUserDashBoardFooterTopView name={userDashboard.name} blood_group={userDashboard.blood_group} />
                 <View style={RVGenericStyles.justifyContentCenter}>
@@ -36,6 +37,7 @@ export const RVDashBoardDetails = (props) => {
                 <RVUserDashBoardFooterButtons navigation={navigation} userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
                 <FeedbackModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
                 <TestimonialModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} phoneNumber={phoneNumber} />
+                <RateUsModal userDashboard={userDashboard} setUserDashboard={setUserDashboard} />
             </Animatable.View>
         </React.Fragment>
     )

@@ -8,7 +8,7 @@ import {
     tokenRequestResponseConst, numericConstants, successFulMessages,
     errorModalTitleConstants, neededOptions, actionButtonTextConstants,
     isAndroid, AUTO_SUBMIT_OTP_TIME_LIMIT, countryCodesConstants,
-    notificationConsts, keyBoardTypeConst
+    notificationConsts, keyBoardTypeConst, GOOGLE_PLAY_PACKAGE_NAME, APPLE_STORE_ID
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
@@ -1005,7 +1005,7 @@ export const getNotificationConfiguration = (navigation) => {
             sound: true,
         },
         popInitialNotification: true,
-        requestPermissions: true,
+        requestPermissions: !isIOS,
     }
 }
 
@@ -1038,5 +1038,21 @@ export const notificationAction = async (notification, navigation) => {
             navigation.current?.navigate(routeConsts.BLOOD_REQUEST_NOTIFICATION);
             handleCancelNotification();
         }
+    }
+}
+
+export const openAppLinkInStore = () => {
+    try {
+        const url = isAndroid && `market://details?id=${GOOGLE_PLAY_PACKAGE_NAME}` ||
+            `itms://itunes.apple.com/in/app/apple-store/${APPLE_STORE_ID}`
+        if (Linking.canOpenURL(url))
+            Linking.openURL(url)
+        else
+            alert(errorModalMessageConstants.CANNOT_OPEN_STORE);
+    } catch (error) {
+        console.error(error);
+        const errorMsg = isAndroid && errorModalMessageConstants.ANDROID_URL_OPEN_ERROR ||
+            errorModalMessageConstants.IOS_URL_OPEN_ERROR;
+        alert(errorMsg);
     }
 }

@@ -63,6 +63,9 @@ export const RVGenericStyles = StyleSheet.create({
     width120: {
         width: 120
     },
+    width130: {
+        width: 130
+    },
     ft16: {
         fontSize: 16
     },
@@ -162,6 +165,12 @@ export const RVGenericStyles = StyleSheet.create({
     paddingHorizontal15: {
         paddingHorizontal: 15
     },
+    paddingHorizontal20: {
+        paddingHorizontal: 20
+    },
+    paddingVertical10: {
+        paddingVertical: 10
+    },
     textLeftAlign: {
         textAlign: 'left'
     },
@@ -208,7 +217,8 @@ export const RVGenericStyles = StyleSheet.create({
         color: 'green'
     },
     dropDownBackGround: {
-        backgroundColor: '#fafafa'
+        backgroundColor: '#fafafa',
+        zIndex: 10
     },
     selectedDropDownColor: {
         color: '#39739d',
@@ -233,6 +243,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     width1pt08: {
         width: width / 1.08
+    },
+    zIndex10: {
+        zIndex: 10
     }
 });
 
@@ -578,6 +591,23 @@ export const RVStyles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5
     },
+    rateUsModalViewStyle: {
+        margin: 200,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 25,
+        width: 300,
+        height: 255,
+        alignItems: "center",
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
     modalTitleTextView: {
         alignItems: 'center'
     },
@@ -587,6 +617,12 @@ export const RVStyles = StyleSheet.create({
     },
     modalTitleDivider: {
         width: 230,
+        height: 1,
+        backgroundColor: "lightgray"
+    },
+    menuOptionsDivider: {
+        width: 125,
+        marginLeft: 1,
         height: 1,
         backgroundColor: "lightgray"
     },

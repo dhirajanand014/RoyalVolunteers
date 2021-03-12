@@ -10,6 +10,9 @@ export const RESEND_OTP_TIME_LIMIT = 20; // 30 secs
 export const AUTO_SUBMIT_OTP_TIME_LIMIT = 1;
 export const OTP_INPUTS = 6;
 
+export const GOOGLE_PLAY_PACKAGE_NAME = `com.royalvolunteers`;
+export const APPLE_STORE_ID = `id1556278478`;
+
 export const stringConstants = {
     EMPTY: ``,
     NODE: {},
@@ -61,7 +64,9 @@ export const actionButtonTextConstants = {
     SIGN_UP: `Sign up`,
     REGISTER: `Register`,
     SUBMIT: `Submit`,
+    SURE: `Sure`,
     CANCEL: `Cancel`,
+    NOT_NOW: `Not now`,
     PROCEED: `Proceed`,
     VERIFY: `Verify`,
     FORGOT_PASSWORD: `Forgot Password`,
@@ -408,6 +413,7 @@ export const miscMessage = {
     YES: `Y`,
     CALL: `Call`,
     LOADING: `Loading`,
+    RATE_US: `Rate Us`,
     LOGOUT: `Logout`,
     PH_QUERY_PARAM: `?ph=`,
     ON_CHANGE: `onChange`,
@@ -445,7 +451,7 @@ export const miscMessage = {
     TAIL: `tail`,
     TIME_FORMAT: `hh:mm A`,
     NOTIFICATION: `notification`,
-    RELOAD_APPLICATION: `Reload Application`
+    RELOAD_APPLICATION: `Reload Application`,
 }
 
 export const successFulMessages = {
@@ -463,7 +469,8 @@ export const successFulMessages = {
     SUCCESSFUL_LOG_OUT: `SuccessFully logged out`,
     DASHBOARD_DETAILS_UPDATE: `Updated your availability successfully!`,
     USER_LOGIN_TOKEN_STATUS: `User login token status`,
-    USER_ACCOUNT_STATUS: `User account status`
+    USER_ACCOUNT_STATUS: `User account status`,
+    RATE_US_MESSAGE: `Would you like to share your review with us?\n\nThis will help and motivate us a lot.`
 }
 
 export const errorModalTitleConstants = {
@@ -525,6 +532,9 @@ export const errorModalMessageConstants = {
     CANNOT_NAVIGATE_TO_NOTIFICATION_REQUEST: `Cannot navigate to notification requests`,
     ERROR_REQUESTING_TOKEN: `Error requsting for token`,
     CANNOT_VALIDATE_SAVED_TOKEN: `Cannot validate saved token`,
+    CANNOT_OPEN_STORE: `Cannot open Store`,
+    ANDROID_URL_OPEN_ERROR: `Please check for Google Play Store`,
+    IOS_URL_OPEN_ERROR: `Please check for the App Store`,
     ERROR_BOUNDARY: `The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.`,
 }
 

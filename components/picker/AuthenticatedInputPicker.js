@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { Text, View } from 'react-native';
-import { RVStyles } from '../../styles/Styles';
+import { isIOS } from '../../constants/Constants';
+import { RVGenericStyles, RVStyles } from '../../styles/Styles';
 import { InputPicker } from '../input/InputPicker';
 export const AuthenticatedInputPicker = props => {
     return (
         <React.Fragment>
-            <View style={RVStyles.registrationUserInputPickerView}>
+            <View style={[RVStyles.registrationUserInputPickerView, isIOS && RVGenericStyles.zIndex10]}>
                 <Text style={RVStyles.registrationUserInputPickerText}>{props.inputTextName}</Text>
                 <InputPicker {...props} />
             </View>

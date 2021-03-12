@@ -8,13 +8,15 @@ import { RVLoginUserIcon } from '../icons/RVLoginUserIcon';
 import * as Animatable from 'react-native-animatable';
 import { RVNotificationIcon } from '../icons/RVNotificationIcon';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Menu, { MenuItem } from 'react-native-material-menu';
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import { SignUpContext } from '../../App';
 import { logoutUser, navigateToNotificationRequests } from '../../helper/Helper';
 
 export const RVUserDashBoardHeaderView = props => {
 
     const menuRef = useRef();
+
+    const { userDashboard, setUserDashboard, navigation } = props;
 
     const { error, setError, setLoader, notificationDetails, setNotificationDetails } = useContext(SignUpContext);
 
@@ -23,21 +25,34 @@ export const RVUserDashBoardHeaderView = props => {
             <View style={[RVStyles.dashBoardMenuStyle, RVGenericStyles.alignSelfEnd]}>
                 <View style={RVGenericStyles.rowFlexDirection}>
                     <TouchableOpacity style={RVGenericStyles.paddingHorizontal15} onPress={async () =>
-                        navigateToNotificationRequests(notificationDetails, setNotificationDetails, props.navigation, setLoader)}>
+                        navigateToNotificationRequests(notificationDetails, setNotificationDetails, navigation, setLoader)}>
                         {
-                            (props.isNewNotification || notificationDetails.isNewNotification)
+                            (userDashboard.isNewNotification || notificationDetails.isNewNotification)
                             && <Animatable.View animation={`swing`} iterationCount={miscMessage.INFINITE}>
                                 <RVNotificationIcon />
                                 <View style={RVStyles.notificationBadge} />
                             </Animatable.View> || <RVNotificationIcon />
                         }
                     </TouchableOpacity>
-                    <Menu ref={menuRef} button={
-                        <TouchableOpacity onPress={() => menuRef.current?.show()}>
+                    <Menu>
+                        <MenuTrigger children={<TouchableOpacity hitSlop={RVStyles.neededRadioSlop}>
                             <RVLoginUserIcon />
-                        </TouchableOpacity>}>
-                        <MenuItem onPress={async () => await logoutUser(error, setError, setLoader, menuRef, props.navigation)}>
-                            {miscMessage.LOGOUT}</MenuItem>
+                        </TouchableOpacity>} />
+                        <MenuOptions customStyles={{ optionsContainer: RVGenericStyles.width130 }} >
+                            <MenuOption onSelect={() => setUserDashboard({ ...userDashboard, showRateUsModal: true })}
+                                customStyles={{ optionWrapper: [RVGenericStyles.paddingVertical10, RVGenericStyles.paddingHorizontal20] }}
+                                children={<TouchableOpacity>
+                                    <Text>{miscMessage.RATE_US}</Text>
+                                </TouchableOpacity>}>
+                            </MenuOption>
+                            <View style={RVStyles.menuOptionsDivider} />
+                            <MenuOption onSelect={async () => await logoutUser(error, setError, setLoader, menuRef, navigation)}
+                                customStyles={{ optionWrapper: [RVGenericStyles.paddingVertical10, RVGenericStyles.paddingHorizontal20] }}
+                                children={<TouchableOpacity>
+                                    <Text>{miscMessage.LOGOUT}</Text>
+                                </TouchableOpacity>}>
+                            </MenuOption>
+                        </MenuOptions>
                     </Menu>
                 </View>
             </View>
@@ -46,7 +61,7 @@ export const RVUserDashBoardHeaderView = props => {
                     width={numericConstants.ONE_HUNDRED} />
                 <View style={[RVGenericStyles.fill, RVGenericStyles.justifyContentCenter, RVGenericStyles.paddingHorizontal12]}>
                     <Text style={[RVGenericStyles.textRightAlign, RVGenericStyles.ft16, RVGenericStyles.colorBlack]}>{fieldTextName.REQUESTS}</Text>
-                    <TouchableOpacity onPress={() => navigateToNotificationRequests(notificationDetails, setNotificationDetails, props.navigation, setLoader)}>
+                    <TouchableOpacity onPress={() => navigateToNotificationRequests(notificationDetails, setNotificationDetails, navigation, setLoader)}>
                         <Text style={[RVGenericStyles.textRightAlign, RVGenericStyles.colorRed, RVGenericStyles.bold, RVGenericStyles.ft42, RVGenericStyles.marginHorizontal4]}>{notificationDetails.requestCount}</Text>
                     </TouchableOpacity>
                 </View>
@@ -55,11 +70,11 @@ export const RVUserDashBoardHeaderView = props => {
                 <View style={[RVStyles.dashBoardCountsView, RVGenericStyles.justifyContentSpaceBetween]}>
                     <View style={[RVGenericStyles.fill_half, RVGenericStyles.justifyContentCenter]}>
                         <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.ft20, RVGenericStyles.colorBlack]}>{fieldTextName.BENIFITERS}</Text>
-                        <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.colorBlack, RVGenericStyles.bold, RVGenericStyles.ft30, RVGenericStyles.marginHorizontal4]}>{props.benefiters_count}</Text>
+                        <Text style={[RVGenericStyles.textLeftAlign, RVGenericStyles.colorBlack, RVGenericStyles.bold, RVGenericStyles.ft30, RVGenericStyles.marginHorizontal4]}>{userDashboard.benefiters_count}</Text>
                     </View>
                     <View style={[RVGenericStyles.fill_half, RVGenericStyles.justifyContentCenter]}>
                         <Text style={[RVGenericStyles.textRightAlign, RVGenericStyles.ft20, RVGenericStyles.colorBlack]}>{fieldTextName.VOLUNTEERS}</Text>
-                        <Text style={[RVGenericStyles.textRightAlign, RVGenericStyles.colorGreen, RVGenericStyles.bold, RVGenericStyles.ft30, RVGenericStyles.marginHorizontal4]}>{props.donor_count}</Text>
+                        <Text style={[RVGenericStyles.textRightAlign, RVGenericStyles.colorGreen, RVGenericStyles.bold, RVGenericStyles.ft30, RVGenericStyles.marginHorizontal4]}>{userDashboard.donor_count}</Text>
                     </View>
                 </View>
             </Animatable.View>

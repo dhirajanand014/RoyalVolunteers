@@ -21,7 +21,7 @@ export const NotificationReceivedModal = () => {
     return (
         <Modal animationType={`slide`} transparent visible={notificationDetails.showNotificationModal}
             onRequestClose={() => setNotificationDetails({ ...notificationDetails, showNotificationModal: false })} >
-            <View style={RVStyles.modalContainer}>
+            <View style={RVStyles.alignItemsCenter}>
                 <LinearGradient style={RVStyles.modalViewStyle} colors={[colors.WHITE, colors.WHITE]}>
                     <View style={RVStyles.modalTitleTextView}>
                         <Text style={RVStyles.modalTitleTextStyle}>{notification && notification.title ||
@@ -64,4 +64,4 @@ export const NotificationReceivedModal = () => {
             </View>
         </Modal>
     );
-}; ``
+};

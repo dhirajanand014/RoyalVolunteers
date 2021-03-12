@@ -16,7 +16,7 @@ export const InputPicker = props => {
                         selectedLabelStyle={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal, RVGenericStyles.selectedDropDownColor]}
                         dropDownStyle={RVGenericStyles.dropDownBackGround} itemStyle={RVGenericStyles.justifyItemsStart} customArrowUp={(size, color) =>
                             <RVArrowUpIcon width={size} height={size} color={color} />} customArrowDown={(size, color) =>
-                                <RVArrowDownIcon width={size} height={size} color={color} />}
+                                <RVArrowDownIcon width={size} height={size} color={color} />} controller={props.bloodGroupControllerCallback}
                         onChangeItem={item => onChangeByValueType(inputProps, item.value, props)} defaultValue={props.dropDownDefaultValue}
                         placeholder={miscMessage.SELECT_A_BLOOD_GROUP} placeholderStyle={[RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal, RVGenericStyles.selectedDropDownColor]}
                     />

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { RVGenericStyles, RVStyles, colors } from '../styles/Styles';
 import { OTPInputText } from '../components/input/OTPInputText';
 import { OTPTextView } from '../components/texts/OTPTextView';
@@ -130,46 +130,48 @@ export const SignUpOTPVerification = props => {
     };
 
     return (
-        <View style={RVStyles.headerContainer}>
-            <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
-            <View style={RVStyles.signUpFooter}>
-                <Text style={RVStyles.signUpTextHeader}>{screenTitle.ENTER_OTP}</Text>
-                <View style={[RVStyles.otpFieldRows, RVGenericStyles.mt12]}>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={RVStyles.headerContainer}>
+                <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
+                <View style={RVStyles.signUpFooter}>
+                    <Text style={RVStyles.signUpTextHeader}>{screenTitle.ENTER_OTP}</Text>
+                    <View style={[RVStyles.otpFieldRows, RVGenericStyles.mt12]}>
+                        {
+                            [firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef,
+                                sixththTextInputRef].map((textInputRef, index) => (
+                                    <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12,
+                                    { borderColor: otpArray[index] && colors.GREEN || textInputRef?.current?.isFocused() && !otpArray[index] && colors.BLUE || colors.ORANGE }]} value={otpArray[index].toString()}
+                                        onKeyPress={onOtpKeyPress(index, otpArray, firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
+                                            fifthTextInputRef, setOtpArray, setError, clearErrors)} onChangeText={onOtpChange(index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
+                                                fifthTextInputRef, sixththTextInputRef)} textContentType={keyBoardTypeConst.ONETIMECODE} maxLength={numericConstants.ONE}
+                                        keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} refCallback={refCallback(textInputRef)}
+                                        key={index} autoFocus={index === numericConstants.ZERO && true || false} />
+                                ))}
+                    </View>
+                    <Text style={RVStyles.otpErrorMessageStyle}>{formState.errors.otpInput?.message}</Text>
                     {
-                        [firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef, fifthTextInputRef,
-                            sixththTextInputRef].map((textInputRef, index) => (
-                                <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12,
-                                { borderColor: otpArray[index] && colors.GREEN || textInputRef?.current?.isFocused() && !otpArray[index] && colors.BLUE || colors.ORANGE }]} value={otpArray[index].toString()}
-                                    onKeyPress={onOtpKeyPress(index, otpArray, firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-                                        fifthTextInputRef, setOtpArray, setError, clearErrors)} onChangeText={onOtpChange(index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-                                            fifthTextInputRef, sixththTextInputRef)} textContentType={keyBoardTypeConst.ONETIMECODE} maxLength={numericConstants.ONE}
-                                    keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} refCallback={refCallback(textInputRef)}
-                                    key={index} autoFocus={index === numericConstants.ZERO && true || false} />
-                            ))}
-                </View>
-                <Text style={RVStyles.otpErrorMessageStyle}>{formState.errors.otpInput?.message}</Text>
-                {
-                    resendButtonDisabledTime > numericConstants.ZERO && <OTPTimeText text={miscMessage.RESEND_OTP_IN} time={resendButtonDisabledTime} />
-                    || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={[RVGenericStyles.colorBlue, RVGenericStyles.bold,
-                    RVGenericStyles.fontFamilyNormal, RVGenericStyles.ft16]}
-                        onPress={async () => await onResendOtpButtonPress(firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
-                            attemptsRemaining, startResendOtpTimer, phoneNumber, isFrom, navigation, clearErrors, setLoader)} />
-                }
-                <View style={RVStyles.signUpPrimaryButtonView}>
-                    <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt36]}>
-                        {attemptsRemaining || numericConstants.ZERO} {miscMessage.ATTEMPT_REMAINING}
-                    </OTPTextView>
-                    {
-                        !autoSubmittingOtp &&
-                        <TouchableOpacity ref={verifyButtonRef} activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
-                            <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
-                                <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.VERIFY}</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                        resendButtonDisabledTime > numericConstants.ZERO && <OTPTimeText text={miscMessage.RESEND_OTP_IN} time={resendButtonDisabledTime} />
+                        || <OTPResendButton text={miscMessage.RESEND_OTP} buttonStyle={RVStyles.otpResendButton} textStyle={[RVGenericStyles.colorBlue, RVGenericStyles.bold,
+                        RVGenericStyles.fontFamilyNormal, RVGenericStyles.ft16]}
+                            onPress={async () => await onResendOtpButtonPress(firstTextInputRef, setOtpArray, setResendButtonDisabledTime, setAttemptsRemaining,
+                                attemptsRemaining, startResendOtpTimer, phoneNumber, isFrom, navigation, clearErrors, setLoader)} />
                     }
+                    <View style={RVStyles.signUpPrimaryButtonView}>
+                        <OTPTextView style={[RVGenericStyles.centerAlignedText, RVGenericStyles.mt36]}>
+                            {attemptsRemaining || numericConstants.ZERO} {miscMessage.ATTEMPT_REMAINING}
+                        </OTPTextView>
+                        {
+                            !autoSubmittingOtp &&
+                            <TouchableOpacity ref={verifyButtonRef} activeOpacity={.7} style={RVStyles.otpVerifyButton} onPress={handleSubmit(onSubmit)} >
+                                <LinearGradient style={RVStyles.signUpActionButtonGradient} colors={[colors.ORANGE, colors.RED]}>
+                                    <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.VERIFY}</Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                        }
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 

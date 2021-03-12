@@ -34,13 +34,14 @@ export const RVUserDashboard = () => {
         showTestimonialModal: false,
         editText: stringConstants.EMPTY,
         isPincodeEdit: false,
-        testimonialAdded: false
+        testimonialAdded: false,
+        showRateUsModal: false
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
     useEffect(() => {
         fetchUserDashboardDetails(userDashboard, setUserDashboard, phoneNumber, navigation, setLoader,
-            notificationDetails, setNotificationDetails);
+            notificationDetails, setNotificationDetails, messaging);
     }, []);
 
     useEffect(() => {
