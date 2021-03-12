@@ -12,7 +12,7 @@ import {
 } from "../constants/Constants";
 import { colors } from "../styles/Styles";
 import * as Keychain from 'react-native-keychain';
-import { Alert, Linking } from "react-native";
+import { Alert, Linking, Share } from "react-native";
 import RNOtpVerify from 'react-native-otp-verify';
 import { handleCancelNotification, createChannel } from '../notification/notification';
 
@@ -707,7 +707,7 @@ export const fetchSplashScreenRoute = async (username, signUpDetails) => {
         return route = {
             name: navigationRoute && navigationRoute || routeConsts.HOME, params: {
                 phoneNumber: phone
-            }
+            },
         }
     } else {
         console.warn(successFulMessages.USER_LOGIN_TOKEN_STATUS, signUpDetails.tokenValidation);
@@ -818,7 +818,6 @@ export const updateSetNotifications = async (notificationMessage) => {
             data.new = true;
             notificationValues.push(data);
         }
-
         if (notificationValues)
             await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues),
                 { service: miscMessage.NOTIFICATION_REQUESTS });
@@ -1054,5 +1053,42 @@ export const openAppLinkInStore = () => {
         const errorMsg = isAndroid && errorModalMessageConstants.ANDROID_URL_OPEN_ERROR ||
             errorModalMessageConstants.IOS_URL_OPEN_ERROR;
         alert(errorMsg);
+    }
+}
+
+export const shareApp = async () => {
+    try {
+        const url = isAndroid && `https://play.google.com/store/apps/details?id=${GOOGLE_PLAY_PACKAGE_NAME}` ||
+            `https://apps.apple.com/us/app/royal-volunteers/${APPLE_STORE_ID}`
+        const result = await Share.share({
+            title: `Royal Volunteers - Donate | Request for Blood`,
+            message: `Please install Royal Volunteers app and Donate | Request for Blood, AppLink : ${url}`,
+            url: url
+        }, {
+            dialogTitle: `Share Royal Volunteers`,
+            tintColor: colors.BLUE,
+            subject: `Royal Volunteers - Donate | Request for Blood`,
+            excludedActivityTypes: [`com.apple.reminders.sharingextension`]
+        });
+        if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+                showSnackBar(`Shared details successfully`, true);
+            }
+        } else if (result.action === Share.dismissedAction) {
+            showSnackBar(`You have cancelled sharing`, false);
+        }
+    } catch (error) {
+        console.error(error);
+        showSnackBar(`Could not share!`, false);
+    }
+}
+
+export const navigateToPreviousScreen = (isFromDashBoard, navigation) => {
+    if (navigation.canGoBack()) {
+        if (isFromDashBoard) {
+            navigation.navigate({ key: routeConsts.USER_DASHBOARD });
+        } else {
+            navigation.goBack();
+        }
     }
 }

@@ -42,6 +42,9 @@ export const RVGenericStyles = StyleSheet.create({
     mt36: {
         marginTop: 36,
     },
+    ht36: {
+        height: 36,
+    },
     mv30: {
         marginVertical: 30,
     },
@@ -159,6 +162,9 @@ export const RVGenericStyles = StyleSheet.create({
     padding10: {
         padding: 10
     },
+    paddingHorizontal5: {
+        paddingHorizontal: 5
+    },
     paddingHorizontal10: {
         paddingHorizontal: 10
     },
@@ -167,6 +173,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     paddingHorizontal20: {
         paddingHorizontal: 20
+    },
+    paddingVertical2: {
+        paddingVertical: 2
     },
     paddingVertical10: {
         paddingVertical: 10
@@ -1058,6 +1067,24 @@ export const RVStyles = StyleSheet.create({
         paddingHorizontal: 80,
         paddingVertical: 10,
         borderRadius: 20
+    },
+    headerBackButton: {
+        position: 'absolute',
+        top: 18,
+        left: 18,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 40,
+        height: 40,
+        backgroundColor: '#fcc200',
+        borderRadius: 50,
+        elevation: 3
+    },
+    headerRequests: {
+        position: 'absolute',
+        right: 0
     }
 });
 
@@ -1079,14 +1106,12 @@ export const errorBoundaryStyles = StyleSheet.create({
     textMessage1Style: {
         fontSize: 32,
         textAlign: 'center',
-        fontFamily: 'wallpiper_roman_font',
     },
     textMessage2Style: {
         marginVertical: 10,
         lineHeight: 23,
         textAlign: 'center',
         fontWeight: '500',
-        fontFamily: 'wallpiper_roman_font'
     },
     resetButton: {
         borderRadius: 25,
@@ -1097,7 +1122,6 @@ export const errorBoundaryStyles = StyleSheet.create({
     },
     redirectButtonText: {
         color: "white",
-        fontFamily: 'wallpiper_roman_font',
         textAlign: "center",
         fontSize: 20
     },

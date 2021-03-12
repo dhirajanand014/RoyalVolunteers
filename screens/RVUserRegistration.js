@@ -61,9 +61,7 @@ export const RVUserRegistration = () => {
         if (isUserRegistrationComplete) {
             const status = await getRegistrationStatus();
             status && saveRegistrationStatus(phoneNumber, miscMessage.REGISTERED);
-            navigation.navigate(routeConsts.USER_DASHBOARD, {
-                phoneNumber: phoneNumber
-            });
+            navigation.navigate(routeConsts.USER_DASHBOARD, { phoneNumber: phoneNumber });
         }
         setLoader(false);
     }
