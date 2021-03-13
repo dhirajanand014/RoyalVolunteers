@@ -370,15 +370,17 @@ export const onOtpKeyPress = (index, otpArray, firstTextInputRef, secondTextInpu
                 setOtpArray(otpArrayCopy);
             }
         }
-        const otpString = otpArray.reduce((result, item) => { return `${result}${item}` }, stringConstants.EMPTY);
-        identifyOtpError(otpString, otpArray, setError, clearErrors);
+        if (isAndroid) {
+            const otpString = otpArray.reduce((result, item) => { return `${result}${item}` }, stringConstants.EMPTY);
+            identifyOtpError(otpString, otpArray, setError, clearErrors);
+        }
     };
 };
 
 // this event won't be fired when text changes from '' to '' i.e. backspace is pressed
 // using onOtpKeyPress for this purpose
 export const onOtpChange = (index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-    fifthTextInputRef, sixththTextInputRef) => {
+    fifthTextInputRef, sixththTextInputRef, setError, clearErrors) => {
     return value => {
         if (isNaN(Number(value))) {
             // do nothing when a non digit is pressed
@@ -387,6 +389,11 @@ export const onOtpChange = (index, otpArray, setOtpArray, secondTextInputRef, th
         const otpArrayCopy = otpArray.concat();
         otpArrayCopy[index] = value;
         setOtpArray(otpArrayCopy);
+
+        if (isIOS) {
+            const otpString = otpArrayCopy.reduce((result, item) => { return `${result}${item}` }, stringConstants.EMPTY);
+            identifyOtpError(otpString, otpArrayCopy, setError, clearErrors);
+        }
 
         // auto focus to next InputText if value is not blank
         if (value !== stringConstants.EMPTY) {
@@ -1044,15 +1051,18 @@ export const openAppLinkInStore = () => {
     try {
         const url = isAndroid && `market://details?id=${GOOGLE_PLAY_PACKAGE_NAME}` ||
             `itms://itunes.apple.com/in/app/apple-store/${APPLE_STORE_ID}`
-        if (Linking.canOpenURL(url))
-            Linking.openURL(url)
-        else
-            alert(errorModalMessageConstants.CANNOT_OPEN_STORE);
+        Linking.canOpenURL(url) && Linking.openURL(url) ||
+            Alert.alert(errorModalTitleConstants.ERROR,
+                errorModalMessageConstants.CANNOT_OPEN_STORE,
+                [{ text: actionButtonTextConstants.OK }], { cancelable: false },
+            );
     } catch (error) {
         console.error(error);
         const errorMsg = isAndroid && errorModalMessageConstants.ANDROID_URL_OPEN_ERROR ||
             errorModalMessageConstants.IOS_URL_OPEN_ERROR;
-        alert(errorMsg);
+        Alert.alert(errorModalTitleConstants.ERROR, errorMsg,
+            [{ text: actionButtonTextConstants.OK }], { cancelable: false },
+        );
     }
 }
 
@@ -1068,18 +1078,18 @@ export const shareApp = async () => {
             dialogTitle: `Share Royal Volunteers`,
             tintColor: colors.BLUE,
             subject: `Royal Volunteers - Donate | Request for Blood`,
-            excludedActivityTypes: [`com.apple.reminders.sharingextension`]
+            excludedActivityTypes: [miscMessage.EXCLUDE_TYPE]
         });
         if (result.action === Share.sharedAction) {
             if (result.activityType) {
-                showSnackBar(`Shared details successfully`, true);
+                showSnackBar(successFulMessages.SHARED_DETAILS_SUCCESSFULLY, true);
             }
         } else if (result.action === Share.dismissedAction) {
-            showSnackBar(`You have cancelled sharing`, false);
+            showSnackBar(errorModalMessageConstants.CANCELLED_SHARING, false);
         }
     } catch (error) {
         console.error(error);
-        showSnackBar(`Could not share!`, false);
+        showSnackBar(errorModalMessageConstants.CANNOT_SHARE, false);
     }
 }
 

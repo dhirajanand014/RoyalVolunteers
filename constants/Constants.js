@@ -454,6 +454,7 @@ export const miscMessage = {
     TIME_FORMAT: `hh:mm A`,
     NOTIFICATION: `notification`,
     RELOAD_APPLICATION: `Reload Application`,
+    EXCLUDE_TYPE: `com.apple.reminders.sharingextension`
 }
 
 export const successFulMessages = {
@@ -472,7 +473,8 @@ export const successFulMessages = {
     DASHBOARD_DETAILS_UPDATE: `Updated your availability successfully!`,
     USER_LOGIN_TOKEN_STATUS: `User login token status`,
     USER_ACCOUNT_STATUS: `User account status`,
-    RATE_US_MESSAGE: `Would you like to share your review with us?\n\nThis will help and motivate us a lot.`
+    RATE_US_MESSAGE: `Would you like to share your review with us?\n\nThis will help and motivate us a lot.`,
+    SHARED_DETAILS_SUCCESSFULLY: `Shared details successfully`
 }
 
 export const errorModalTitleConstants = {
@@ -537,6 +539,8 @@ export const errorModalMessageConstants = {
     CANNOT_OPEN_STORE: `Cannot open Store`,
     ANDROID_URL_OPEN_ERROR: `Please check for Google Play Store`,
     IOS_URL_OPEN_ERROR: `Please check for the App Store`,
+    CANCELLED_SHARING: `You have cancelled sharing`,
+    CANNOT_SHARE: `Could not share!`,
     ERROR_BOUNDARY: `The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.`,
 }
 

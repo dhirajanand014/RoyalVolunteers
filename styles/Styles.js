@@ -348,8 +348,8 @@ export const RVStyles = StyleSheet.create({
         flex: 1,
         paddingLeft: 3,
         justifyContent: 'center',
-        marginTop: isIOS && 0 || -25,
-        paddingVertical: isIOS && 3 || 5,
+        marginTop: isIOS && 0 || -28,
+        paddingVertical: isIOS && 3 || 1,
         borderBottomWidth: 1,
         fontSize: 16,
         color: '#05375a'

@@ -17,8 +17,8 @@ export const HeaderForm = (props) => {
                     <View style={RVStyles.headerBackButton}>
                         <RVArrowLeftIcon />
                     </View>
-                </TouchableNativeFeedback>) ||
-                (isIOS && <TouchableOpacity onPress={() => navigateToPreviousScreen(props.isFromDashBoard, navigation)}
+                </TouchableNativeFeedback> ||
+                isIOS && <TouchableOpacity onPress={() => navigateToPreviousScreen(props.isFromDashBoard, navigation)}
                     style={RVStyles.headerBackButton}>
                     <RVArrowLeftIcon />
                 </TouchableOpacity>)
