@@ -474,7 +474,10 @@ export const successFulMessages = {
     USER_LOGIN_TOKEN_STATUS: `User login token status`,
     USER_ACCOUNT_STATUS: `User account status`,
     RATE_US_MESSAGE: `Would you like to share your review with us?\n\nThis will help and motivate us a lot.`,
-    SHARED_DETAILS_SUCCESSFULLY: `Shared details successfully`
+    SHARED_DETAILS_SUCCESSFULLY: `Shared details successfully`,
+    SHARE_TITLE: `Royal Volunteers - Donate or Request for Blood`,
+    SHARE_DIALOG_TITLE: `Share Royal Volunteers`,
+    SHARE_MESSAGE: `Please register to Royal Volunteers app and Donate or Request for Blood when in need, AppLink :`
 }
 
 export const errorModalTitleConstants = {

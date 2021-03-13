@@ -1071,13 +1071,13 @@ export const shareApp = async () => {
         const url = isAndroid && `https://play.google.com/store/apps/details?id=${GOOGLE_PLAY_PACKAGE_NAME}` ||
             `https://apps.apple.com/us/app/royal-volunteers/${APPLE_STORE_ID}`
         const result = await Share.share({
-            title: `Royal Volunteers - Donate | Request for Blood`,
-            message: `Please install Royal Volunteers app and Donate | Request for Blood, AppLink : ${url}`,
+            title: successFulMessages.SHARE_TITLE,
+            message: `${successFulMessages.SHARE_MESSAGE}${stringConstants.SPACE}${url}`,
             url: url
         }, {
-            dialogTitle: `Share Royal Volunteers`,
+            dialogTitle: successFulMessages.SHARE_DIALOG_TITLE,
             tintColor: colors.BLUE,
-            subject: `Royal Volunteers - Donate | Request for Blood`,
+            subject: successFulMessages.SHARE_TITLE,
             excludedActivityTypes: [miscMessage.EXCLUDE_TYPE]
         });
         if (result.action === Share.sharedAction) {
