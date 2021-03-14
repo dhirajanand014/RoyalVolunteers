@@ -7,7 +7,6 @@ import { miscMessage, numericConstants, stringConstants } from '../constants/Con
 import { useForm } from 'react-hook-form';
 import messaging from '@react-native-firebase/messaging';
 import { SignUpContext } from '../App';
-import { NotificationReceivedModal } from '../components/modals/NotificationReceivedModal';
 import { RVDashBoardDetails } from '../components/view/RVDashBoardDetails';
 import { showNotification } from '../notification/notification';
 
@@ -29,12 +28,9 @@ export const RVUserDashboard = () => {
         donor_count: numericConstants.ZERO,
         phone: stringConstants.EMPTY,
         availability_status: stringConstants.EMPTY,
-        testimonialStars: numericConstants.ZERO,
         showFeedbackModal: false,
-        showTestimonialModal: false,
         editText: stringConstants.EMPTY,
         isPincodeEdit: false,
-        testimonialAdded: false,
         showRateUsModal: false
     });
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
@@ -59,7 +55,6 @@ export const RVUserDashboard = () => {
             <View style={RVStyles.headerContainer}>
                 <RVDashBoardDetails userDashboard={userDashboard} handleSubmit={handleSubmit} setUserDashboard={setUserDashboard}
                     control={control} formState={formState} setLoader={setLoader} navigation={navigation} phoneNumber={phoneNumber} />
-                <NotificationReceivedModal />
             </View>
         </TouchableWithoutFeedback>
     )

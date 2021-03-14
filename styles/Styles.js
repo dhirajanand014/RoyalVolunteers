@@ -877,12 +877,6 @@ export const RVStyles = StyleSheet.create({
         elevation: 3,
         backgroundColor: "#DE1F25"
     },
-    dashBoardTestimonials: {
-        borderRadius: 25,
-        paddingVertical: 12,
-        width: 110,
-        elevation: 3,
-    },
     feedBackModalView: {
         margin: 250,
         backgroundColor: "white",
@@ -910,17 +904,6 @@ export const RVStyles = StyleSheet.create({
         fontSize: 16,
         color: '#05375a'
     },
-    testimonialModalTextInput: {
-        borderWidth: 2,
-        borderRadius: 8,
-        width: 310,
-        paddingLeft: 3,
-        paddingVertical: 5,
-        borderBottomWidth: 1,
-        height: 100,
-        fontSize: 16,
-        color: '#05375a'
-    },
     feedBackCancelText: {
         color: 'grey',
         textAlign: 'center',
@@ -934,24 +917,6 @@ export const RVStyles = StyleSheet.create({
         paddingVertical: 12,
         marginVertical: 6,
         width: 120,
-        elevation: 3,
-        backgroundColor: '#fec72e'
-    },
-    testimonialSubmitButton: {
-        borderRadius: 25,
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        width: 120,
-        elevation: 3,
-        backgroundColor: '#fec72e'
-    },
-    viewRequestButton: {
-        borderRadius: 25,
-        paddingHorizontal: 18,
-        paddingVertical: 12,
-        alignItems: 'center',
-        marginVertical: 15,
-        width: 140,
         elevation: 3,
         backgroundColor: '#fec72e'
     },
@@ -1050,23 +1015,10 @@ export const RVStyles = StyleSheet.create({
         left: 18,
         borderRadius: 50
     },
-    testimonialsStyle: {
-        height: 120,
-        width: width
-    },
-    testimonialSwiperList: {
-        height: isIOS && (height == 736 && 130 || 70) || 130,
-        paddingVertical: 1
-    },
     testimonialStars: {
         position: 'absolute',
         bottom: 0,
         right: 0
-    },
-    foregroundNotificationCallStyle: {
-        paddingHorizontal: 80,
-        paddingVertical: 10,
-        borderRadius: 20
     },
     headerBackButton: {
         position: 'absolute',

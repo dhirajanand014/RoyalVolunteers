@@ -86,27 +86,6 @@ export const saveFeedbackText = async (feedBackTextValue, phoneNumber) => {
     return miscMessage.ERROR;
 }
 
-export const saveTestimonialData = async (testimonialData, rating, phoneNumber, userDashboard, setUserDashboard) => {
-    try {
-        const testimonialRequest = {
-            [fieldControllerName.PHONE_NUMBER]: phoneNumber,
-            testimonial_description: testimonialData,
-            testimonial_rating: rating
-        }
-        const testimonialJSON = JSON.stringify(testimonialRequest);
-        const testimonialResponse = await axios.post(urlConstants.SAVE_TESTIMONIAL, testimonialJSON);
-
-        userDashboard.testimonialAdded = true;
-
-        setUserDashboard({ ...userDashboard, showTestimonialModal: false });
-        return testimonialResponse && testimonialResponse.data == miscMessage.SUCCESS &&
-            miscMessage.SUCCESS || miscMessage.ERROR;
-    } catch (error) {
-        console.error(error);
-    }
-    return miscMessage.ERROR;
-}
-
 export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard, phoneNumber, navigation, setLoader,
     notificationDetails, setNotificationDetails) => {
     try {
@@ -125,7 +104,6 @@ export const fetchUserDashboardDetails = async (userDashboard, setUserDashboard,
                     numericConstants.FIVE_HUNDRED);
             }
             setUserDashboard({ ...userDashboard, ...userDashboardDetails.user });
-
         }
     } catch (error) {
         console.error(error);

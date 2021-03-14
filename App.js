@@ -51,7 +51,6 @@ export default function App({ navigationRef }) {
   });
 
   const [notificationDetails, setNotificationDetails] = useState({
-    showNotificationModal: false,
     message: stringConstants.EMPTY,
     isNewNotification: false,
     requestCount: numericConstants.ZERO

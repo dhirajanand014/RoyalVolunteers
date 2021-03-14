@@ -74,8 +74,7 @@ export const actionButtonTextConstants = {
     OK: `OK`,
     DATE: `Date`,
     FEEDBACK: `Feedback`,
-    REQUEST_BLOOD: `Request Blood`,
-    TESTIMONIAL: `Testimonial`
+    REQUEST_BLOOD: `Request Blood`
 }
 
 export const stackOptions = {
@@ -173,16 +172,6 @@ export const formRequiredRules = {
         }
     },
     feedBackInputRule: {
-        maxLength: {
-            value: 1000,
-            message: `Please enter only 1000 characters`
-        },
-        required: {
-            value: true,
-            message: `Please enter a value`
-        }
-    },
-    testimnialRule: {
         maxLength: {
             value: 1000,
             message: `Please enter only 1000 characters`
@@ -341,8 +330,7 @@ export const fieldControllerName = {
     AVAILABILITY_STATUS: `availability_status`,
     DATE_PICKER: `datePicker`,
     HOSPITAL_NAME: `hospitalName`,
-    FEEDBACK: `feedback`,
-    TESTIMONIAL: `testimonial`
+    FEEDBACK: `feedback`
 }
 
 export const fieldTextName = {
@@ -376,7 +364,6 @@ export const placeHolderText = {
     SIGN_UP_DESCRIPTION: `We will send you a verification code to your phone`,
     HOSPITAL_NAME: `Enter Hospital name`,
     FEEDBACK: `Enter Feedback`,
-    TESTIMONIAL: `Enter Testimonials`,
     SELECT_A_BLOOD_GROUP: `Select a blood group`
 }
 
@@ -459,7 +446,6 @@ export const miscMessage = {
 
 export const successFulMessages = {
     FEEDBACK_SUBMITTED_SUCCESSFULLY: `Feedback submitted successfully`,
-    TESTIMONIAL_SUBMITTED_SUCCESSFULLY: `Testimonial submitted successfully`,
     SENT_SMS_SUCCESSFULLY: `Successfully sent message!`,
     NOTIFICATION_SENT_DONERS: `Notification sent to doners. Someone will call you!`,
     SUCCESSFULLY_REGISTERED: `Successfully registered your details`,
@@ -507,7 +493,6 @@ export const errorModalMessageConstants = {
     USER_LOGIN_FAILED: `Username and Password does not match`,
     NOTIFICATION_FAIL_DONERS: `Could not notify doners`,
     FEEDBACK_SUBMITTED_UNSUCCESSFULLY: `Could not submit feedback`,
-    TESTIMONIAL_SUBMITTED_UNSUCCESSFULLY: `Could not submit testimonial`,
     USER_NOT_REGISTERED: `Could not register user.`,
     USER_ALREADY_REGISTERED: `User already registerd. Please sign in`,
     INCORRECT_OTP_ENTERED: `Incorrect OTP entered`,
