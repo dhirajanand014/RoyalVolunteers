@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { Text, View, ActivityIndicator } from 'react-native';
-import { bloodGroupsList, fieldTextName, isIOS, screenTitle } from '../../constants/Constants';
+import { bloodGroupsList, fieldTextName, isIOS, screenTitle, stringConstants } from '../../constants/Constants';
 import { RVGenericStyles, colors, RVStyles } from '../../styles/Styles';
 
 export const RVUserDashBoardFooterTopView = props => {
-    const bloodLabel = bloodGroupsList.find(bloodGroup => bloodGroup.value == props.blood_group).label;
+    const bloodLabel = props.blood_group && bloodGroupsList.find(bloodGroup => bloodGroup.value == props.blood_group).label ||
+        stringConstants.EMPTY;
     return (
         <View style={RVGenericStyles.borderBottomWidth1}>
             <View style={[RVStyles.dashBoardFooterTopView, RVGenericStyles.justifyContentSpaceBetween]}>

@@ -22,7 +22,7 @@ export const RVDashBoardDetails = (props) => {
             <RVUserDashBoardHeaderView userDashboard={userDashboard} setUserDashboard={setUserDashboard} navigation={navigation} />
             <Animatable.View animation={`fadeInUpBig`} style={RVStyles.dashBoardFooter}>
                 <RVUserDashBoardFooterTopView name={userDashboard.name} blood_group={userDashboard.blood_group} />
-                <View style={RVGenericStyles.justifyContentCenter}>
+                <View style={RVGenericStyles.justifyContentSpaceBetween}>
                     <RVUserDashboardDetailsText text={fieldTextName.MOBILE_NUMBER_TEXT} value={userDashboard.phoneNumber} />
 
                     <RVUserDashboardDetailsText text={fieldTextName.AGE} value={`${dobYears} ${miscMessage.YEARS}`} />

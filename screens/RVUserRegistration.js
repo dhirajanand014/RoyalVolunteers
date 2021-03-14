@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -34,6 +34,12 @@ export const RVUserRegistration = () => {
 
     const phoneNumber = route?.params?.phoneNumber || stringConstants.EMPTY;
 
+    let bloodGroupController;
+
+    const bloodGroupControllerCallback = useCallback(instance => {
+        bloodGroupController = instance
+    });
+
     const dobRef = useRef(null);
     const pincodeRef = useRef(null);
 
@@ -67,7 +73,10 @@ export const RVUserRegistration = () => {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <TouchableWithoutFeedback onPress={() => {
+            Keyboard.dismiss();
+            bloodGroupController?.isOpen && bloodGroupController?.close();
+        }}>
             <View style={RVStyles.headerContainer}>
                 <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
                 <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
@@ -82,12 +91,13 @@ export const RVUserRegistration = () => {
                             keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} defaultValue={stringConstants.EMPTY}
                             mode={miscMessage.DATE} dateFormat={miscMessage.DATE_PICKER_FORMAT} display={keyBoardTypeConst.DEFAULT} isFromRegistration={true} maximumDate={new Date()} />
 
+                        <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
+                            defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)}
+                            bloodGroupControllerCallback={bloodGroupControllerCallback} />
+
                         <AuthenticatedInputText inputTextName={fieldTextName.PINCODE} inputName={fieldControllerName.PINCODE} control={control} rules={formRequiredRules.pinCodeRule} refCallback={pincodeRefCallback}
                             defaultValue={stringConstants.EMPTY} maxLength={numericConstants.SIX} placeHolderText={placeHolderText.PINCODE} textContentType={keyBoardTypeConst.PINCODE}
                             keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} formState={formState} />
-
-                        <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
-                            defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} />
 
                         <AuthenticatedSelectorInput inputTextName={fieldTextName.AVAILABILITY_STATUS} inputName={fieldControllerName.AVAILABILITY_STATUS} control={control}
                             initial={availablilityStatusOptions.findIndex(options => options.value == miscMessage.YES)} formState={formState} hasPadding={true} options={availablilityStatusOptions}

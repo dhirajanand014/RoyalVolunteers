@@ -24,7 +24,6 @@ export const RVUserDashboard = () => {
         dob: stringConstants.EMPTY,
         pincode: stringConstants.EMPTY,
         blood_group: numericConstants.MINUS_ONE,
-        benefiters_count: numericConstants.ZERO,
         donor_count: numericConstants.ZERO,
         phone: stringConstants.EMPTY,
         availability_status: stringConstants.EMPTY,

@@ -142,8 +142,9 @@ export const SignUpOTPVerification = props => {
                                     <OTPInputText control={control} containerStyle={[RVGenericStyles.fill, RVGenericStyles.mr12,
                                     { borderColor: otpArray[index] && colors.GREEN || textInputRef?.current?.isFocused() && !otpArray[index] && colors.BLUE || colors.ORANGE }]} value={otpArray[index].toString()}
                                         onKeyPress={onOtpKeyPress(index, otpArray, firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-                                            fifthTextInputRef, setOtpArray, setError, clearErrors)} onChangeText={onOtpChange(index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-                                                fifthTextInputRef, sixththTextInputRef, setError, clearErrors)} textContentType={keyBoardTypeConst.ONETIMECODE} maxLength={numericConstants.ONE}
+                                            fifthTextInputRef, setOtpArray, setError, clearErrors, setAutoSubmittingOtp)}
+                                        onChangeText={onOtpChange(index, otpArray, setOtpArray, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
+                                            fifthTextInputRef, sixththTextInputRef, setError, clearErrors)} textContentType={keyBoardTypeConst.ONETIMECODE} maxLength={numericConstants.ONE}
                                         keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} refCallback={refCallback(textInputRef)}
                                         key={index} autoFocus={index === numericConstants.ZERO && true || false} />
                                 ))}

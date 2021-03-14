@@ -314,8 +314,6 @@ export const RVStyles = StyleSheet.create({
         flex: 1,
         paddingLeft: 10,
         justifyContent: 'center',
-        marginTop: isIOS && 0 || -5,
-        paddingVertical: isIOS && 1 || 1,
         borderBottomWidth: 1,
         color: '#05375a'
     },
@@ -368,15 +366,15 @@ export const RVStyles = StyleSheet.create({
         width: width / 1.10
     },
     registrationUserInputPickerView: {
-        marginTop: isIOS && 25 || 0,
-        paddingTop: isIOS && 28 || 0,
+        marginTop: isIOS && 8 || 0,
+        paddingTop: isIOS && 8 || 0,
         paddingBottom: -12,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
     userDashBoardPickerView: {
-        paddingBottom: 10,
+        paddingBottom: 20,
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'center'
@@ -709,7 +707,7 @@ export const RVStyles = StyleSheet.create({
     },
     bloodGroupPickerStyle: {
         justifyContent: 'center',
-        width: width / 2,
+        width: width / 1.8,
         height: 35
     },
     availabilityStatusStyle: {
@@ -790,7 +788,7 @@ export const RVStyles = StyleSheet.create({
     dashBoardUserDetailsTextView: {
         flexDirection: 'row',
         width: width / 1.1,
-        paddingVertical: 8,
+        paddingVertical: 12,
         paddingLeft: 8
     },
     dashBoardUserTextStyle: {
@@ -811,19 +809,19 @@ export const RVStyles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     dashBoardCountsViewStyle: {
-        alignSelf: 'center',
         borderColor: 'red',
         borderWidth: 2,
         borderRadius: 20,
+        marginHorizontal: 3,
         backgroundColor: 'white',
-        width: width / 1.01,
+        width: width / 3,
         marginTop: 5,
         marginBottom: 10
     },
     dashBoardCountsView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 8,
+        padding: 10,
         overflow: 'hidden'
     },
     dashBoardFooterTopView: {
@@ -867,13 +865,23 @@ export const RVStyles = StyleSheet.create({
         paddingVertical: 12,
         width: 100,
         elevation: 3,
-        backgroundColor: '#fec72e'
+        backgroundColor: 'red'
+    },
+    shareButtonStyle: {
+        borderRadius: 25,
+        paddingVertical: 12,
+        width: 90,
+        marginHorizontal: 10,
+        elevation: 3,
+        backgroundColor: 'green'
     },
     dashBoardRequestBlood: {
         borderRadius: 25,
-        paddingVertical: 12,
+        borderWidth: 2,
+        borderColor: `black`,
+        paddingVertical: 25,
         marginHorizontal: 6,
-        width: 130,
+        width: width / 1.61,
         elevation: 3,
         backgroundColor: "#DE1F25"
     },
@@ -1014,11 +1022,6 @@ export const RVStyles = StyleSheet.create({
         position: 'absolute',
         left: 18,
         borderRadius: 50
-    },
-    testimonialStars: {
-        position: 'absolute',
-        bottom: 0,
-        right: 0
     },
     headerBackButton: {
         position: 'absolute',

@@ -314,10 +314,11 @@ export const onResendOtpButtonPress = async (firstTextInputRef, setOtpArray, set
 // to have consistency, using this event just to detect backspace key press and
 // onOtpChange for other digits press
 export const onOtpKeyPress = (index, otpArray, firstTextInputRef, secondTextInputRef, thirdTextInputRef, fourthTextInputRef,
-    fifthTextInputRef, setOtpArray, setError, clearErrors) => {
+    fifthTextInputRef, setOtpArray, setError, clearErrors, setAutoSubmittingOtp) => {
     return ({ nativeEvent: { key: value } }) => {
         // auto focus to previous InputText if value is blank and existing value is also blank
         if (value === miscMessage.BACKSPACE && otpArray[index] === stringConstants.EMPTY) {
+            setAutoSubmittingOtp(false)
             switch (index) {
                 case numericConstants.ONE:
                     firstTextInputRef.current.focus();
