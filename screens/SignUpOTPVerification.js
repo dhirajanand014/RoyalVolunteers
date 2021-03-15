@@ -7,8 +7,8 @@ import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
 import {
-    onOtpKeyPress, onResendOtpButtonPress,
-    identifyOtpError, verifyOtpRequest, onOtpChange, verifyOtpReceived
+    onOtpKeyPress, onResendOtpButtonPress, identifyOtpError,
+    pRequest, onOtpChange, verifyOtpReceived, checkPinCodeFromClipBoardIOS
 } from '../helper/Helper';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -17,19 +17,22 @@ import { useForm } from 'react-hook-form';
 import {
     AUTO_SUBMIT_OTP_TIME_LIMIT, keyBoardTypeConst, isAndroid, screenTitle,
     RESEND_OTP_TIME_LIMIT, stringConstants, OTP_INPUTS,
-    numericConstants, actionButtonTextConstants, miscMessage, routeConsts
+    numericConstants, actionButtonTextConstants, miscMessage, routeConsts, isIOS
 } from '../constants/Constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SignUpContext } from '../App';
 
 let resendOtpTimerInterval;
 let autoSubmitOtpTimerInterval;
+let iosOtpAutoFillInterval;
+let isIOSOtpAutoFilled;
 
 let otpInputs = Array(OTP_INPUTS).fill(stringConstants.EMPTY);
 
 export const SignUpOTPVerification = props => {
     const { otpRequestData, attempts } = props;
     let [attemptsRemaining, setAttemptsRemaining] = useState(attempts);
+
     const [otpArray, setOtpArray] = useState(otpInputs);
     const [autoSubmittingOtp, setAutoSubmittingOtp] = useState(false);
 
@@ -72,6 +75,15 @@ export const SignUpOTPVerification = props => {
     useEffect(() => {
         (async () => {
             await verifyOtpReceived(setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp);
+            if (isIOS) {
+                isIOSOtpAutoFilled = await checkPinCodeFromClipBoardIOS(setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp);
+                if (!isIOSOtpAutoFilled) {
+                    iosOtpAutoFillInterval = setInterval(async () => {
+                        isIOSOtpAutoFilled = await checkPinCodeFromClipBoardIOS(setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp);
+                    }, numericConstants.TWO_HUNDRED);
+                }
+                iosOtpAutoFillInterval && isIOSOtpAutoFilled && clearInterval(iosOtpAutoFillInterval);
+            }
         })();
     }, []);
 

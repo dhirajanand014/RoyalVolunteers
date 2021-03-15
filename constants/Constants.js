@@ -195,7 +195,8 @@ export const urlConstants = {
     VALIDATE_TOKEN: `https://royalvolunteers.in/resource_validate.php`,
     FORGOT_PASSWORD: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_urs_pass_update.php`,
     NOTIFY_BLOOD_REQUEST: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_notify_blood_request.php`,
-    UPDATE_DEVICE_TOKEN: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_up_device_token.php`
+    UPDATE_DEVICE_TOKEN: `https://royalvolunteers.in/rv1sknSQW9Xxb8f_up_device_token.php`,
+    SHARE_APP_LINK: `https://www.royalvolunteers.in/share.html`
 }
 
 export const countryCodesConstants = {
@@ -403,6 +404,7 @@ export const miscMessage = {
     CALL: `Call`,
     LOADING: `Loading`,
     RATE_US: `Rate Us`,
+    DISCLAIMER_PRIVACY_POLICY: `Disclaimer and Privacy policy`,
     LOGOUT: `Logout`,
     PH_QUERY_PARAM: `?ph=`,
     ON_CHANGE: `onChange`,
@@ -426,6 +428,7 @@ export const miscMessage = {
     CANCEL_TYPE: `cancel`,
     DASHBOARD: `Dashboard`,
     NOTIFICATION_REQUESTS: `notificationRequests`,
+    ACCEPTED_TERMS: `acceptedTerms`,
     REQUESTS: `requests`,
     INFINITE: `infinite`,
     NEEDED_REQUEST: `needed_request`,
@@ -441,7 +444,8 @@ export const miscMessage = {
     TIME_FORMAT: `hh:mm A`,
     NOTIFICATION: `notification`,
     RELOAD_APPLICATION: `Reload Application`,
-    EXCLUDE_TYPE: `com.apple.reminders.sharingextension`
+    EXCLUDE_TYPE: `com.apple.reminders.sharingextension`,
+    ACCEPTED: `accepted`
 }
 
 export const successFulMessages = {
@@ -529,6 +533,10 @@ export const errorModalMessageConstants = {
     IOS_URL_OPEN_ERROR: `Please check for the App Store`,
     CANCELLED_SHARING: `You have cancelled sharing`,
     CANNOT_SHARE: `Could not share!`,
+    CLIPBOARD_CONTENT_IS_EMPTY: `Clipboard content is empty`,
+    CLIPBOARD_CANNOT_CHECK_OTP_IOS: `Could not check code from message IOS`,
+    CANNOT_SAVE_TNC: `Cannot save accepted terms`,
+    CANNOT_FETCH_SAVED_TNC: `Cannot fetch saved accepted terms`,
     ERROR_BOUNDARY: `The app ran into a problem and could not continue. We apologise for any inconvenience this has caused! Press the button below to restart the app and sign back in. Please contact us if this issue persists.`,
 }
 
@@ -551,4 +559,28 @@ export const tokenRequestResponseConst = {
     TYPE_REFRESH: `REFRESH`,
     SAVED_DATE: `saved_date`,
     ACCOUNT_STATUS: `account_status`
+}
+
+export const TnCTexts = {
+    LN1: `Royal Volunteer is an organisation which functions with the sole aim to promote and spread the awareness among the people to donate blood which is helpful for the poor and needy.`,
+    LN2: `The users need to utilise the information provided in the site and approach the list of donors.`,
+    LN3: `The details of the donors are displayed only to facilitate the users for contacting them when in need of blood in case of any emergency. Royal Volunteer organisation is not responsible for willingness/unwillingness to donate blood expressed by the donor listed in the site.`,
+    LN4: `Content provided in or through the site:`,
+    LN5: `Royal Volunteer may employ cookie technology to allow subscribers and users to move more quickly through our site. Cookies are small text files a website can use to recognise repeat users and facilitate the user's ongoing access to and use of the site. Generally, cookies do not pose a threat to a user's files. Royal Volunteer cannot control the use of cookies by advertisers or third parties hosting data for Royal Volunteer, In case a member/user does not want the use of cookies, most browsers allow the user to deny or accept the cookie feature.`,
+    LN6: `Royal Volunteer may contain links to other web sites or resources only for the convenience of the users. Royal Volunteer is not responsible for the content of these external sites, nor does friends2support endorse, warrant or guarantee the products, services or information described or offered in those sites. It is the responsibility of the user to examine the copyright and licensing restrictions of linked pages and to secure all necessary permission.`,
+    LN7: `Royal Volunteer reserves the right to change, modify or discontinue any aspect of the Website at any time, including any information or its contents or features. Royal Volunteer reserves the right to collect, analyze and disseminate the patterns of usage of the Website by all its Users.`,
+    LN8: `All information or content on the Website is the exclusive property of Royal Volunteer support. No information or content on the Website may be copied, modified, reproduced, republished, uploaded, transmitted, posted or distributed in any form without the prior written consent of Royal Volunteer support. Royal Volunteer support trademark shall not be used in any manner without the prior written consent of Royal Volunteer support.`,
+    H1: `Contacting Blood Donors`,
+    H2: `Content`,
+    H3: `Cookies`,
+    H4: `External Links`,
+    H5: `Royal Volunteer Rights`,
+    H6: `Copyrights & Trademarks`,
+    FOOTER: `Unauthorized use of any information or content appearing on the Website shall violate copyright, trademark and other applicable laws and could result in criminal or civil penalties.`,
+    PT1: `Is provided for information purposes only.`,
+    PT2: `Is not shared with third parties.`,
+    PT3: `The donor information available in this website is made available to us by the donors and its purely the donor's right to continue or to withdraw any information available at any point of time.`,
+    PT4: `We are not responsible for any inaccuracy in the information available on the website.`,
+    PT5: `We are not responsible for any misuse of contact information displayed in the website. If you feel that your contact details are being misused then contact us on support@royalvolunteer.in`,
+
 }

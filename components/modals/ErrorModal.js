@@ -16,7 +16,7 @@ export const ErrorModal = props => {
                 <LinearGradient style={RVStyles.modalViewStyle} colors={['white', 'white']}>
                     <View style={RVStyles.modalTitleTextView}>
                         <Text style={RVStyles.modalTitleTextStyle}>{error.title}</Text>
-                        <View style={RVStyles.modalTitleDivider}></View>
+                        <View style={RVStyles.modalTitleDivider} />
                     </View>
                     <View style={RVStyles.modalMessageViewStyle}>
                         <Text style={RVStyles.modalMessageTextStyle}>{error.message}</Text>

@@ -15,6 +15,7 @@ import * as Keychain from 'react-native-keychain';
 import { Alert, Linking, Share } from "react-native";
 import RNOtpVerify from 'react-native-otp-verify';
 import { handleCancelNotification, createChannel } from '../notification/notification';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
@@ -856,7 +857,8 @@ export const updateNotificationsStatus = async () => {
                     if (value.new == true)
                         value.new = false
                 });
-            await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues.length && notificationValues ||
+            await Keychain.setGenericPassword(miscMessage.REQUESTS, JSON.stringify(notificationValues.length
+                && notificationValues ||
                 stringConstants.ARRAY), { service: miscMessage.NOTIFICATION_REQUESTS });
         }
     } catch (error) {
@@ -921,12 +923,29 @@ const listenOtp = (message, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOt
                     setAutoSubmitOtpTime(AUTO_SUBMIT_OTP_TIME_LIMIT);
                     startAutoSubmitOtpTimer();
                     setAutoSubmittingOtp(true);
+                    return true;
                 }
             }
         }
     } catch (error) {
-        console.error(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification',);
+        console.error(error.message, 'RNOtpVerify.getOtp - read message, OtpVerification');
     }
+    return false;
+}
+
+export const checkPinCodeFromClipBoardIOS = async (setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp) => {
+    try {
+        const content = await Clipboard.hasString();
+        if (content) {
+            const codeString = await Clipboard.getString();
+            return listenOtp(codeString, setOtpArray, setAutoSubmitOtpTime, startAutoSubmitOtpTimer, setAutoSubmittingOtp);
+        }
+        console.warn(errorModalMessageConstants.CLIPBOARD_CONTENT_IS_EMPTY);
+    }
+    catch (error) {
+        console.error(errorModalMessageConstants.CLIPBOARD_CANNOT_CHECK_OTP_IOS);
+    }
+    return false;
 }
 
 export const sendNotification = async (phoneNumber, requestForm) => {
@@ -1029,7 +1048,7 @@ export const notificationAction = async (notification, navigation) => {
 export const openAppLinkInStore = () => {
     try {
         const url = isAndroid && `market://details?id=${GOOGLE_PLAY_PACKAGE_NAME}` ||
-            `itms://itunes.apple.com/in/app/apple-store/${APPLE_STORE_ID}`
+            `https://apps.apple.com/us/app/royal-volunteers/${APPLE_STORE_ID}`
         Linking.canOpenURL(url) && Linking.openURL(url) ||
             Alert.alert(errorModalTitleConstants.ERROR,
                 errorModalMessageConstants.CANNOT_OPEN_STORE,
@@ -1047,12 +1066,10 @@ export const openAppLinkInStore = () => {
 
 export const shareApp = async () => {
     try {
-        const url = isAndroid && `https://play.google.com/store/apps/details?id=${GOOGLE_PLAY_PACKAGE_NAME}` ||
-            `https://apps.apple.com/us/app/royal-volunteers/${APPLE_STORE_ID}`
         const result = await Share.share({
             title: successFulMessages.SHARE_TITLE,
-            message: `${successFulMessages.SHARE_MESSAGE}${stringConstants.SPACE}${url}`,
-            url: url
+            message: `${successFulMessages.SHARE_MESSAGE}${stringConstants.SPACE}${urlConstants.SHARE_APP_LINK}`,
+            url: urlConstants.SHARE_APP_LINK
         }, {
             dialogTitle: successFulMessages.SHARE_DIALOG_TITLE,
             tintColor: colors.BLUE,
@@ -1079,5 +1096,30 @@ export const navigateToPreviousScreen = (isFromDashBoard, navigation) => {
         } else {
             navigation.goBack();
         }
+    }
+}
+
+export const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = numericConstants.TWENTY;
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+};
+
+export const getAcceptedTerms = async () => {
+    try {
+        const savedAcceptanceTerms = await Keychain.getGenericPassword({ service: miscMessage.ACCEPTED_TERMS });
+        return savedAcceptanceTerms && JSON.parse(savedAcceptanceTerms.password) || false;
+    } catch (error) {
+        console.error(errorModalMessageConstants.CANNOT_FETCH_SAVED_TNC, error);
+    }
+    return false;
+}
+
+export const saveUserAcceptedTerms = async (acceptedTnC, setAcceptedTnC) => {
+    try {
+        setAcceptedTnC({ ...acceptedTnC, showAcceptanceModal: false });
+        await Keychain.setGenericPassword(miscMessage.ACCEPTED, JSON.stringify(acceptedTnC.userAccepted),
+            { service: miscMessage.ACCEPTED_TERMS });
+    } catch (error) {
+        console.error(errorModalMessageConstants.CANNOT_SAVE_TNC, error);
     }
 }

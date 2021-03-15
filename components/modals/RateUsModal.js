@@ -18,7 +18,7 @@ export const RateUsModal = props => {
                 <LinearGradient style={RVStyles.rateUsModalViewStyle} colors={[colors.WHITE, colors.WHITE]}>
                     <View style={RVStyles.modalTitleTextView}>
                         <Text style={RVStyles.modalTitleTextStyle}>{miscMessage.RATE_US}</Text>
-                        <View style={RVStyles.modalTitleDivider}></View>
+                        <View style={RVStyles.modalTitleDivider} />
                     </View>
                     <View style={RVStyles.modalMessageViewStyle}>
                         <Text style={RVStyles.modalMessageTextStyle}>{successFulMessages.RATE_US_MESSAGE}</Text>

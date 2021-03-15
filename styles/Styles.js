@@ -69,6 +69,9 @@ export const RVGenericStyles = StyleSheet.create({
     width130: {
         width: 130
     },
+    ft14: {
+        fontSize: 14
+    },
     ft16: {
         fontSize: 16
     },
@@ -106,6 +109,9 @@ export const RVGenericStyles = StyleSheet.create({
         marginVertical: 2
     },
     marginVertical5: {
+        marginVertical: 5
+    },
+    mv5: {
         marginVertical: 5
     },
     mv10: {
@@ -158,6 +164,9 @@ export const RVGenericStyles = StyleSheet.create({
     },
     padding5: {
         padding: 5
+    },
+    marginHorizontal10: {
+        marginHorizontal: 10
     },
     padding10: {
         padding: 10
@@ -618,12 +627,25 @@ export const RVStyles = StyleSheet.create({
     modalTitleTextView: {
         alignItems: 'center'
     },
+    disclaimerModalTitleTextView: {
+        alignItems: 'center',
+        marginTop: 20
+    },
     modalTitleTextStyle: {
         fontSize: 20,
         padding: 4
     },
+    disclaimerTitleTextStyle: {
+        fontSize: 20
+    },
     modalTitleDivider: {
         width: 230,
+        height: 1,
+        backgroundColor: "lightgray"
+    },
+    disclaimerModalTitleDivider: {
+        width: width / 1.05,
+        marginTop: 5,
         height: 1,
         backgroundColor: "lightgray"
     },
@@ -1041,6 +1063,27 @@ export const RVStyles = StyleSheet.create({
     headerRequests: {
         position: 'absolute',
         right: 0
+    },
+    tncContainer: {
+        height: height / 1.26,
+        marginTop: 10,
+        marginBottom: 15
+    },
+    tncButton: {
+        backgroundColor: '#136AC7',
+        borderRadius: 28,
+        alignItems: 'center',
+        padding: 15,
+        width: width / 1.2,
+        elevation: 3
+    },
+    tncButtonDisabled: {
+        backgroundColor: '#999',
+        alignItems: 'center',
+        borderRadius: 28,
+        padding: 15,
+        width: width / 1.2,
+        elevation: 3
     }
 });
 

@@ -17,10 +17,11 @@ import { RVUserDashboard } from './screens/RVUserDashboard';
 import { RVBloodRequestsNotifications } from './screens/RVBloodRequestsNotifications';
 import { SplashScreen } from './screens/SplashScreen';
 import NetInfo from "@react-native-community/netinfo";
-import { showSnackBar } from './helper/Helper';
+import { getAcceptedTerms, showSnackBar } from './helper/Helper';
 import { RVLoaderView } from './components/view/RVLoaderView';
 import RVErrorBoundary from './components/view/RVErrorBounday';
 import { MenuProvider } from 'react-native-popup-menu';
+import { RVTermsAndConditions } from './components/modals/RVTermsAndConditions';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
@@ -44,6 +45,11 @@ export default function App({ navigationRef }) {
 
   const [loader, setLoader] = useState(false);
 
+  const [acceptedTnC, setAcceptedTnC] = useState({
+    userAccepted: false,
+    showAcceptanceModal: false
+  });
+
   const [error, setError] = useState({
     title: stringConstants.EMPTY,
     message: stringConstants.EMPTY,
@@ -60,6 +66,11 @@ export default function App({ navigationRef }) {
     const unsubscribe = NetInfo.addEventListener((state) => {
       showSnackBar(state.isConnected && `Connected` || `Disconnected`, true);
     });
+    (async () => {
+      if (!await getAcceptedTerms()) {
+        setAcceptedTnC({ ...acceptedTnC, showAcceptanceModal: true });
+      }
+    })();
     return () => {
       unsubscribe();
     }
@@ -92,6 +103,7 @@ export default function App({ navigationRef }) {
             loader && <RVLoaderView />
           }
         </MenuProvider>
+        <RVTermsAndConditions acceptedTnC={acceptedTnC} setAcceptedTnC={setAcceptedTnC} />
       </SignUpContext.Provider>
     </RVErrorBoundary>
   );
