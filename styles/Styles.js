@@ -321,10 +321,12 @@ export const RVStyles = StyleSheet.create({
     },
     dashBoardUnderlineTextInput: {
         flex: 1,
-        paddingLeft: 10,
+        marginLeft: 8,
+        paddingLeft: 2,
+        paddingVertical: 1,
         justifyContent: 'center',
         borderBottomWidth: 1,
-        color: '#05375a'
+        color: '#05375a',
     },
     underlineTextInput: {
         flex: 1,

@@ -15,19 +15,20 @@ export const RVTermsAndConditions = (props) => {
                     <Text style={RVStyles.disclaimerTitleTextStyle}>{miscMessage.DISCLAIMER_PRIVACY_POLICY}</Text>
                     <View style={RVStyles.disclaimerModalTitleDivider} />
                 </View>
-                <ScrollView style={[RVStyles.tncContainer, RVGenericStyles.marginHorizontal10]} onScroll={({ nativeEvent }) => isCloseToBottom(nativeEvent) && setAcceptedTnC({ ...acceptedTnC, userAccepted: true })}>
+                <ScrollView style={[RVStyles.tncContainer, RVGenericStyles.marginHorizontal10]} bounces
+                    onScroll={({ nativeEvent }) => isCloseToBottom(nativeEvent) && setAcceptedTnC({ ...acceptedTnC, userAccepted: true })}>
                     <Text style={[RVGenericStyles.mv10, RVGenericStyles.ft14]}>{TnCTexts.LN1}</Text>
                     <Text style={[RVGenericStyles.ft14, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{TnCTexts.H1}</Text>
                     <Text style={RVGenericStyles.ft14}>{TnCTexts.LN2}</Text>
                     <Text style={[RVGenericStyles.ft14, RVGenericStyles.marginBottom10]}>{TnCTexts.LN3}</Text>
                     <Text style={[RVGenericStyles.ft14, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{TnCTexts.H2}</Text>
                     <Text style={RVGenericStyles.ft14}>{TnCTexts.LN4}</Text>
-                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.mv5]}>{'\u2022'} {TnCTexts.PT1}</Text>
-                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginVertical2]}>{'\u2022'} {TnCTexts.PT2}</Text>
-                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginVertical2]}>{'\u2022'} {TnCTexts.PT3}</Text>
-                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginVertical2]}>{'\u2022'} {TnCTexts.PT4}</Text>
-                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginBottom10]}>{'\u2022'} {TnCTexts.PT5}</Text>
-                    <Text style={[RVGenericStyles.mt12, RVGenericStyles.ft14, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{TnCTexts.H3}</Text>
+                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.mv5]}>{miscMessage.BULLET} {TnCTexts.PT1}</Text>
+                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginVertical2]}>{miscMessage.BULLET} {TnCTexts.PT2}</Text>
+                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginVertical2]}>{miscMessage.BULLET} {TnCTexts.PT3}</Text>
+                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginVertical2]}>{miscMessage.BULLET} {TnCTexts.PT4}</Text>
+                    <Text style={[RVGenericStyles.ml_8, RVGenericStyles.marginBottom10]}>{miscMessage.BULLET} {TnCTexts.PT5}</Text>
+                    <Text style={[RVGenericStyles.ft14, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{TnCTexts.H3}</Text>
                     <Text style={[RVGenericStyles.ft14, RVGenericStyles.marginBottom10]}>{TnCTexts.LN5}</Text>
                     <Text style={[RVGenericStyles.ft14, RVGenericStyles.bold, RVGenericStyles.fontFamilyNormal]}>{TnCTexts.H4}</Text>
                     <Text style={[RVGenericStyles.ft14, RVGenericStyles.marginBottom10]}>{TnCTexts.LN6}</Text>

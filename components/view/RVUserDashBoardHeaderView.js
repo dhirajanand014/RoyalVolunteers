@@ -80,7 +80,7 @@ export const RVUserDashBoardHeaderView = props => {
                     <TouchableOpacity activeOpacity={.7} style={RVStyles.dashBoardRequestBlood} onPress={() => props.navigation.navigate(routeConsts.BLOOD_REQUEST, {
                         isFrom: routeConsts.USER_DASHBOARD, phoneNumber: userDashboard.phoneNumber
                     })}>
-                        <Text style={[RVGenericStyles.ft20, RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.REQUEST_BLOOD}</Text>
+                        <Text style={[RVGenericStyles.ft20, RVGenericStyles.colorWhite, RVGenericStyles.centerAlignedText, RVGenericStyles.bold]}>{actionButtonTextConstants.REQUEST_DONERS}</Text>
                     </TouchableOpacity>
                 </View>
             </Animatable.View>

@@ -60,7 +60,7 @@ export const RVBloodRequest = () => {
             <View style={RVStyles.headerContainer}>
                 <HeaderForm style={RVStyles.headerImage} imagePath={require(`../assets/rv_home_logo.png`)} />
                 <Animatable.View animation={`fadeInUpBig`} style={RVStyles.signUpFooter}>
-                    <Text style={RVStyles.signUpTextHeader}>{screenTitle.REQUEST_FOR_BLOOD}</Text>
+                    <Text style={RVStyles.signUpTextHeader}>{screenTitle.REQUEST_DONERS}</Text>
                     <View>
                         <AuthenticatedInputPicker inputTextName={fieldTextName.BLOOD_GROUP} inputName={fieldControllerName.BLOOD_GROUP} control={control} rules={formRequiredRules.bloodGroupRule}
                             defaultValue={stringConstants.EMPTY} formState={formState} list={bloodGroupsList.filter(bloodGroup => bloodGroup.value != numericConstants.MINUS_ONE)} bloodGroupControllerCallback={bloodGroupControllerCallback}
@@ -84,7 +84,7 @@ export const RVBloodRequest = () => {
                     <View style={RVStyles.requestBloodButtonStyle}>
                         <TouchableOpacity activeOpacity={.7} style={RVStyles.actionButtonStyle} onPress={handleSubmit(onSubmit)} >
                             <LinearGradient style={RVStyles.primaryActionButtonLinearGradient} colors={[colors.ORANGE, colors.RED]}>
-                                <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.REQUEST_BLOOD}</Text>
+                                <Text style={RVStyles.primaryActionButtonButtonText}>{actionButtonTextConstants.REQUEST_DONERS}</Text>
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>

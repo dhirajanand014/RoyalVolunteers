@@ -54,7 +54,7 @@ export const screenTitle = {
     ENTER_PASSWORD: `ENTER PASSWORD`,
     ENTER_OTP: `ENTER OTP`,
     USER_REGISTRATION: `USER REGISTRATION`,
-    REQUEST_FOR_BLOOD: `REQUEST FOR BLOOD`,
+    REQUEST_DONERS: `REQUEST DONERS`,
     WELCOME: `Welcome`,
     BLOOD_REQUESTS: `BLOOD REQUESTS`
 }
@@ -75,7 +75,7 @@ export const actionButtonTextConstants = {
     DATE: `Date`,
     FEEDBACK: `Feedback`,
     SHARE: `Share`,
-    REQUEST_BLOOD: `Request Blood`
+    REQUEST_DONERS: `Request Doners`
 }
 
 export const stackOptions = {
@@ -445,7 +445,8 @@ export const miscMessage = {
     NOTIFICATION: `notification`,
     RELOAD_APPLICATION: `Reload Application`,
     EXCLUDE_TYPE: `com.apple.reminders.sharingextension`,
-    ACCEPTED: `accepted`
+    ACCEPTED: `accepted`,
+    BULLET: `\u2022`
 }
 
 export const successFulMessages = {
@@ -461,6 +462,7 @@ export const successFulMessages = {
     TOKEN_FETCHED_SUCESSFULLY: `Fetched the token successfully!`,
     SUCCESSFUL_LOG_OUT: `SuccessFully logged out`,
     DASHBOARD_DETAILS_UPDATE: `Updated your availability successfully!`,
+    DASHBOARD_PINCODE_DETAILS_UPDATE: `Updated your pincode successfully!`,
     USER_LOGIN_TOKEN_STATUS: `User login token status`,
     USER_ACCOUNT_STATUS: `User account status`,
     RATE_US_MESSAGE: `Would you like to share your review with us?\n\nThis will help and motivate us a lot.`,

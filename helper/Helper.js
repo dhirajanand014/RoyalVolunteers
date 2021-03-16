@@ -285,7 +285,8 @@ export const updateDataFromDashBoard = async (userDashboard, setUserDashboard, p
     const dashboardData = { ...userDashboard };
     await handleUserSignUpRegistration(userDashboard.phoneNumber, dashboardData, true);
     setUserDashboard({ ...userDashboard });
-    showSnackBar(successFulMessages.DASHBOARD_DETAILS_UPDATE, true);
+    showSnackBar(property == fieldControllerName.AVAILABILITY_STATUS && successFulMessages.DASHBOARD_DETAILS_UPDATE ||
+        successFulMessages.DASHBOARD_PINCODE_DETAILS_UPDATE, true);
     if (property == fieldControllerName.AVAILABILITY_STATUS)
         setLoader(false);
 }
@@ -1068,8 +1069,7 @@ export const shareApp = async () => {
     try {
         const result = await Share.share({
             title: successFulMessages.SHARE_TITLE,
-            message: `${successFulMessages.SHARE_MESSAGE}${stringConstants.SPACE}${urlConstants.SHARE_APP_LINK}`,
-            url: urlConstants.SHARE_APP_LINK
+            message: `${successFulMessages.SHARE_MESSAGE}${stringConstants.SPACE}${urlConstants.SHARE_APP_LINK}`
         }, {
             dialogTitle: successFulMessages.SHARE_DIALOG_TITLE,
             tintColor: colors.BLUE,
