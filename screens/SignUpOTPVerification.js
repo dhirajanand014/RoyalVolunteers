@@ -7,8 +7,8 @@ import { OTPTextView } from '../components/texts/OTPTextView';
 import { OTPTimeText } from '../components/texts/OTPTimeText';
 import { OTPResendButton } from '../components/button/OTPResendButton';
 import {
-    onOtpKeyPress, onResendOtpButtonPress, identifyOtpError,
-    pRequest, onOtpChange, verifyOtpReceived, checkPinCodeFromClipBoardIOS
+    onOtpKeyPress, onResendOtpButtonPress, identifyOtpError, verifyOtpRequest,
+    onOtpChange, verifyOtpReceived, checkPinCodeFromClipBoardIOS
 } from '../helper/Helper';
 import { HeaderForm } from '../layouts/HeaderForm';
 import { TouchableOpacity } from 'react-native-gesture-handler';
