@@ -93,7 +93,8 @@ export const SignIn = () => {
 
                         <FormInput inputTextName={fieldTextName.PASSWORD} inputName={fieldControllerName.SECRET} control={control} rules={formRequiredRules.passwordFormRule}
                             defaultValue={stringConstants.EMPTY} maxLength={numericConstants.FOUR} placeHolderText={placeHolderText.SECRET} refCallback={refCallback}
-                            keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />} textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
+                            keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />}
+                            textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
                         <View style={RVStyles.signInLinks}>
                             <View style={RVStyles.signInForgotPassword}>
                                 <TouchableOpacity onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>

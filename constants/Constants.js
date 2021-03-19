@@ -583,6 +583,5 @@ export const TnCTexts = {
     PT2: `Is not shared with third parties.`,
     PT3: `The donor information available in this website is made available to us by the donors and its purely the donor's right to continue or to withdraw any information available at any point of time.`,
     PT4: `We are not responsible for any inaccuracy in the information available on the website.`,
-    PT5: `We are not responsible for any misuse of contact information displayed in the website. If you feel that your contact details are being misused then contact us on support@royalvolunteer.in`,
-
+    PT5: `We are not responsible for any misuse of contact information displayed in the website. If you feel that your contact details are being misused then contact us on support@royalvolunteer.in`
 }
