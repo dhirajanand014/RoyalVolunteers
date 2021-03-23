@@ -449,7 +449,7 @@ export const miscMessage = {
     BULLET: `\u2022`,
     CONNECTED: `Connected`,
     DISCONNECTED: `Disconnected`,
-    CHECK_CONNECTION_DETAILS: `Please check you internet connection and try again.`
+    CHECK_CONNECTION_DETAILS: `Please check your internet connection and try again.`
 }
 
 export const successFulMessages = {

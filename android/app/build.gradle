@@ -133,8 +133,8 @@ android {
         applicationId "com.royalvolunteers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "1.9"
+        versionCode 6
+        versionName "1.10"
     }
     splits {
         abi {
