@@ -462,7 +462,6 @@ const datePickerConvert = (event, date) => {
     } catch (error) {
         console.error(error);
     }
-
     return false;
 }
 

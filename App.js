@@ -8,7 +8,7 @@ import { SignUp } from './screens/SignUp';
 import { SignUpOTPVerification } from './screens/SignUpOTPVerification';
 import {
   neededOptions, numericConstants, routeConsts, screenOptions,
-  stackOptions, stringConstants
+  stackOptions, stringConstants, miscMessage
 } from './constants/Constants';
 import { SignUpConfirmSecret } from './screens/SignUpConfirmSecret';
 import { RVUserRegistration } from './screens/RVUserRegistration';
@@ -22,6 +22,7 @@ import { RVLoaderView } from './components/view/RVLoaderView';
 import RVErrorBoundary from './components/view/RVErrorBounday';
 import { MenuProvider } from 'react-native-popup-menu';
 import { RVTermsAndConditions } from './components/modals/RVTermsAndConditions';
+import { RVDisconnectedNetModal } from './components/modals/RVDisconnectedNetModal';
 
 export const SignUpContext = createContext();
 const Stack = createStackNavigator();
@@ -62,9 +63,14 @@ export default function App({ navigationRef }) {
     requestCount: numericConstants.ZERO
   });
 
+  const [netConnection, setNetConnection] = useState({
+    isConnected: true
+  })
+
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
-      showSnackBar(state.isConnected && `Connected` || `Disconnected`, true);
+      showSnackBar(state.isConnected && miscMessage.CONNECTED || miscMessage.DISCONNECTED, true);
+      setNetConnection({ ...netConnection, isConnected: state.isConnected });
     });
     (async () => {
       if (!await getAcceptedTerms()) {
@@ -104,6 +110,7 @@ export default function App({ navigationRef }) {
           }
         </MenuProvider>
         <RVTermsAndConditions acceptedTnC={acceptedTnC} setAcceptedTnC={setAcceptedTnC} />
+        <RVDisconnectedNetModal isConnected={netConnection.isConnected} />
       </SignUpContext.Provider>
     </RVErrorBoundary>
   );

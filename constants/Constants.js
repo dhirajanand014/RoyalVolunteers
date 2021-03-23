@@ -446,7 +446,10 @@ export const miscMessage = {
     RELOAD_APPLICATION: `Reload Application`,
     EXCLUDE_TYPE: `com.apple.reminders.sharingextension`,
     ACCEPTED: `accepted`,
-    BULLET: `\u2022`
+    BULLET: `\u2022`,
+    CONNECTED: `Connected`,
+    DISCONNECTED: `Disconnected`,
+    CHECK_CONNECTION_DETAILS: `Please check you internet connection and try again.`
 }
 
 export const successFulMessages = {
