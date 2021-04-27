@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { RVPhoneIcon } from '../components/icons/RVPhoneIcon';
 import messaging from '@react-native-firebase/messaging';
-import { colors, RVStyles } from '../styles/Styles';
+import { colors, RVGenericStyles, RVStyles } from '../styles/Styles';
 import {
     actionButtonTextConstants, errorModalMessageConstants, errorModalTitleConstants,
     fieldControllerName, fieldTextName, formRequiredRules, keyBoardTypeConst,
@@ -96,9 +96,9 @@ export const SignIn = () => {
                             keyboardType={isAndroid && keyBoardTypeConst.ANDROID_NUMERIC || keyBoardTypeConst.IOS_NUMERIC} isSecureTextEntry={true} icon={<RVLoginSecretIcon />}
                             textContentType={keyBoardTypeConst.PASSWORD} formState={formState} />
                         <View style={RVStyles.signInLinks}>
-                            <View style={RVStyles.signInForgotPassword}>
+                            <View style={RVGenericStyles.fill, RVGenericStyles.alignItemsEnd}>
                                 <TouchableOpacity onPress={async () => await handleForgotPassword(watchMobileNumber, navigation, trigger, error, setError, clearErrors, setLoader)}>
-                                    <Text style={RVStyles.signInForgotPasswordText}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
+                                    <Text style={RVStyles.colorPink}>{actionButtonTextConstants.FORGOT_PASSWORD}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

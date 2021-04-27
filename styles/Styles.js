@@ -520,17 +520,13 @@ export const RVStyles = StyleSheet.create({
         marginHorizontal: 19,
         marginLeft: 10
     },
-    signInForgotPassword: {
-        flex: 1,
-        alignItems: 'flex-end'
-    },
-    signInForgotPasswordText: {
-        color: `#c08`
-    },
     actionButtonStyle: {
         flexDirection: `column`,
         alignItems: 'center',
         elevation: 3
+    },
+    colorPink: {
+        color: colors.PINK
     },
     primaryActionButtonLinearGradient: {
         width: width / 1.35,
@@ -1144,6 +1140,7 @@ export const colors = {
     GREY: '#7e7e7e',
     WHITE_GREY: '#d4d4d4',
     DARK_GREY: '#555555',
+    PINK: `#c08`,
     LIGHT_BLACK: '#212121',
     DARK_RED: '#c04d47',
     SEMI_TRANSPARENT: 'rgba(0,0,0,0.5)',
