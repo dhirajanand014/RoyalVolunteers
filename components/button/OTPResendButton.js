@@ -7,7 +7,7 @@ import { keyBoardTypeConst, stringConstants } from '../../constants/Constants';
 export const OTPResendButton = props => {
     const style = { borderWidth: 0 };
     return (
-        <TouchableOpacity {...props} style={[RVStyles.buttonStyle, style, props.buttonStyle, props.disabled &&
+        <TouchableOpacity {...props} style={[style, props.buttonStyle, props.disabled &&
             RVStyles.otpResendDisabled || stringConstants.NODE]}>
             <Text style={props.textStyle}>{props.text}</Text>
         </TouchableOpacity>
