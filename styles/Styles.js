@@ -622,9 +622,6 @@ export const RVStyles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5
     },
-    modalTitleTextView: {
-        alignItems: 'center'
-    },
     disclaimerModalTitleTextView: {
         alignItems: 'center',
         paddingTop: isIOS && 20 || 0,

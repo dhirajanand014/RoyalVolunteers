@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Text, TouchableOpacity, View, Image } from "react-native";
 import { stringConstants, actionButtonTextConstants } from "../../constants/Constants";
 import { setErrorModal } from "../../helper/Helper";
-import { RVStyles } from "../../styles/Styles";
+import { RVGenericStyles, RVStyles } from "../../styles/Styles";
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from "react-native-linear-gradient";
 
@@ -14,7 +14,7 @@ export const ErrorModal = props => {
         <Modal animationType="slide" transparent visible={error.showModal} onRequestClose={() => setErrorModal(error, setError, stringConstants.EMPTY, stringConstants.EMPTY, false)} >
             <View style={RVStyles.modalContainer}>
                 <LinearGradient style={RVStyles.modalViewStyle} colors={['white', 'white']}>
-                    <View style={RVStyles.modalTitleTextView}>
+                    <View style={RVGenericStyles.alignItemsCenter}>
                         <Text style={RVStyles.modalTitleTextStyle}>{error.title}</Text>
                         <View style={RVStyles.modalTitleDivider} />
                     </View>
