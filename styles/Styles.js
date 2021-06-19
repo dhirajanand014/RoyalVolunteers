@@ -526,7 +526,7 @@ export const RVStyles = StyleSheet.create({
         elevation: 3
     },
     colorPink: {
-        color: colors.PINK
+        color: `#c08`
     },
     primaryActionButtonLinearGradient: {
         width: width / 1.35,
