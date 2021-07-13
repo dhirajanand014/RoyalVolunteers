@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Text, View } from 'react-native';
 import { errorBoundaryStyles, RVGenericStyles } from '../../styles/Styles';
 import { RVCloseIcon } from '../icons/RVCloseIcon';
 import * as Animatable from 'react-native-animatable';
